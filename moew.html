@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>UNITY VINA • Security Explorer v1.0</title>
+  <link rel="icon" href="https://raw.githubusercontent.com/lapgia57-netizen/Dondi/main/favicon.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0f172a;                /* slate-900 */
+      --surface: #1e293b;           /* slate-800 */
+      --surface-hover: #334155;     /* slate-700 */
+      --text: #f1f5f9;              /* slate-100 */
+      --text-secondary: #94a3b8;    /* slate-400 */
+      --accent: #f59e0b;            /* amber-500 - vàng uy tín */
+      --accent-soft: #fbbf24;       /* amber-400 */
+      --accent-glow: rgba(245,158,11,0.22);
+      --danger: #ef4444;            /* đỏ cảnh báo/an ninh */
+      --border: #334155;
+      --shadow-sm: 0 4px 16px rgba(0,0,0,0.4);
+      --shadow-md: 0 10px 40px rgba(245,158,11,0.18);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      background-image: 
+        radial-gradient(circle at 10% 10%, rgba(245,158,11,0.08) 0%, transparent 45%),
+        radial-gradient(circle at 85% 75%, rgba(239,68,68,0.06) 0%, transparent 45%);
+      background-attachment: fixed;
+      line-height: 1.6;
+    }
+
+    .header {
+      background: rgba(30,41,59,0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 1.2rem 2.2rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: var(--shadow-sm);
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5.8vw, 2.8rem);
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: -0.6px;
+    }
+
+    .version {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      background: rgba(245,158,11,0.12);
+      padding: 0.32rem 1rem;
+      border-radius: 6px;
+      border: 1px solid rgba(245,158,11,0.25);
+    }
+
+    .main-layout {
+      display: flex;
+      flex-direction: column;
+      min-height: calc(100dvh - 76px);
+    }
+
+    .sidebar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 1.3rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    @media (min-width: 960px) {
+      .main-layout { flex-direction: row; }
+      .sidebar {
+        width: 360px;
+        border-bottom: none;
+        border-right: 1px solid var(--border);
+        height: calc(100dvh - 76px);
+        overflow-y: auto;
+        position: sticky;
+        top: 76px;
+      }
+    }
+
+    .content {
+      flex: 1;
+      padding: 2.2rem;
+      background: var(--bg);
+    }
+
+    .search-wrapper {
+      position: relative;
+      margin-bottom: 2rem;
+    }
+
+    .search {
+      width: 100%;
+      padding: 1.1rem 1.1rem 1.1rem 3.4rem;
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 1rem;
+      color: var(--text);
+      transition: all 0.25s ease;
+    }
+
+    .search:focus {
+      outline: none;
+      border-color: var(--accent-soft);
+      box-shadow: 0 0 0 4px var(--accent-glow);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 1.2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+      font-size: 1.4rem;
+    }
+
+    .tree { padding: 0.5rem 0; }
+    .tree ul { list-style: none; padding-left: 1.4rem; }
+    .tree li {
+      padding: 0.75rem 1.1rem;
+      margin: 0.2rem 0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.22s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      color: var(--text-secondary);
+      font-size: 0.97rem;
+    }
+
+    .tree li:hover {
+      background: var(--surface-hover);
+      color: var(--text);
+      transform: translateX(4px);
+    }
+
+    .tree li.active {
+      background: rgba(245,158,11,0.14);
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .folder {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .folder::before {
+      content: "▶ ";
+      color: var(--accent-soft);
+      display: inline-block;
+      width: 1.4em;
+      transition: transform 0.3s ease;
+    }
+
+    .folder.closed::before { transform: rotate(-90deg); }
+
+    .file::before {
+      content: "🛡️";
+      font-size: 1.15rem;
+      margin-right: 0.5rem;
+    }
+
+    .realtime-panel {
+      background: var(--surface);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 1.8rem;
+      margin-bottom: 2.2rem;
+      box-shadow: var(--shadow-md);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .realtime-panel:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 14px 40px rgba(245,158,11,0.2);
+    }
+
+    .panel-title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.38rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      background: var(--accent-soft);
+      border-radius: 50%;
+      box-shadow: 0 0 0 0 var(--accent-glow);
+      animation: pulse 2.6s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(245,158,11,0.55); }
+      50%      { box-shadow: 0 0 0 14px rgba(245,158,11,0); }
+    }
+
+    .event-item {
+      padding: 1.1rem 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-secondary);
+      font-size: 0.96rem;
+      transition: all 0.22s ease;
+    }
+
+    .event-item:hover {
+      color: var(--text);
+      background: rgba(245,158,11,0.08);
+      border-radius: 8px;
+      padding-left: 0.9rem;
+      padding-right: 0.9rem;
+    }
+
+    .hash {
+      color: var(--accent);
+      font-family: 'DM Sans', monospace;
+      font-weight: 500;
+    }
+
+    .time {
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+      white-space: nowrap;
+    }
+
+    .status-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(30,41,59,0.94);
+      backdrop-filter: blur(14px);
+      border-top: 1px solid var(--border);
+      padding: 1rem 2.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      box-shadow: 0 -3px 12px rgba(0,0,0,0.3);
+      z-index: 999;
+    }
+
+    .online-count {
+      background: var(--danger);
+      color: white;
+      padding: 0.45rem 1.3rem;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 480px) {
+      .content, .realtime-panel { padding: 1.6rem; }
+      .status-bar { padding: 0.9rem 1.6rem; font-size: 0.86rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div style="display:flex; align-items:center; gap:1.2rem;">
+      <h1>UNITY VINA</h1>
+      <span class="version">Security Explorer v1.0</span>
+    </div>
+    <div style="font-weight:500;">
+      Files: <strong style="color:var(--accent);"><span id="fileCount">0</span></strong>
+    </div>
+  </div>
+
+  <div class="main-layout">
+    <div class="sidebar">
+      <div class="search-wrapper">
+        <span class="search-icon">🛡️</span>
+        <input type="text" class="search" id="search" placeholder="Tìm kiếm tài liệu, hợp đồng, mã bảo mật..." autocomplete="off"/>
+      </div>
+
+      <div class="tree" id="tree">
+        <div style="text-align:center; padding:4rem 1.5rem; color:var(--text-secondary);">
+          <div style="font-size:3.8rem; margin-bottom:1.2rem;">🛡️</div>
+          Đang kết nối đến hệ thống UNITY VINA...
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <div class="realtime-panel">
+        <div class="panel-title">
+          <span class="dot"></span>
+          Báo cáo / Tài liệu mới nhất
+        </div>
+        <div id="latest-blocks">Đang tải...</div>
+      </div>
+
+      <div class="realtime-panel">
+        <div class="panel-title">
+          <span class="dot"></span>
+          Hoạt động bảo vệ gần đây
+        </div>
+        <div id="latest-txs">Đang tải...</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="status-bar">
+    <div>Cập nhật lần cuối: <span id="time">—</span></div>
+    <div class="online-count">Online: <span id="online">0</span> nodes</div>
+    <div>v1.0 • lapgia57-netizen.github.io/Dondi</div>
+  </div>
+
+  <script>
+    const CUSTOM_DOMAIN = "https://lapgia57-netizen.github.io/Dondi/";
+    const RAW_BASE = "https://raw.githubusercontent.com/lapgia57-netizen/Dondi/main/";
+    const API_URL = "https://api.github.com/repos/lapgia57-netizen/Dondi/git/trees/main?recursive=1";
+    const HIDDEN_FILES = ['index.html', 'LICENSE', 'moew.html' ,  'README.md', 'CNAME', 'favicon.ico', 'unityvina.com.vn-1762155316.zip'];
+
+    let allFiles = [];
+
+    async function loadData() {
+      const treeEl = document.getElementById("tree");
+      try {
+        const res = await fetch(API_URL);
+        if (!res.ok) throw new Error(`GitHub API: ${res.status}`);
+
+        const data = await res.json();
+        if (data.message) throw new Error(data.message);
+
+        allFiles = data.tree
+          .filter(f => f.type === "blob")
+          .filter(f => !HIDDEN_FILES.includes(f.path.split('/').pop()));
+
+        const count = allFiles.length;
+        document.getElementById("fileCount").textContent = count;
+        document.getElementById("online").textContent = Math.max(1, Math.floor(count / 3) + 1); // giả lập nodes
+
+        renderTree(allFiles);
+        renderRealTimePanels(allFiles);
+        updateTime();
+
+      } catch (e) {
+        treeEl.innerHTML = `<div style="color:#f87171;padding:4rem 1.8rem;text-align:center;">
+          Không thể kết nối đến hệ thống bảo mật<br><small>${e.message}</small>
+        </div>`;
+      }
+    }
+
+    function renderTree(files) {
+      const container = document.getElementById("tree");
+      container.innerHTML = "";
+
+      const rootUl = document.createElement("ul");
+      const folders = {};
+
+      files.forEach(file => {
+        const parts = file.path.split('/');
+        const name = parts.pop();
+        let current = rootUl;
+
+        parts.forEach((dir, idx) => {
+          const key = parts.slice(0, idx+1).join('/');
+          if (!folders[key]) {
+            const li = document.createElement("li");
+            li.className = "folder closed";
+            li.innerHTML = dir;
+            li.onclick = (e) => {
+              e.stopPropagation();
+              li.classList.toggle("closed");
+              const ul = li.querySelector("ul");
+              if (ul) ul.style.display = ul.style.display === "none" ? "block" : "none";
+            };
+            const ul = document.createElement("ul");
+            ul.style.display = "none";
+            li.appendChild(ul);
+            current.appendChild(li);
+            folders[key] = ul;
+            current = ul;
+          } else {
+            current = folders[key];
+          }
+        });
+
+        const li = document.createElement("li");
+        li.className = "file";
+        li.innerHTML = name;
+        li.title = file.path;
+        li.onclick = () => openFile(file.path);
+        current.appendChild(li);
+      });
+
+      container.appendChild(rootUl);
+    }
+
+    function openFile(path) {
+      const url = path.endsWith('.html') || path.endsWith('.htm')
+        ? CUSTOM_DOMAIN + path
+        : RAW_BASE + path;
+      window.open(url, '_blank');
+    }
+
+    function getRelativeTime() {
+      const mins = Math.floor(Math.random() * 180) + 2;
+      if (mins < 60) return `${mins} phút trước`;
+      const h = Math.floor(mins / 60);
+      return `${h} giờ trước`;
+    }
+
+    function renderRealTimePanels(files) {
+      const sorted = [...files].sort((a,b) => b.path.localeCompare(a.path));
+
+      document.getElementById("latest-blocks").innerHTML = sorted.slice(0, 7).map(f => `
+        <div class="event-item">
+          <span><span class="hash">${f.path.split('/').pop().slice(0,18)}${f.path.length>18?'...':''}</span></span>
+          <span class="time">${getRelativeTime()}</span>
+        </div>
+      `).join('') || '<div style="text-align:center;padding:2.5rem;color:var(--text-secondary);">Chưa có tài liệu mới</div>';
+
+      document.getElementById("latest-txs").innerHTML = sorted.slice(7, 14).map(f => `
+        <div class="event-item">
+          <span>Bảo vệ / Giám sát → <span class="hash">${f.path.split('/').pop().slice(0,22)}${f.path.length>22?'...':''}</span></span>
+          <span class="time">${getRelativeTime()}</span>
+        </div>
+      `).join('') || '<div style="text-align:center;padding:2.5rem;color:var(--text-secondary);">Chưa có hoạt động mới</div>';
+    }
+
+    function updateTime() {
+      document.getElementById("time").textContent = 
+        new Date().toLocaleString("vi-VN", { dateStyle: "short", timeStyle: "medium" });
+    }
+
+    loadData();
+    setInterval(loadData, 45000);
+
+    // Tìm kiếm
+    document.getElementById("search").addEventListener("input", e => {
+      const term = e.target.value.toLowerCase().trim();
+      document.querySelectorAll(".tree li").forEach(el => {
+        const text = (el.textContent + (el.title || "")).toLowerCase();
+        el.style.display = term ? (text.includes(term) ? "" : "none") : "";
+      });
+    });
+  </script>
+</body>
+</html>
