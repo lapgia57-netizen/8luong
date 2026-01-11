@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Công ty CP xe khách Bắc Giang (BJC)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #FF6B00 0%, #FF8C00 100%);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: 0 4px 6px rgba(255, 107, 0, 0.2);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: #FF6B00;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+        }
+
+        .section-title {
+            color: #FF6B00;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #FF6B00;
+            display: inline-block;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .info-item {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid #FF6B00;
+            transition: all 0.3s ease;
+        }
+
+        .info-item:hover {
+            background: linear-gradient(135deg, #fff5eb 0%, #ffe8cc 100%);
+            transform: translateX(5px);
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #FF6B00;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-value {
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #fff5eb 0%, #ffe8cc 100%);
+            border-left: 5px solid #FF6B00;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-box strong {
+            color: #FF6B00;
+        }
+
+        .service-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .service-list li {
+            padding: 1rem;
+            margin: 0.8rem 0;
+            background: white;
+            border-radius: 10px;
+            border-left: 4px solid #FF6B00;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .service-list li:hover {
+            background: #fff5eb;
+            transform: translateX(8px);
+            box-shadow: 0 4px 12px rgba(255, 107, 0, 0.15);
+        }
+
+        .service-list li::before {
+            content: "🚌";
+            margin-right: 0.8rem;
+            font-size: 1.3rem;
+        }
+
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-box {
+            flex: 1;
+            min-width: 200px;
+            background: linear-gradient(135deg, #FF6B00 0%, #FF8C00 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(255, 107, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-box:hover {
+            transform: scale(1.05);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.95;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo">BJC</div>
+                <div>
+                    <h1>Công ty Cổ phần xe khách Bắc Giang</h1>
+                    <div class="subtitle">Dịch vụ vận tải hành khách uy tín - Chất lượng hàng đầu</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="info-card">
+            <h2 class="section-title">Thông tin chung</h2>
+            <div class="highlight-box">
+                <p><strong>Tiền thân:</strong> Công ty vận tải hành khách Bắc Giang, được thành lập năm <strong>1999</strong></p>
+                <p style="margin-top: 0.8rem;"><strong>Đặc biệt:</strong> Là công ty đầu tiên trong tỉnh Bắc Giang chuyển đổi từ Công ty Nhà nước sang Công ty Cổ phần</p>
+            </div>
+            
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Vốn điều lệ</div>
+                    <div class="info-value">50 tỷ đồng</div>
+                    <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #666;">Toàn bộ do cán bộ công nhân viên đóng góp</p>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Năm thành lập</div>
+                    <div class="info-value">1999</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Loại hình</div>
+                    <div class="info-value">Công ty Cổ phần</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <h2 class="section-title">Quy mô hoạt động</h2>
+            <div class="stats-container">
+                <div class="stat-box">
+                    <div class="stat-number">14</div>
+                    <div class="stat-label">Đơn vị thành viên</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">~500</div>
+                    <div class="stat-label">Cán bộ công nhân viên</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">25+</div>
+                    <div class="stat-label">Năm kinh nghiệm</div>
+                </div>
+            </div>
+            <p style="text-align: center; color: #666; margin-top: 1rem; font-style: italic;">
+                Bao gồm nhân viên chính thức, thuê theo thời vụ và thuê ngoài
+            </p>
+        </div>
+
+        <div class="info-card">
+            <h2 class="section-title">Dịch vụ vận tải</h2>
+            <ul class="service-list">
+                <li>
+                    <strong>Tuyến Gia Lâm – Lục Ngạn</strong>
+                    <p style="margin-top: 0.3rem; color: #666;">Dịch vụ vận tải hành khách chính</p>
+                </li>
+                <li>
+                    <strong>Tuyến Bắc Giang - Hà Nội</strong>
+                    <p style="margin-top: 0.3rem; color: #666;">Kết nối thủ đô với tỉnh Bắc Giang</p>
+                </li>
+                <li>
+                    <strong>Các tuyến nội tỉnh</strong>
+                    <p style="margin-top: 0.3rem; color: #666;">Phục vụ di chuyển trong khu vực Bắc Giang</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="info-card">
+            <h2 class="section-title">Đội xe hiện đại</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Loại xe</div>
+                    <div class="info-value">Xe ghế ngồi hiện đại</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Sức chứa</div>
+                    <div class="info-value">29 - 40 chỗ ngồi</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Tiêu chuẩn</div>
+                    <div class="info-value">An toàn, tiện nghi</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-card" style="background: linear-gradient(135deg, #fff5eb 0%, #ffe8cc 100%);">
+            <h2 class="section-title">Liên hệ & Hỗ trợ</h2>
+            <p style="font-size: 1.1rem; margin-top: 1rem;">
+                Để biết thêm thông tin chi tiết về địa chỉ, số điện thoại liên hệ hoặc các tuyến xe cụ thể, 
+                quý khách vui lòng truy cập website chính thức hoặc liên hệ trực tiếp với công ty.
+            </p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2025 Công ty Cổ phần xe khách Bắc Giang (BJC)</p>
+        <p style="margin-top: 0.5rem; opacity: 0.8;">Designed with FPT Theme</p>
+    </div>
+</body>
+</html>
