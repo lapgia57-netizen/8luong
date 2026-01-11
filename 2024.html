@@ -3,252 +3,257 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MẪU HỢP ĐỒNG LAO ĐỘNG - Không xác định thời hạn</title>
+  <title>Hợp đồng lao động Nhân viên Bảo vệ - Hướng dẫn 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Noto+Sans+Vietnamese:wght@400;500;700&display=swap" rel="stylesheet">
+  
   <style>
+    :root {
+      --primary: #1e40af;
+      --primary-dark: #1e3a8a;
+      --gray: #4b5563;
+      --light: #f9fafb;
+      --border: #e5e7eb;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: "Times New Roman", Times, serif;
-      line-height: 1.65;
-      color: #1a1a1a;
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 0 20px;
-      background-color: #f9f9f9;
+      font-family: 'Roboto', 'Noto Sans Vietnamese', sans-serif;
+      line-height: 1.6;
+      color: #1f2937;
+      background-color: var(--light);
+      padding: 20px;
     }
 
     .container {
-      background-color: white;
-      padding: 40px 50px;
-      border: 1px solid #ddd;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      overflow: hidden;
     }
 
-    h1 {
+    .header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      padding: 2.5rem 2rem;
       text-align: center;
-      font-size: 1.9em;
-      margin: 0.4em 0;
-      text-transform: uppercase;
-      letter-spacing: 1px;
     }
 
-    .doc-header {
-      text-align: center;
-      margin-bottom: 2.2em;
+    .header h1 {
+      font-size: 2.1rem;
+      margin-bottom: 0.5rem;
     }
 
-    .doc-title {
-      font-size: 2.1em;
-      font-weight: bold;
-      margin: 0.6em 0 0.3em;
+    .header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
     }
 
-    .doc-subtitle {
-      font-size: 1.15em;
-      margin: 0.2em 0 1.2em;
+    .content {
+      padding: 2.5rem;
     }
 
-    .contract-number {
-      text-align: right;
-      font-style: italic;
-      margin-bottom: 1.8em;
+    h2 {
+      color: var(--primary-dark);
+      font-size: 1.65rem;
+      margin: 2.2rem 0 1rem;
+      border-left: 5px solid var(--primary);
+      padding-left: 1rem;
     }
 
-    h2, h3 {
-      color: #b22222;
-      margin: 1.8em 0 0.9em;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 0.4em;
+    h3 {
+      color: #374151;
+      font-size: 1.35rem;
+      margin: 1.8rem 0 0.9rem;
     }
 
-    .party {
-      margin: 2em 0;
-    }
-
-    .party-title {
-      font-weight: bold;
-      text-transform: uppercase;
-      margin-bottom: 0.6em;
-      color: #333;
-    }
-
-    .highlight {
-      background-color: #fffacd;
-      padding: 1px 4px;
-      border-radius: 3px;
-    }
-
-    .note-box {
-      background-color: #fff3e6;
-      border-left: 5px solid #ff9800;
-      padding: 16px 20px;
-      margin: 2em 0;
-      font-size: 0.97em;
+    p, li {
+      font-size: 1.05rem;
+      color: #374151;
+      margin-bottom: 0.9rem;
     }
 
     .important {
-      color: #c62828;
-      font-weight: bold;
+      background-color: #fef3c7;
+      border-left: 5px solid #d97706;
+      padding: 1.2rem 1.5rem;
+      margin: 1.5rem 0;
+      border-radius: 6px;
     }
 
-    .signature {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 5em;
-      gap: 40px;
+    .note {
+      font-style: italic;
+      color: #6b7280;
+      margin: 1.2rem 0;
     }
 
-    .sign-block {
-      flex: 1;
+    ul, ol {
+      margin: 1rem 0 1.5rem 1.8rem;
+    }
+
+    li {
+      margin-bottom: 0.7rem;
+    }
+
+    .contract-sample {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.8rem;
+      margin: 2rem 0;
+      font-family: 'Courier New', Courier, monospace;
+      white-space: pre-wrap;
+      font-size: 0.98rem;
+      line-height: 1.5;
+    }
+
+    .highlight {
+      color: #c2410c;
+      font-weight: 600;
+    }
+
+    .tips {
+      background: #ecfdf5;
+      border-left: 5px solid #10b981;
+      padding: 1.3rem;
+      margin: 2rem 0;
+      border-radius: 6px;
+    }
+
+    .footer-note {
       text-align: center;
-    }
-
-    .sign-line {
-      margin-top: 4em;
-      border-top: 1px solid #333;
-      width: 70%;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    @media print {
-      body {
-        background: white;
-        margin: 0;
-        padding: 0;
-      }
-      .container {
-        box-shadow: none;
-        border: none;
-        padding: 20px;
-        max-width: none;
-      }
-      .note-box {
-        border-left: 4px solid #ffa726;
-      }
+      padding: 2rem;
+      background: #f1f5f9;
+      color: #64748b;
+      font-size: 0.95rem;
     }
 
     @media (max-width: 768px) {
-      .container {
-        padding: 25px 30px;
-      }
-      .signature {
-        flex-direction: column;
-        gap: 4em;
-      }
+      .content { padding: 1.8rem; }
+      .header h1 { font-size: 1.8rem; }
     }
   </style>
 </head>
 <body>
 
 <div class="container">
-
-  <div class="doc-header">
-    <h1>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</h1>
-    <p>Độc lập – Tự do – Hạnh phúc</p>
-    <div class="doc-title">HỢP ĐỒNG LAO ĐỘNG</div>
-    <div class="doc-subtitle">Loại: Không xác định thời hạn</div>
+  <div class="header">
+    <h1>Hướng dẫn Hợp đồng Lao động<br>Nhân viên Bảo vệ 2026</h1>
+    <p>Công ty TNHH - Cập nhật theo Bộ luật Lao động & quy định mới nhất</p>
   </div>
 
-  <div class="contract-number">Số: ……… /HĐLĐ</div>
+  <div class="content">
 
-  <p style="text-align:center; font-style:italic;">
-    Hôm nay, ngày <span class="highlight">16</span> tháng <span class="highlight">10</span> năm <span class="highlight">2024</span>, tại trụ sở Công ty, chúng tôi gồm:
-  </p>
+    <h2>Các loại hợp đồng phổ biến cho vị trí bảo vệ</h2>
+    <ul>
+      <li><strong>Hợp đồng xác định thời hạn</strong> (thường 12–36 tháng) – phổ biến nhất</li>
+      <li><strong>Hợp đồng không xác định thời hạn</strong> – làm việc lâu dài, ổn định</li>
+      <li><strong>Hợp đồng thời vụ</strong> – dưới 12 tháng, nhu cầu ngắn hạn</li>
+    </ul>
 
-  <!-- Bên A -->
-  <div class="party">
-    <div class="party-title">BÊN A (NGƯỜI SỬ DỤNG LAO ĐỘNG):</div>
-    <p>Tên công ty: <strong>CÔNG TY TNHH ………………………………………</strong></p>
-    <p>Mã số thuế: ………………………………………</p>
-    <p>Địa chỉ trụ sở: ………………………………………………………………</p>
-    <p>Đại diện theo pháp luật: Ông/Bà ………………………………………</p>
-    <p>Chức vụ: Giám đốc</p>
-    <p>Số điện thoại: ………………………………………</p>
-  </div>
-
-  <!-- Bên B -->
-  <div class="party">
-    <div class="party-title">BÊN B (NGƯỜI LAO ĐỘNG):</div>
-    <p>Họ và tên: <strong>………………………………………</strong></p>
-    <p>Ngày sinh: ………………… Giới tính: …………………</p>
-    <p>Quốc tịch: ………………… Số CMND/CCCD/Hộ chiếu: ………………… cấp ngày ………………… tại …………………</p>
-    <p>Địa chỉ thường trú: ………………………………………………………………</p>
-    <p>Số điện thoại: ………………………………………</p>
-  </div>
-
-  <p style="text-align:center; margin:2.5em 0;">
-    Hai bên cùng thống nhất ký kết hợp đồng lao động với các điều khoản sau:
-  </p>
-
-  <h2>Điều 1. Loại hợp đồng và thời hạn hợp đồng</h2>
-  <ul>
-    <li>Loại hợp đồng: <strong>Hợp đồng lao động không xác định thời hạn</strong></li>
-    <li>Thời điểm bắt đầu thực hiện hợp đồng: Từ ngày <strong>16 tháng 10 năm 2024</strong></li>
-    <li>Thời gian thử việc (nếu có): ………………… tháng (tối đa 60 ngày đối với công việc cần trình độ từ cao đẳng trở lên; 30 ngày đối với công việc cần trình độ trung cấp, công nhân kỹ thuật; 06 ngày làm việc đối với công việc khác).</li>
-  </ul>
-
-  <h2>Điều 2. Công việc và địa điểm làm việc</h2>
-  <p>Công việc được giao: <strong>…………………………………………………………</strong><br>
-  <small>(Mô tả cụ thể vị trí, nhiệm vụ chính)</small></p>
-  <p>Địa điểm làm việc: Trụ sở chính tại …………………………………………… hoặc các địa điểm khác theo yêu cầu công việc và sự phân công của Công ty.</p>
-
-  <h2>Điều 3. Thời giờ làm việc, thời giờ nghỉ ngơi</h2>
-  <p>Thời giờ làm việc: ………………… giờ/ngày, ………………… giờ/tuần (thường là 08 giờ/ngày, 48 giờ/tuần hoặc theo ca nếu có).</p>
-  <p>Nghỉ giữa giờ, nghỉ lễ, tết, nghỉ phép năm theo quy định của pháp luật và Nội quy Công ty.</p>
-
-  <h2>Điều 4. Tiền lương, phụ cấp và hình thức trả lương</h2>
-  <p>Mức lương chính: <strong>………………… VNĐ/tháng</strong> (bằng số) <strong>……………………………</strong> (bằng chữ)</p>
-  <p>Các khoản phụ cấp (nếu có):</p>
-  <ul>
-    <li>Phụ cấp trách nhiệm: ………………… VNĐ/tháng</li>
-    <li>Phụ cấp ăn ca: ………………… VNĐ/ca</li>
-    <li>Phụ cấp khác: …………………</li>
-  </ul>
-  <p><strong>Tổng thu nhập tháng (dự kiến):</strong> ………………… VNĐ</p>
-  <p>Hình thức trả lương: Chuyển khoản ngân hàng / Tiền mặt, kỳ trả: Ngày ………………… hàng tháng.</p>
-
-  <h2>Điều 5. Bảo hiểm xã hội, bảo hiểm y tế, bảo hiểm thất nghiệp</h2>
-  <p>Công ty và Người lao động thực hiện đầy đủ nghĩa vụ đóng BHXH, BHYT, BHTN theo quy định hiện hành của Nhà nước.</p>
-
-  <h2>Điều 6. Trang bị bảo hộ lao động, phương tiện làm việc</h2>
-  <p>Công ty trang bị đầy đủ phương tiện, dụng cụ làm việc và bảo hộ lao động theo quy định.</p>
-
-  <h2>Điều 7. Quyền và nghĩa vụ của các bên</h2>
-  <ul>
-    <li>Quyền và nghĩa vụ của Bên A (Công ty) theo Điều 21, Điều 22 Bộ luật Lao động.</li>
-    <li>Quyền và nghĩa vụ của Bên B (Người lao động) theo Điều 21, Điều 23 Bộ luật Lao động.</li>
-  </ul>
-
-  <h2>Điều 8. Chấm dứt hợp đồng lao động</h2>
-  <p>Thực hiện theo quy định tại Chương III Bộ luật Lao động 2019 (Điều 34 đến Điều 41), đặc biệt lưu ý thời hạn báo trước khi đơn phương chấm dứt (ít nhất <strong>45 ngày</strong> đối với hợp đồng không xác định thời hạn).</p>
-
-  <h2>Điều 9. Điều khoản thi hành</h2>
-  <ul>
-    <li>Hợp đồng này được lập thành 02 bản có giá trị pháp lý như nhau, mỗi bên giữ 01 bản.</li>
-    <li>Hợp đồng có hiệu lực từ ngày ký.</li>
-    <li>Mọi sửa đổi, bổ sung phải được lập thành văn bản phụ lục và có chữ ký của cả hai bên.</li>
-  </ul>
-
-  <div class="signature">
-    <div class="sign-block">
-      <strong>ĐẠI DIỆN BÊN A</strong><br>
-      (Ký, ghi rõ họ tên, đóng dấu)
-      <div class="sign-line"></div>
+    <div class="important">
+      <strong>Lưu ý cực kỳ quan trọng:</strong><br>
+      Phải ký <strong>HỢP ĐỒNG LAO ĐỘNG</strong> (không phải hợp đồng dịch vụ/khoán việc) nếu làm việc thường xuyên, dưới sự quản lý trực tiếp của công ty → công ty <strong>PHẢI đóng đầy đủ BHXH, BHYT, BHTN</strong>.
     </div>
-    <div class="sign-block">
-      <strong>ĐẠI DIỆN BÊN B</strong><br>
-      (Ký, ghi rõ họ tên)
-      <div class="sign-line"></div>
+
+    <h2>Nội dung bắt buộc phải có trong hợp đồng (Điều 21 BLLĐ 2019)</h2>
+    <ul>
+      <li>Tên, địa chỉ, MST, người đại diện công ty</li>
+      <li>Họ tên, ngày sinh, số CCCD gắn chip, địa chỉ thường trú của NLĐ</li>
+      <li>Công việc & địa điểm làm việc</li>
+      <li>Thời hạn hợp đồng</li>
+      <li>Mức lương, hình thức trả, phụ cấp, thời gian trả lương</li>
+      <li>Thời giờ làm việc, thời gian nghỉ ngơi</li>
+      <li>Trang thiết bị, phương tiện làm việc do công ty cấp</li>
+      <li>BHXH, BHYT, BHTN</li>
+      <li>Đào tạo, bồi dưỡng nghề nghiệp</li>
+      <li>Các nội dung khác: kỷ luật, ATVSLĐ, bảo mật, bồi thường thiệt hại...</li>
+    </ul>
+
+    <h2>Mẫu hợp đồng lao động bảo vệ tham khảo (cơ bản)</h2>
+    <div class="contract-sample">
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+──────────────────────────────
+HỢP ĐỒNG LAO ĐỘNG
+(số: ………./HĐLĐ)
+
+Hôm nay, ngày … tháng … năm 2026, tại ……………………
+Chúng tôi gồm:
+
+BÊN A (Người sử dụng lao động):
+Công ty TNHH ……………………
+Địa chỉ: …………………………………………
+Mã số thuế: …………………
+Đại diện: Ông/Bà ……………… – Chức vụ: …………………
+
+BÊN B (Người lao động):
+Họ và tên: …………………………………………
+Ngày sinh: ………………   Giới tính: ………………
+Số CCCD: ……………… cấp ngày ……………… tại ………………
+Địa chỉ thường trú: …………………………………………
+SĐT: ………………
+
+Hai bên thống nhất ký kết hợp đồng lao động với các điều khoản sau:
+
+Điều 1: Công việc và địa điểm làm việc
+Công việc: Nhân viên bảo vệ
+Nhiệm vụ chính: Kiểm soát ra vào, tuần tra, giám sát an ninh, báo cáo sự cố...
+Địa điểm: Tại trụ sở Công ty và các địa điểm khác theo yêu cầu
+
+Điều 2: Thời hạn hợp đồng
+Loại hợp đồng: Xác định thời hạn … tháng
+(Thời gian: từ ngày … đến ngày …)
+
+Điều 3: Thời giờ làm việc và nghỉ ngơi
+Làm việc theo ca: 8 giờ/ngày, 48 giờ/tuần (luân phiên ngày/đêm)
+Nghỉ giữa ca, nghỉ phép năm, lễ Tết theo quy định pháp luật
+
+Điều 4: Lương, thưởng và phúc lợi
+Lương cơ bản: ………………… đồng/tháng
+Phụ cấp (ca đêm, trách nhiệm…): ………………… đồng
+Hình thức trả: Chuyển khoản ngày …………………
+Tham gia đầy đủ BHXH, BHYT, BHTN theo luật
+
+Điều 5: Trang bị và an toàn lao động
+Công ty cấp đồng phục, công cụ hỗ trợ, bảo đảm ATVSLĐ
+
+Điều 6: Quyền và nghĩa vụ các bên
+Bên B cam kết chấp hành nội quy, bảo mật thông tin, chịu trách nhiệm bồi thường nếu có lỗi gây thiệt hại
+
+Điều 7: Chấm dứt hợp đồng
+Theo quy định Bộ luật Lao động 2019
+
+Điều 8: Giải quyết tranh chấp
+Thương lượng → Hòa giải → Tòa án lao động
+
+Hợp đồng lập thành 02 bản, mỗi bên giữ 01 bản có giá trị pháp lý như nhau.
+
+ĐẠI DIỆN BÊN A                           NGƯỜI LAO ĐỘNG
+(Ký, ghi rõ họ tên, đóng dấu)            (Ký, ghi rõ họ tên)
     </div>
+
+    <div class="tips">
+      <strong>Khuyến nghị thực tế 2026:</strong><br>
+      • Ký hợp đồng <strong>ngay ngày đầu làm việc</strong><br>
+      • Giữ bản sao hợp đồng, bảng lương, tra cứu BHXH<br>
+      • Công ty không ký HĐLĐ hoặc không đóng BH → khiếu nại Sở LĐ-TB&XH
+    </div>
+
   </div>
 
-  <div class="note-box">
-    <strong>LƯU Ý QUAN TRỌNG (cập nhật đến tháng 1/2026):</strong><br>
-    • Từ 01/7/2025, Luật Bảo hiểm xã hội 2024 có hiệu lực → một số chế độ BHXH thay đổi nhẹ...<br>
-    • Mức lương tối thiểu vùng năm 2026 đã tăng (khoảng 250.000 – 350.000 đồng tùy vùng) → đảm bảo lương thỏa thuận không thấp hơn mức tối thiểu vùng.<br>
-    • Nếu công ty có Thỏa ước lao động tập thể hoặc Nội quy lao động đã đăng ký → phải tham chiếu và ưu tiên áp dụng nếu có lợi hơn cho người lao động.<br>
-    • Nên đính kèm: Bản sao CCCD, Sơ yếu lý lịch, Giấy khám sức khỏe (nếu bắt buộc theo ngành nghề).
+  <div class="footer-note">
+    Nguồn tham khảo: Bộ luật Lao động 2019 • Nghị định 337/2025/NĐ-CP • Luật Bảo vệ dữ liệu cá nhân 2025<br>
+    Nên nhờ luật sư kiểm tra trước khi sử dụng chính thức • Cập nhật tháng 01/2026
   </div>
-
 </div>
 
 </body>
