@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Công ty Cổ phần Xe khách Bắc Giang - BJC Group</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --primary: #004aad;       /* xanh dương đậm - xe khách */
+      --primary-light: #0066cc;
+      --accent: #ff8c00;         /* cam vàng - năng động */
+      --light: #f8f9fa;
+      --dark: #2d2d2d;
+      --gray: #6c757d;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(to bottom, var(--light), #e9f0ff);
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    .bus-header {
+      background: var(--primary);
+      color: white;
+      padding: 2.5rem 1rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bus-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.15), transparent);
+      transform: rotate(30deg);
+      animation: shine 8s infinite;
+    }
+
+    @keyframes shine {
+      0%, 100% { transform: translateX(-100%) rotate(30deg); }
+      50% { transform: translateX(100%) rotate(30deg); }
+    }
+
+    .bus-header h1 {
+      font-size: 2.4rem;
+      margin-bottom: 0.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .bus-header .subtitle {
+      font-size: 1.15rem;
+      opacity: 0.95;
+      position: relative;
+      z-index: 1;
+    }
+
+    .bus-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      color: var(--accent);
+      position: relative;
+      z-index: 1;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: -3rem auto 3rem;
+      padding: 0 1.5rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+      padding: 2.2rem;
+      margin-bottom: 1.8rem;
+      border-top: 5px solid var(--primary);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 15px 35px rgba(0,74,173,0.18);
+    }
+
+    .card h2 {
+      color: var(--primary);
+      font-size: 1.65rem;
+      margin-bottom: 1.1rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 2px solid var(--accent);
+      display: inline-block;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .info-item {
+      background: #f0f5ff;
+      padding: 1.2rem;
+      border-radius: 10px;
+      border-left: 5px solid var(--accent);
+    }
+
+    .info-item strong {
+      color: var(--primary);
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+
+    .highlight {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.9rem 1.5rem;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .btn:hover {
+      background: var(--primary-light);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-outline:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: var(--gray);
+      font-size: 0.95rem;
+      border-top: 1px solid #ddd;
+      margin-top: 3rem;
+    }
+
+    @media (max-width: 600px) {
+      .bus-header h1 { font-size: 2rem; }
+      .card { padding: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="bus-header">
+    <i class="fas fa-bus bus-icon"></i>
+    <h1>Công ty Cổ phần Xe khách Bắc Giang</h1>
+    <p class="subtitle">BJC Group – Vận tải hành khách chất lượng cao</p>
+  </header>
+
+  <div class="container">
+
+    <div class="card">
+      <h2>Giới thiệu chung</h2>
+      <p>Công ty Cổ phần Xe khách Bắc Giang (viết tắt: <strong>BJC</strong>) thường được biết đến với thương hiệu <strong>BJC Group</strong>. Đây là một trong những công ty vận tải hành khách hàng đầu tại tỉnh Bắc Giang, Việt Nam.</p>
+    </div>
+
+    <div class="card">
+      <h2>Thông tin chính</h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <strong>Tên đầy đủ</strong>
+          Công ty Cổ phần Xe khách Bắc Giang (BJC)
+        </div>
+        <div class="info-item">
+          <strong>Thành lập</strong>
+          Năm <span class="highlight">1999</span><br>
+          Tiền thân: Công ty Vận tải Hành khách Bắc Giang<br>
+          Công ty đầu tiên trong tỉnh chuyển đổi sang mô hình cổ phần
+        </div>
+        <div class="info-item">
+          <strong>Lĩnh vực chính</strong>
+          • Vận tải hành khách (xe giường nằm, limousine, xe chất lượng cao)<br>
+          • Vận tải hàng hóa<br>
+          • Dịch vụ bến xe<br>
+          • Dịch vụ liên quan giao thông vận tải
+        </div>
+        <div class="info-item">
+          <strong>Quy mô</strong>
+          • Khoảng <span class="highlight">15 đơn vị thành viên</span><br>
+          • Gần <span class="highlight">400 cán bộ, nhân viên</span> (bao gồm lao động thời vụ)
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Thương hiệu nổi bật</h2>
+      <p>Từ năm <strong>2023</strong>, công ty áp dụng thương hiệu <span class="highlight">“Thành Công”</span> cho các tuyến xe khách chất lượng cao, sử dụng xe <strong>Ford Transit 16 chỗ</strong> đời mới – tiện nghi và an toàn hàng đầu.</p>
+    </div>
+
+    <div class="card">
+      <h2>Tuyến đường chính & Cam kết</h2>
+      <p>Công ty tập trung vào các tuyến liên tỉnh từ Bắc Giang đi:</p>
+      <ul style="padding-left: 1.8rem; margin: 1rem 0;">
+        <li>Hà Nội (Yên Nghĩa, Giáp Bát...)</li>
+        <li>Các tỉnh miền Bắc</li>
+        <li>Một số tuyến đường dài xa hơn</li>
+      </ul>
+      <p style="margin-top: 1.2rem;">Với cam kết chất lượng dịch vụ ngày càng được cải thiện và nâng cao.</p>
+    </div>
+
+    <div class="card">
+      <h2>Liên kết chính thức</h2>
+      <div class="links">
+        <a href="https://xekhachbacgiang.com.vn" target="_blank" class="btn">
+          <i class="fas fa-globe"></i> Website chính thức
+        </a>
+        <a href="https://www.facebook.com/" target="_blank" class="btn btn-outline">
+          <i class="fab fa-facebook-f"></i> Fanpage Facebook
+        </a>
+      </div>
+      <p style="margin-top: 1.3rem; color: var(--gray); font-size: 0.95rem;">
+        Fanpage thường xuyên cập nhật lịch xe, thay đổi tuyến đường và các chương trình khuyến mãi.
+      </p>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>© 2026 BJC Group - Công ty Cổ phần Xe khách Bắc Giang</p>
+    <p>Chất lượng – An toàn – Uy tín</p>
+  </footer>
+
+</body>
+</html>
