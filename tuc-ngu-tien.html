@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Đồng tiền liền khúc ruột - Tục ngữ Việt Nam</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --money-green: #2d9a88;      /* Xanh lá tiền tệ chính */
+      --money-light: #4abf9e;      /* Xanh sáng hơn */
+      --money-deep: #1e6b61;       /* Xanh đậm */
+      --gold: #d4af37;             /* Vàng kim loại */
+      --bg-light: #f8f9fa;
+      --text-dark: #2c3e50;
+      --shadow: 0 10px 30px rgba(45, 154, 136, 0.15);
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #e0f7fa, #f0fff4);
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card {
+      max-width: 700px;
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--money-light);
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--money-green), var(--money-deep));
+      color: white;
+      padding: 40px 30px 30px;
+      text-align: center;
+      position: relative;
+    }
+
+    .header::before {
+      content: "💰";
+      font-size: 60px;
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      opacity: 0.25;
+    }
+
+    .header h1 {
+      font-family: 'Playfair Display', serif;
+      margin: 0;
+      font-size: 2.4rem;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .header p.subtitle {
+      margin: 10px 0 0;
+      font-size: 1.1rem;
+      opacity: 0.95;
+    }
+
+    .content {
+      padding: 30px;
+      line-height: 1.7;
+      color: var(--text-dark);
+    }
+
+    .section-title {
+      color: var(--money-green);
+      font-weight: 700;
+      font-size: 1.4rem;
+      margin: 30px 0 15px;
+      border-bottom: 2px solid var(--money-light);
+      padding-bottom: 8px;
+      position: relative;
+    }
+
+    .section-title::after {
+      content: "";
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: var(--gold);
+    }
+
+    p {
+      margin: 12px 0;
+    }
+
+    .highlight {
+      background: rgba(74, 191, 158, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--money-deep);
+      font-weight: 500;
+    }
+
+    .footer {
+      background: var(--money-deep);
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.95rem;
+    }
+
+    .footer strong {
+      color: var(--gold);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="header">
+      <h1>Đồng tiền liền khúc ruột</h1>
+      <p class="subtitle">Câu tục ngữ dân gian Việt Nam sâu sắc về giá trị của đồng tiền</p>
+    </div>
+
+    <div class="content">
+      <p>Câu tục ngữ "<span class="highlight">Đồng tiền đi liền khúc ruột</span>" (hoặc biến thể "<span class="highlight">Đồng tiền liền khúc ruột</span>") là một câu nói dân gian rất quen thuộc trong văn hóa Việt Nam.</p>
+
+      <h2 class="section-title">Ý nghĩa chính</h2>
+      <p>Câu này nhấn mạnh rằng đồng tiền quý giá và thiết thân với con người, gần gũi như một phần cơ thể (khúc ruột). Tiền không phải tự nhiên mà có, mà được tạo ra từ mồ hôi, nước mắt, công sức lao động vất vả của mỗi người. Vì vậy, khi mất tiền hay hao hụt tiền bạc, người ta thường cảm thấy đau đớn, xót xa như bị tổn thương đến chính thân thể mình.</p>
+      <p>Theo các từ điển tục ngữ Việt Nam (như của Nguyễn Đức Chung hay Việt Chương):</p>
+      <p>"<span class="highlight">Đồng tiền vốn gắn liền với khúc ruột của từng người</span>" → ai cũng thấy xót xa khi tiền bị hao mòn.</p>
+      <p>Tiền là kết quả của sự "<span class="highlight">hao hụt thân xác</span>" (lao động cực nhọc), nên mất tiền thì "<span class="highlight">ruột đau xót biết chừng nào</span>".</p>
+
+      <h2 class="section-title">Bài học rút ra</h2>
+      <p>Phải trân trọng đồng tiền của mình và của người khác, vì nó đều là mồ hôi nước mắt.</p>
+      <p>Không tiêu xài hoang phí, phải chi tiêu hợp lý.</p>
+      <p>Khi cho mượn tiền hay giao dịch tiền bạc, cần cẩn trọng, vì "<span class="highlight">động đến tiền</span>" dễ làm mất tình nghĩa, thậm chí rạn nứt quan hệ (dân gian hay nói "<span class="highlight">mượn tiền thấu lòng người, trả tiền thấu nhân phẩm</span>").</p>
+      <p>Trong xã hội hiện đại, câu này còn được dùng để giải thích tại sao dùng tiền mặt thường khiến ta tiết kiệm hơn so với quẹt thẻ (vì "<span class="highlight">xót ruột</span>" khi thấy tiền rời tay trực tiếp).</p>
+
+      <p>Ông cha ta dùng hình ảnh rất đời thường nhưng sâu sắc để nhắc nhở: tiền bạc quan trọng, nhưng phải kiếm bằng cách chân chính và sử dụng một cách có ý nghĩa. Dù ngày nay có nhiều cách kiếm tiền dễ hơn xưa, câu tục ngữ vẫn rất "<span class="highlight">thấm</span>" vì ai cũng từng trải qua cảm giác "<span class="highlight">đau ví</span>" khi chi tiêu hay mất mát tài chính.</p>
+
+      <p>Bạn đang nghĩ về câu này trong ngữ cảnh nào vậy? Hay chỉ tình cờ nhớ tới và muốn ôn lại ý nghĩa?</p>
+    </div>
+
+    <div class="footer">
+      Trân trọng đồng tiền – trân trọng mồ hôi nước mắt và giá trị cuộc sống 💸
+    </div>
+  </div>
+
+</body>
+</html>
