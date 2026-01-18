@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hướng Dẫn Sử Dụng API Hiệu Quả</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px 15px;
+    }
+    h1, h2, h3 {
+      color: #1a1a1a;
+    }
+    h1 {
+      text-align: center;
+      margin: 30px 0 10px;
+      font-size: 2.2rem;
+    }
+    h2 {
+      border-left: 5px solid #007bff;
+      padding-left: 12px;
+      margin-top: 40px;
+      font-size: 1.8rem;
+    }
+    h3 {
+      margin-top: 30px;
+      font-size: 1.4rem;
+      color: #0056b3;
+    }
+    p {
+      margin: 12px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.95rem;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 12px 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background: #007bff;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background: #f2f8ff;
+    }
+    ul {
+      padding-left: 20px;
+      margin: 10px 0;
+    }
+    .img-container {
+      margin: 25px 0;
+      text-align: center;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .highlight {
+      background: #e7f3ff;
+      padding: 15px;
+      border-left: 5px solid #007bff;
+      border-radius: 6px;
+      margin: 20px 0;
+    }
+    @media (max-width: 600px) {
+      h1 { font-size: 1.9rem; }
+      h2 { font-size: 1.6rem; }
+      table { font-size: 0.9rem; }
+      th, td { padding: 10px 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <h1>Để sử dụng một API một cách hiệu quả</h1>
+  <p style="text-align:center; color:#555; font-style:italic;">(Đặc biệt là Web API hiện đại, thường là REST API)</p>
+
+  <div class="img-container">
+    <img src="https://www.altexsoft.com/media/2021/03/rest_api_works.png" alt="How REST API works - diagram">
+  </div>
+
+  <p>Mình sẽ trình bày theo thứ tự logic từ cơ bản → nâng cao, dễ áp dụng thực tế nhất.</p>
+
+  <h2>1. API là gì? (Khái niệm cốt lõi)</h2>
+  <p>API = Application Programming Interface</p>
+  <p>→ Là cầu nối / giao diện cho phép hai phần mềm (hoặc hai hệ thống) nói chuyện với nhau mà không cần biết bên trong hoạt động thế nào.</p>
+  <p>Ví dụ thực tế:</p>
+  <ul>
+    <li>Ứng dụng thời tiết trên điện thoại → gọi API của Trung tâm Khí tượng</li>
+    <li>Đăng nhập bằng Google/Facebook → gọi API của Google/Facebook</li>
+    <li>Ứng dụng của bạn lấy giá tiền ảo, gửi tin nhắn Zalo, thanh toán VNPay… → đều dùng API</li>
+  </ul>
+
+  <div class="img-container">
+    <img src="https://eu-central-1-shared-euc1-02.graphassets.com/AvHQ3RDvFSousA8iwElOKz/resize=width:2048/bixkNpDoQMepBnMH4hv6" alt="API request response cycle">
+  </div>
+
+  <h2>2. Các thành phần chính khi dùng một API (phải biết)</h2>
+
+  <table>
+    <tr><th>Thành phần</th><th>Ý nghĩa</th><th>Ví dụ thực tế</th></tr>
+    <tr><td>Endpoint</td><td>Địa chỉ URL cụ thể để gọi</td><td>https://api.openweathermap.org/data/2.5/weather</td></tr>
+    <tr><td>HTTP Method</td><td>Loại hành động bạn muốn thực hiện (CRUD)</td><td>GET, POST, PUT, PATCH, DELETE</td></tr>
+    <tr><td>Headers</td><td>Thông tin bổ sung (rất quan trọng)</td><td>Authorization, Content-Type, Accept</td></tr>
+    <tr><td>Query Params</td><td>Tham số truyền trên URL (thường dùng cho GET)</td><td>?q=Hanoi&appid=xxx&units=metric</td></tr>
+    <tr><td>Body</td><td>Dữ liệu gửi lên (thường dùng cho POST/PUT) – dạng JSON/XML</td><td>{ "name": "Nguyen Giang", "age": 25 }</td></tr>
+    <tr><td>Status Code</td><td>Mã trả về cho biết kết quả</td><td>200 OK, 201 Created, 400 Bad Request, 401 Unauthorized, 404 Not Found, 500 Server Error</td></tr>
+    <tr><td>Response</td><td>Dữ liệu trả về (thường là JSON)</td><td>{ "temp": 28.5, "humidity": 70 }</td></tr>
+  </table>
+
+  <div class="img-container">
+    <img src="https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/blogs/2147485434/images/7d8522f-3343-70d6-3234-7d8ea88ce2_rest-api-model-http-request-response.webp" alt="REST API components">
+  </div>
+
+  <h2>3. Bảng HTTP Methods phổ biến nhất (CRUD)</h2>
+
+  <table>
+    <tr><th>Method</th><th>Ý nghĩa</th><th>Thường dùng để</th><th>Có Body?</th><th>An toàn?*</th><th>Idempotent?**</th></tr>
+    <tr><td>GET</td><td>Lấy dữ liệu</td><td>Đọc thông tin</td><td>Không</td><td>Có</td><td>Có</td></tr>
+    <tr><td>POST</td><td>Tạo mới</td><td>Đăng ký, gửi form, tạo bài viết</td><td>Có</td><td>Không</td><td>Không</td></tr>
+    <tr><td>PUT</td><td>Cập nhật toàn bộ</td><td>Thay toàn bộ thông tin</td><td>Có</td><td>Không</td><td>Có</td></tr>
+    <tr><td>PATCH</td><td>Cập nhật một phần</td><td>Chỉnh sửa vài trường</td><td>Có</td><td>Không</td><td>Không</td></tr>
+    <tr><td>DELETE</td><td>Xóa</td><td>Xóa tài khoản, bài viết</td><td>Có/Không</td><td>Không</td><td>Có</td></tr>
+  </table>
+  <p style="font-size:0.9rem; color:#555;">*An toàn = không thay đổi dữ liệu<br>**Idempotent = gọi nhiều lần vẫn cho kết quả giống gọi 1 lần</p>
+
+  <div class="img-container">
+    <img src="https://blog.postman.com/wp-content/uploads/2023/06/What-are-HTTP-methods-V1@2x.jpg" alt="HTTP Methods CRUD illustration">
+  </div>
+
+  <h2>4. Các bước lý thuyết để dùng một API (quy trình chuẩn)</h2>
+  <ol>
+    <li>Đọc tài liệu API (Documentation)<br>→ Đây là bước quan trọng nhất! Không đọc doc → không biết gọi sao.</li>
+    <li>Đăng ký & lấy API Key / Token (nếu cần)<br>API Key: chuỗi đơn giản (thường truyền trong header hoặc query)<br>Bearer Token (JWT): phổ biến hiện nay (đăng nhập → nhận token → gửi kèm mỗi request)<br>OAuth 2.0: phức tạp hơn (Google, Facebook, GitHub…)</li>
+    <li>Xác định Endpoint + Method + Parameters<br>Ví dụ: Muốn lấy thời tiết Hà Nội<br>→ GET https://api.openweathermap.org/data/2.5/weather?q=Hanoi&appid=YOUR_KEY</li>
+    <li>Xây dựng Request<br>Headers: Content-Type: application/json, Authorization: Bearer xxx<br>Body (nếu POST/PUT): JSON hoặc form-data</li>
+    <li>Gửi request & xử lý Response<br>Kiểm tra status code trước<br>Parse JSON → lấy dữ liệu cần dùng</li>
+    <li>Xử lý lỗi (Error Handling) – rất quan trọng<br>4xx: lỗi từ phía bạn (400, 401, 403, 429 rate limit…)<br>5xx: lỗi từ server<br>→ Nên retry, thông báo người dùng, log lỗi…</li>
+  </ol>
+
+  <div class="img-container">
+    <img src="https://voyager.postman.com/illustration/diagram-rest-postman-illustration.svg" alt="API request response cycle">
+  </div>
+
+  <div class="highlight">
+    <strong>Tóm tắt ngắn gọn quy trình dùng API</strong><br>
+    Đọc documentation → hiểu endpoint, method, params, auth<br>
+    Lấy key/token<br>
+    Xây request (method + url + header + body)<br>
+    Gửi → nhận response<br>
+    Kiểm tra status → parse data → xử lý lỗi<br>
+    Lặp lại & tối ưu (cache, retry, timeout…)
+  </div>
+
+  <h2>5. Một số khái niệm nâng cao cần biết khi dùng API lâu dài</h2>
+  <ul>
+    <li>Rate Limit / Quota: Giới hạn số lần gọi (ví dụ: 1000 request/ngày)</li>
+    <li>Pagination: Dữ liệu nhiều → chia trang (page=1&limit=20)</li>
+    <li>Authentication vs Authorization<br>Authentication: Bạn là ai?<br>Authorization: Bạn được làm gì?</li>
+    <li>Versioning: API có thể thay đổi → /v1/, /v2/, ?version=2</li>
+    <li>CORS: Khi gọi API từ trình duyệt (frontend) → server phải cho phép</li>
+    <li>JSON vs XML: Hiện nay hầu hết dùng JSON</li>
+  </ul>
+
+  <div class="img-container">
+    <img src="https://voyager.postman.com/illustration/oauth-diagram-postman.svg" alt="OAuth authentication flow">
+  </div>
+
+  <p>Bạn đang muốn dùng API cụ thể nào (ví dụ: OpenAI, Google Maps, Facebook, thời tiết, thanh toán…) thì nói mình biết để mình hướng dẫn chi tiết cách gọi luôn nhé! Hoặc bạn đang dùng ngôn ngữ nào (JS, Python, Java, PHP…)? Mình sẽ đưa ví dụ code tương ứng.</p>
+
+</div>
+
+</body>
+</html>
