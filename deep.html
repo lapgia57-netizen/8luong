@@ -3,8 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Thông tin Công ty TNHH Unityvina</title>
+  <title>Giới thiệu Công ty TNHH Unity Việt Nam - Unity Vina</title>
   <style>
+    :root {
+      --primary: #1e3a8a;      /* xanh dương đậm - an ninh chuyên nghiệp */
+      --primary-light: #3b82f6;
+      --text: #1f2937;
+      --gray: #4b5563;
+      --light: #f3f4f6;
+      --white: #ffffff;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -12,173 +21,242 @@
     }
 
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
-      color: #e0e0ff;
-      min-height: 100vh;
-      padding: 40px 20px;
-      line-height: 1.7;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: var(--text);
+      background-color: var(--light);
     }
 
     .container {
-      max-width: 900px;
+      max-width: 1000px;
       margin: 0 auto;
-      background: rgba(20, 20, 60, 0.65);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-radius: 20px;
-      border: 1px solid rgba(100, 100, 255, 0.18);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-      padding: 50px 40px;
-      position: relative;
-      overflow: hidden;
+      padding: 0 20px;
     }
 
-    .container::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle at 30% 20%, rgba(100,100,255,0.12) 0%, transparent 40%);
-      pointer-events: none;
-    }
-
-    h1 {
-      font-size: 2.4rem;
-      margin-bottom: 1.8rem;
-      color: #a5b4fc;
-      text-shadow: 0 0 15px rgba(165,180,252,0.5);
+    header {
+      background: linear-gradient(135deg, var(--primary), #111827);
+      color: white;
+      padding: 80px 0 60px;
       text-align: center;
-      letter-spacing: 1.5px;
+    }
+
+    header h1 {
+      font-size: 2.8rem;
+      margin-bottom: 12px;
+    }
+
+    header p {
+      font-size: 1.25rem;
+      opacity: 0.9;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    section {
+      padding: 60px 0;
     }
 
     h2 {
-      font-size: 1.65rem;
-      color: #c7d2fe;
-      margin: 2.2rem 0 1.2rem;
-      border-left: 5px solid #6366f1;
-      padding-left: 15px;
+      color: var(--primary);
+      font-size: 2.2rem;
+      margin-bottom: 24px;
+      position: relative;
+      padding-bottom: 12px;
     }
 
-    p {
-      margin-bottom: 1.3rem;
-      color: #d1d5db;
-      font-size: 1.05rem;
+    h2::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 80px;
+      height: 4px;
+      background: var(--primary-light);
+      border-radius: 2px;
+    }
+
+    .intro p {
+      font-size: 1.15rem;
+      margin-bottom: 20px;
     }
 
     .highlight {
-      color: #a5b4fc;
-      font-weight: 600;
+      background: #eff6ff;
+      border-left: 5px solid var(--primary);
+      padding: 20px;
+      margin: 30px 0;
+      border-radius: 6px;
     }
 
-    .info-box {
-      background: rgba(30, 30, 80, 0.4);
-      border: 1px solid rgba(100,100,255,0.25);
-      border-radius: 14px;
-      padding: 24px;
-      margin: 28px 0;
-      backdrop-filter: blur(6px);
-    }
-
-    .info-box ul {
+    ul.services {
       list-style: none;
-      padding-left: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin: 32px 0;
     }
 
-    .info-box li {
+    ul.services li {
+      background: white;
+      padding: 28px 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    ul.services li:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+    }
+
+    ul.services li strong {
+      display: block;
+      color: var(--primary);
+      font-size: 1.3rem;
       margin-bottom: 12px;
-      position: relative;
-      padding-left: 28px;
     }
 
-    .info-box li::before {
-      content: "→";
-      position: absolute;
-      left: 0;
-      color: #818cf8;
-      font-weight: bold;
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+      margin: 40px 0;
     }
 
-    .contact-advice {
-      background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(79,70,229,0.15));
-      border: 1px solid rgba(99,102,241,0.4);
-      border-radius: 14px;
-      padding: 28px;
-      margin-top: 32px;
-    }
-
-    .contact-advice strong {
-      color: #c084fc;
-    }
-
-    .footer-note {
+    .stat-item {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 12px;
       text-align: center;
-      margin-top: 40px;
+      min-width: 220px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    }
+
+    .stat-item .number {
+      font-size: 2.8rem;
+      font-weight: bold;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .contact {
+      background: var(--primary);
+      color: white;
+      text-align: center;
+      padding: 60px 20px;
+      border-radius: 12px;
+      margin: 40px 0;
+    }
+
+    .contact a {
+      color: #dbeafe;
+      text-decoration: underline;
+      font-weight: 500;
+    }
+
+    footer {
+      background: #111827;
+      color: #9ca3af;
+      text-align: center;
+      padding: 30px 0;
       font-size: 0.95rem;
-      color: #94a3b8;
-      opacity: 0.8;
     }
 
     @media (max-width: 768px) {
-      .container {
-        padding: 40px 25px;
-      }
-      h1 { font-size: 2rem; }
-      h2 { font-size: 1.45rem; }
+      header h1 { font-size: 2.3rem; }
+      header { padding: 60px 0 40px; }
+      section { padding: 40px 0; }
+      h2 { font-size: 1.9rem; }
     }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <h1>Công ty TNHH Unityvina (UNITY VINA)</h1>
+  <header>
+    <div class="container">
+      <h1>Công ty TNHH Unity Việt Nam</h1>
+      <p>Unity Vina – Đơn vị bảo vệ chuyên nghiệp, ứng dụng công nghệ hiện đại – Hơn 10 năm đồng hành cùng doanh nghiệp Việt</p>
+    </div>
+  </header>
 
-  <p>Công ty TNHH Unityvina (hay còn gọi là <span class="highlight">UNITY VINA</span>) là một doanh nghiệp hoạt động trong lĩnh vực <strong>dịch vụ bảo vệ và an ninh</strong> tại Việt Nam.</p>
+  <section class="container intro">
+    <h2>Giới thiệu chung</h2>
+    <p>Công ty TNHH Unity Việt Nam (Unity Vina) được thành lập năm <strong>2014</strong>, với giấy phép kinh doanh số <strong>2300853605</strong> do Sở Kế hoạch và Đầu tư Hà Nội cấp. Công ty hoạt động dưới sự quản lý của <strong>Bộ Công an</strong>, được xây dựng bởi đội ngũ cán bộ trẻ, giàu kinh nghiệm trong lĩnh vực an ninh – bảo vệ.</p>
+    
+    <p>Unity Vina chuyên cung cấp dịch vụ bảo vệ cho các doanh nghiệp sản xuất linh kiện điện tử – lĩnh vực đòi hỏi tiêu chuẩn an toàn tài sản rất cao. Sau hơn 10 năm phát triển, công ty hiện có:</p>
+    
+    <div class="stats">
+      <div class="stat-item">
+        <div class="number">+100</div>
+        <div>Khách hàng</div>
+      </div>
+      <div class="stat-item">
+        <div class="number">+1000</div>
+        <div>Nhân viên vệ sĩ</div>
+      </div>
+      <div class="stat-item">
+        <div class="number">5</div>
+        <div>Chi nhánh</div>
+      </div>
+      <div class="stat-item">
+        <div class="number">500–1000</div>
+        <div>Nhân sự</div>
+      </div>
+    </div>
 
-  <p>Công ty được xây dựng và điều hành bởi đội ngũ cán bộ trẻ, với mục tiêu mang đến hướng đi mới cho ngành dịch vụ bảo vệ dựa trên kinh nghiệm tích lũy lâu năm.</p>
+    <div class="highlight">
+      <strong>Trụ sở chính:</strong> Số 79 Nguyễn Hy Quang, Phường Ô Chợ Dừa, Quận Đống Đa, Hà Nội<br>
+      (Một số tài liệu ghi nhận địa chỉ khác: Tòa N01-T1, Khu Ngoại Giao Đoàn, Xuân Đỉnh, Bắc Từ Liêm, Hà Nội)
+    </div>
 
-  <h2>Thông tin về ban lãnh đạo chủ chốt</h2>
+    <p>Website chính thức: <a href="https://unityvina.com.vn/" target="_blank">https://unityvina.com.vn/</a><br>
+    Đại diện pháp luật: Bà <strong>Đào Thị Tuyết Nga</strong></p>
+  </section>
 
-  <div class="info-box">
-    <p>Thông tin công khai về ban lãnh đạo cụ thể (như Giám đốc, Tổng giám đốc, Chủ tịch, hoặc các thành viên chủ chốt) của Công ty TNHH Unityvina khá hạn chế trên các nguồn trực tuyến chính thức và cơ sở dữ liệu doanh nghiệp.</p>
+  <section class="container" style="background:#fff; padding:60px 0;">
+    <div class="container">
+      <h2>Dịch vụ chính</h2>
+      <ul class="services">
+        <li>
+          <strong>Bảo vệ yếu nhân & Vệ sĩ chuyên nghiệp</strong>
+          <p>Bảo vệ cá nhân, áp tải tiền hàng, tài sản giá trị cao.</p>
+        </li>
+        <li>
+          <strong>Bảo vệ mục tiêu cố định</strong>
+          <p>Tòa nhà, nhà máy, khu công nghiệp, sự kiện lớn.</p>
+        </li>
+        <li>
+          <strong>Đào tạo bảo vệ chuyên sâu</strong>
+          <p>Trung tâm đào tạo được Bộ Công an phê duyệt.</p>
+        </li>
+        <li>
+          <strong>Ứng dụng công nghệ quản lý</strong>
+          <p>Hệ thống SIS (từ 2023), diễn tập cháy nổ – cứu hộ.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
 
-    <p>Trang web chính thức của công ty (<strong>unityvina.com.vn</strong>) nhấn mạnh rằng:</p>
+  <section class="container">
+    <h2>Tinh thần & Giá trị cốt lõi</h2>
+    <p>Unity Vina luôn hướng tới sự <strong>chủ động – chuyên nghiệp – công nghệ hóa</strong>. Đội ngũ thường xuyên diễn tập xử lý tình huống khẩn cấp, cháy nổ, sơ tán cứu hộ nhằm đảm bảo an toàn tối đa cho khách hàng.</p>
+  </section>
 
-    <p class="highlight" style="font-style:italic; margin: 18px 0;">
-      "Công ty được xây dựng và điều hành bởi đội ngũ cán bộ trẻ, những người có nhiều năm kinh nghiệm trong lĩnh vực bảo vệ và an ninh."
+  <div class="contact container">
+    <h2>Liên hệ ngay hôm nay</h2>
+    <p style="font-size:1.4rem; margin:20px 0;">Hotline: <strong>099.556.7777</strong> – <strong>0243.881.2222</strong></p>
+    <p>Theo dõi cập nhật tuyển dụng & hoạt động:</p>
+    <p>
+      <a href="https://unityvina.com.vn/" style="color:#dbeafe;">Website</a> • 
+      <a href="https://www.facebook.com/UnityVietnamSecurity" style="color:#dbeafe;">Facebook Unity Vietnam Security</a> • 
+      <a href="https://www.facebook.com/tuyendungunityvina" style="color:#dbeafe;">Tuyển dụng Unity Vina</a>
     </p>
-
-    <p>Không có danh sách chi tiết tên tuổi, chức vụ cụ thể của ban lãnh đạo được công bố công khai trên website hoặc các cổng thông tin doanh nghiệp phổ biến (như masothue.com, cổng thông tin quốc gia về đăng ký kinh doanh).</p>
   </div>
 
-  <h2>Mô hình Công ty TNHH tại Việt Nam</h2>
-
-  <div class="info-box">
-    <p>Theo Luật Doanh nghiệp, ban lãnh đạo chủ chốt thường bao gồm:</p>
-    <ul>
-      <li>Người đại diện theo pháp luật (thường là Giám đốc hoặc Tổng giám đốc).</li>
-      <li>Chủ sở hữu hoặc Hội đồng thành viên (nếu là TNHH 2 thành viên trở lên).</li>
-      <li>Các vị trí quản lý cấp cao khác tùy theo điều lệ công ty.</li>
-    </ul>
-  </div>
-
-  <div class="contact-advice">
-    <h2 style="margin-top:0">Khuyến nghị để có thông tin chính xác và cập nhật nhất</h2>
-    <ul>
-      <li>Truy cập trực tiếp website công ty: <strong>unityvina.com.vn</strong> (phần "Về chúng tôi" hoặc liên hệ).</li>
-      <li>Tra cứu mã số thuế của công ty trên <strong>Cổng thông tin quốc gia về đăng ký doanh nghiệp</strong> (<a href="https://dangkykinhdoanh.gov.vn" target="_blank" style="color:#a5b4fc;">https://dangkykinhdoanh.gov.vn</a>) hoặc các trang như <strong>masothue.com</strong> để xem thông tin đăng ký kinh doanh, bao gồm người đại diện pháp luật.</li>
-      <li>Liên hệ trực tiếp công ty qua thông tin trên website để hỏi thêm.</li>
-    </ul>
-  </div>
-
-  <p style="margin-top: 32px;">Nếu bạn có thêm chi tiết (ví dụ: mã số thuế, địa chỉ cụ thể, hoặc lĩnh vực chính xác hơn nếu đây không phải công ty dịch vụ bảo vệ), tôi có thể hỗ trợ tìm kiếm sâu hơn!</p>
-
-  <div class="footer-note">
-    Deep Zone Style • Information as of January 2026
-  </div>
-</div>
+  <footer>
+    <p>© 2026 Công ty TNHH Unity Việt Nam – Unity Vina. All rights reserved.</p>
+  </footer>
 
 </body>
 </html>
