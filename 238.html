@@ -3,17 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Lịch nghỉ Tết Bính Ngọ 2026 - Học sinh các tỉnh thành</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <title>Tết Nguyên Đán 2026 – Năm Bính Ngọ (Ngựa Lửa)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  
   <style>
     :root {
-      --primary: #c41e3a;
-      --primary-dark: #a1162f;
-      --bg: #fff8f5;
-      --card: #ffffff;
-      --text: #2d2d2d;
-      --text-light: #555;
-      --border: #ffe0e0;
+      --red-tet: #c41e3a;
+      --gold-tet: #d4a017;
+      --bg-light: #fffef7;
+      --text-dark: #2d1e12;
+      --accent: #e63946;
     }
 
     * {
@@ -23,216 +24,181 @@
     }
 
     body {
-      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #fff8f5 0%, #fff3ef 100%);
-      color: var(--text);
-      line-height: 1.6;
-      padding: 20px 15px;
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(to bottom, var(--bg-light), #fff8e1);
+      color: var(--text-dark);
+      line-height: 1.7;
     }
 
     .container {
-      max-width: 900px;
-      margin: 0 auto;
+      max-width: 820px;
+      margin: 40px auto;
+      padding: 0 20px;
     }
 
     header {
       text-align: center;
-      margin-bottom: 2.5rem;
-      padding: 1.5rem;
-      background: white;
+      margin-bottom: 50px;
+      padding: 30px 20px;
+      background: linear-gradient(135deg, #c41e3a, #9b1d2f);
+      color: white;
       border-radius: 16px;
-      box-shadow: 0 6px 20px rgba(196,30,58,0.08);
+      box-shadow: 0 10px 30px rgba(196, 30, 58, 0.25);
     }
 
-    h1 {
-      color: var(--primary);
-      font-size: 2.1rem;
-      margin-bottom: 0.6rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      margin-bottom: 12px;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
     }
 
-    .subtitle {
-      color: var(--text-light);
+    header .subtitle {
+      font-size: 1.3rem;
+      opacity: 0.95;
+    }
+
+    .section {
+      background: white;
+      padding: 32px;
+      margin-bottom: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      border: 1px solid #ffe6e6;
+    }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      color: var(--red-tet);
+      font-size: 2rem;
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 80px;
+      height: 3px;
+      background: var(--gold-tet);
+      border-radius: 3px;
+    }
+
+    .date-list {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px 20px;
+      margin: 24px 0;
       font-size: 1.1rem;
     }
 
-    .highlight-info {
-      background: #fff0f0;
-      border-left: 5px solid var(--primary);
-      padding: 1.2rem;
-      margin: 1.5rem 0;
-      border-radius: 8px;
-      font-size: 1.05rem;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 1.4rem;
-      margin: 2rem 0;
-    }
-
-    .card {
-      background: var(--card);
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-      transition: all 0.25s ease;
-      border: 1px solid var(--border);
-    }
-
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 30px rgba(196,30,58,0.12);
-    }
-
-    .card-header {
-      background: var(--primary);
-      color: white;
-      padding: 1rem 1.3rem;
+    .date-list dt {
       font-weight: 700;
-      font-size: 1.2rem;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      color: var(--red-tet);
+      min-width: 140px;
     }
 
-    .card-body {
-      padding: 1.3rem;
-    }
-
-    .days {
-      font-size: 2.4rem;
-      font-weight: 800;
-      color: var(--primary);
-      margin: 0.4rem 0;
-    }
-
-    .date-range {
-      color: #d32f2f;
+    .highlight {
+      color: var(--accent);
       font-weight: 600;
-      margin: 0.6rem 0;
     }
 
     .note {
-      font-size: 0.92rem;
-      color: #555;
-      margin-top: 1rem;
-      line-height: 1.5;
+      background: #fff8e1;
+      padding: 20px;
+      border-left: 5px solid var(--gold-tet);
+      border-radius: 8px;
+      margin: 24px 0;
+      font-style: italic;
     }
 
-    .government {
-      background: #f8f9fa;
-      border: 1px dashed #ccc;
-      padding: 1.2rem;
-      border-radius: 10px;
-      margin: 2.5rem 0;
+    .blessing {
       text-align: center;
+      font-size: 1.4rem;
+      font-family: 'Playfair Display', serif;
+      color: var(--red-tet);
+      margin: 50px 0 30px;
+      padding: 30px;
+      background: rgba(196, 30, 58, 0.06);
+      border-radius: 16px;
+      border: 2px dashed var(--gold-tet);
     }
 
     @media (max-width: 600px) {
-      h1 { font-size: 1.8rem; }
-      .days { font-size: 2.1rem; }
-      .grid { grid-template-columns: 1fr; }
+      header h1 { font-size: 2.3rem; }
+      h2 { font-size: 1.8rem; }
+      .date-list { grid-template-columns: 1fr; gap: 8px; }
+      .date-list dt { min-width: auto; }
+      .container { margin: 20px auto; padding: 0 16px; }
+      .section { padding: 24px 18px; }
     }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <header>
-    <h1>
-      <i class="fa-solid fa-calendar-days"></i>
-      Lịch nghỉ Tết Bính Ngọ 2026 cho học sinh
-    </h1>
-    <div class="subtitle">📅🧧 Cập nhật đến ngày 10/01/2026</div>
-  </header>
+  <div class="container">
 
-  <div class="highlight-info">
-    <strong>An Giang & Lâm Đồng</strong> dẫn đầu với <strong>14 ngày nghỉ liên tục</strong><br>
-    <strong>Quảng Ninh</strong> học sinh quay lại trường muộn nhất cả nước (2/3/2026)
+    <header>
+      <h1>Tết Nguyên Đán 2026</h1>
+      <p class="subtitle">Năm Bính Ngọ – Ngựa Lửa (Fire Horse)</p>
+      <p>Mùng 1 Tết: Thứ Ba, ngày 17 tháng 02 năm 2026</p>
+    </header>
+
+    <div class="section">
+      <h2>Thông tin chính</h2>
+      <p><strong>Tết Nguyên Đán 2026</strong> (Tết Âm lịch, Tết Bính Ngọ) rơi vào <span class="highlight">ngày 17 tháng 2 năm 2026</span> (dương lịch), tức là mùng 1 tháng Giêng năm Bính Ngọ.</p>
+      
+      <div class="date-list">
+        <dt>Ngày Giao thừa</dt>
+        <dd>Thứ Hai, ngày <strong>16/02/2026</strong> (29 Tết)</dd>
+        
+        <dt>Mùng 1 Tết</dt>
+        <dd>Thứ Ba, ngày <strong>17/02/2026</strong></dd>
+        
+        <dt>Mùng 2 Tết</dt>
+        <dd>Thứ Tư, ngày <strong>18/02/2026</strong></dd>
+        
+        <dt>Mùng 3 Tết</dt>
+        <dd>Thứ Năm, ngày <strong>19/02/2026</strong></dd>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Năm Bính Ngọ 2026</h2>
+      <p>Năm 2026 là năm <strong>Bính Ngọ</strong> – năm con Ngựa (cụ thể là <span class="highlight">Ngựa Lửa – Fire Horse</span> theo tử vi Trung Quốc).</p>
+      <p>Thời gian: bắt đầu từ <strong>17/02/2026</strong> và kéo dài đến <strong>05/02/2027</strong> (dương lịch).</p>
+      <p>Con Ngựa tượng trưng cho <strong>năng lượng, tự do, tốc độ, sự nhiệt huyết</strong> và những thay đổi mạnh mẽ.</p>
+    </div>
+
+    <div class="section">
+      <h2>Lịch nghỉ Tết Nguyên Đán 2026</h2>
+      <p><strong>Dành cho cán bộ, công chức, viên chức</strong> (theo phương án phổ biến & thông báo chính thức):</p>
+      <p class="highlight" style="font-size: 1.25rem; margin: 20px 0;">Kỳ nghỉ kéo dài 9 ngày liên tục:</p>
+      <p>Từ <strong>Thứ Bảy ngày 14/02/2026</strong> (27 tháng Chạp năm Ất Tỵ) đến hết <strong>Chủ Nhật ngày 22/02/2026</strong> (mùng 6 tháng Giêng năm Bính Ngọ).</p>
+      
+      <div class="note">
+        <strong>Lưu ý:</strong> Trong đó có 5 ngày nghỉ lễ chính thức theo Bộ luật Lao động (nghỉ hưởng nguyên lương), cộng thêm các ngày cuối tuần. Một số địa phương/doanh nghiệp có thể nghỉ dài hơn (10–16 ngày) tùy theo sắp xếp làm bù.
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Thời tiết & đặc điểm Tết 2026</h2>
+      <ul style="padding-left: 22px; margin: 16px 0;">
+        <li>Tết năm nay đến <strong>muộn hơn</strong> so với nhiều năm trước → mọi người có thêm thời gian chuẩn bị.</li>
+        <li>Thời tiết: thường <strong>se lạnh miền Bắc</strong>, <strong>ấm áp miền Nam</strong>, có sự khác biệt rõ rệt giữa 3 miền.</li>
+      </ul>
+    </div>
+
+    <div class="blessing">
+      Chúc bạn và gia đình một cái Tết Bính Ngọ 2026<br>
+      <strong>Ngập tràn niềm vui – Sum vầy – May mắn</strong><br>
+      và tràn đầy năng lượng như chú Ngựa Lửa phi nước đại! 🐎🔥
+    </div>
+
   </div>
-
-  <div class="grid">
-    <!-- Top nghỉ dài nhất -->
-    <div class="card">
-      <div class="card-header">
-        <i class="fa-solid fa-medal"></i> Top 1 - 14 ngày
-      </div>
-      <div class="card-body">
-        <div class="days">14 ngày</div>
-        <div class="date-range">9/2 – 22/2/2026</div>
-        <p><strong>An Giang & Lâm Đồng</strong></p>
-        <div class="note">(22 tháng Chạp → mùng 5 tháng Giêng)</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header">
-        <i class="fa-solid fa-medal" style="--tw-rotate:15deg"></i> 14 ngày (tính cả CN)
-      </div>
-      <div class="card-body">
-        <div class="days">14 ngày</div>
-        <div class="date-range">16/2 – 2/3/2026</div>
-        <p><strong>Quảng Ninh</strong></p>
-        <div class="note">Chính thức 13 ngày + CN 1/3 → quay lại trường muộn nhất cả nước</div>
-      </div>
-    </div>
-
-    <!-- Nhóm 12 ngày -->
-    <div class="card">
-      <div class="card-header">
-        <i class="fa-solid fa-trophy"></i> 12 ngày
-      </div>
-      <div class="card-body">
-        <div class="days">12 ngày</div>
-        <p><strong>Tây Ninh</strong></p>
-      </div>
-    </div>
-
-    <!-- Nhóm 11 ngày -->
-    <div class="card">
-      <div class="card-header">
-        <i class="fa-solid fa-list-ol"></i> 11 ngày
-      </div>
-      <div class="card-body">
-        <div class="days">11 ngày</div>
-        <p><strong>TP. Hồ Chí Minh</strong><br>
-           <strong>Cần Thơ</strong><br>
-           <strong>Hà Tĩnh</strong></p>
-      </div>
-    </div>
-
-    <!-- Hà Nội - ngắn nhất -->
-    <div class="card" style="border-color: #ff9800;">
-      <div class="card-header" style="background:#ff9800;">
-        <i class="fa-solid fa-exclamation-triangle"></i> Ngắn nhất
-      </div>
-      <div class="card-body">
-        <div class="days" style="color:#e65100;">5 ngày</div>
-        <div class="date-range">16/2 – 20/2/2026</div>
-        <p><strong>Hà Nội</strong></p>
-        <div class="note">Có thể nghỉ tối đa 9 ngày nếu tính cả cuối tuần (không học thứ 7)</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="government">
-    <h3 style="margin-bottom:0.8rem;color:#c41e3a;">
-      <i class="fa-solid fa-landmark"></i> Lịch nghỉ Tết chính thức toàn quốc
-    </h3>
-    <p style="font-size:1.1rem;">
-      <strong>14/2 – 22/2/2026</strong><br>
-      (27 tháng Chạp năm Ất Tỵ → hết mùng 6 tháng Giêng năm Bính Ngọ)<br>
-      <strong>Tổng cộng 9 ngày nghỉ lễ</strong>
-    </p>
-  </div>
-
-</div>
 
 </body>
 </html>
