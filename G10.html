@@ -3,276 +3,221 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Xe đạp điện 133 KAZASHI G10 - Thông số chi tiết</title>
+  <title>Quy định chung của nhà nghỉ (cơ sở lưu trú du lịch) tại Việt Nam</title>
   <style>
     :root {
-      --primary: #0066cc;
-      --primary-dark: #004080;
-      --light: #f8f9fa;
-      --dark: #333;
-      --gray: #666;
-      --border: #ddd;
+      --primary: #2c7be5;
+      --primary-dark: #1e5bb8;
+      --text: #333;
+      --light-bg: #f8f9fa;
+      --border: #dee2e6;
     }
-
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: var(--light);
-      color: var(--dark);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       line-height: 1.6;
+      color: var(--text);
+      background-color: #fff;
     }
-
     .container {
-      max-width: 1100px;
+      max-width: 900px;
       margin: 0 auto;
-      padding: 20px;
+      padding: 30px 20px;
     }
-
     header {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: white;
-      padding: 60px 20px 40px;
       text-align: center;
-      border-radius: 0 0 20px 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      margin-bottom: 40px;
     }
-
-    header h1 {
-      font-size: 2.8rem;
+    h1 {
+      color: var(--primary-dark);
+      font-size: 2.1rem;
       margin-bottom: 12px;
     }
-
-    header p {
-      font-size: 1.3rem;
-      opacity: 0.95;
+    .intro {
+      font-size: 1.1rem;
+      color: #555;
+      max-width: 760px;
+      margin: 0 auto 40px;
     }
-
-    .section {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-      margin: 30px 0;
-      padding: 30px;
-      overflow: hidden;
+    section {
+      margin-bottom: 50px;
     }
-
-    .section-title {
-      font-size: 1.8rem;
+    h2 {
       color: var(--primary);
-      margin-bottom: 20px;
-      padding-bottom: 12px;
+      font-size: 1.7rem;
+      margin: 0 0 20px;
+      padding-bottom: 10px;
       border-bottom: 3px solid var(--primary);
-      display: inline-block;
+      position: relative;
     }
-
-    .checkmark {
-      color: #28a745;
-      font-weight: bold;
-      margin-right: 8px;
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 80px;
+      height: 3px;
+      background: var(--primary);
     }
-
-    .specs-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 18px 30px;
-    }
-
-    .spec-item {
-      display: flex;
-      flex-direction: column;
-      padding: 16px;
-      background: var(--light);
-      border-radius: 10px;
+    .law-box, .rule-box {
+      background: var(--light-bg);
       border: 1px solid var(--border);
-      transition: all 0.25s ease;
+      border-radius: 10px;
+      padding: 24px;
+      margin: 20px 0;
     }
-
-    .spec-item:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      border-color: var(--primary);
+    .law-box {
+      border-left: 5px solid #dc3545;
     }
-
-    .spec-label {
-      font-weight: 600;
-      color: var(--gray);
-      margin-bottom: 6px;
+    .rule-box {
+      border-left: 5px solid #28a745;
+    }
+    ul, ol {
+      padding-left: 24px;
+      margin: 16px 0;
+    }
+    li {
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+    }
+    strong {
+      color: #222;
+    }
+    .highlight {
+      background: #fff3cd;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .note {
+      background: #e2f0ff;
+      border-left: 4px solid var(--primary);
+      padding: 16px 20px;
+      margin: 24px 0;
+      border-radius: 6px;
+      font-style: italic;
+    }
+    footer {
+      text-align: center;
+      margin-top: 60px;
+      padding-top: 30px;
+      border-top: 1px solid var(--border);
+      color: #777;
       font-size: 0.95rem;
     }
-
-    .spec-value {
-      font-size: 1.15rem;
-      color: var(--dark);
-      font-weight: 500;
-    }
-
-    .warranty {
-      background: #e8f4ff;
-      border-left: 5px solid var(--primary);
-    }
-
-    .colors {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-top: 12px;
-    }
-
-    .color-box {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      border: 2px solid white;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    }
-
-    .color-black { background: #000; }
-    .color-red   { background: #d32f2f; }
-    .color-white { background: #fff; border: 1px solid #ccc; }
-    .color-blue  { background: #1976d2; }
-
-    @media (max-width: 768px) {
-      header h1 { font-size: 2.2rem; }
-      .section { padding: 20px; }
-      .specs-grid { grid-template-columns: 1fr; }
+    @media (max-width: 600px) {
+      h1 { font-size: 1.8rem; }
+      h2 { font-size: 1.5rem; }
+      .container { padding: 20px 15px; }
     }
   </style>
 </head>
 <body>
 
+<div class="container">
+
   <header>
-    <div class="container">
-      <h1>Xe đạp điện 133 KAZASHI G10</h1>
-      <p>Thiết kế hiện đại – Hiệu suất mạnh mẽ – Tiết kiệm & An toàn</p>
-    </div>
+    <h1>Quy định chung của nhà nghỉ<br>(cơ sở lưu trú du lịch dạng nhà nghỉ) tại Việt Nam</h1>
+    <p class="intro">Bao gồm quy định pháp luật bắt buộc và nội quy phổ biến áp dụng thực tế tại hầu hết các nhà nghỉ</p>
   </header>
 
-  <div class="container">
-
-    <div class="section">
-      <h2 class="section-title"><span class="checkmark">✔✔</span> THÔNG TIN SẢN PHẨM</h2>
-      
-      <div class="specs-grid">
-        <div class="spec-item">
-          <div class="spec-label">Loại sản phẩm</div>
-          <div class="spec-value">Xe đạp điện 133 KAZASHI G10</div>
-        </div>
-
-        <div class="spec-item">
-          <div class="spec-label">Chiều dài x Chiều rộng x Chiều cao</div>
-          <div class="spec-value">1640mm x 640mm x 1200mm</div>
-        </div>
-
-        <div class="spec-item">
-          <div class="spec-label">Đường kính bánh xe</div>
-          <div class="spec-value">12</div>
-        </div>
-
-        <div class="spec-item">
-          <div class="spec-label">Chiều cao yên xe</div>
-          <div class="spec-value">750mm</div>
-        </div>
-
-        <div class="spec-item">
-          <div class="spec-label">Hãng sản xuất</div>
-          <div class="spec-value">KAZASHI</div>
-        </div>
-
-        <div class="spec-item">
-          <div class="spec-label">Vận tốc tối đa</div>
-          <div class="spec-value">40 km/h</div>
-        </div>
-
-        <div class="spec-item">
-          <div class="spec-label">Loại acquy</div>
-          <div class="spec-value">48V – 14Ah</div>
-        </div>
-
-        <div class="spec-item">
-          <div class="spec-label">Chở vật nặng</div>
-          <div class="spec-value">180kg</div>
-        </div>
-
-        <div class="spec-item">
-          <div class="spec-label">Quãng đường</div>
-          <div class="spec-value">50 km / 1 lần sạc</div>
-        </div>
-
-        <div class="spec-item">
-          <div class="spec-label">Thời gian sạc</div>
-          <div class="spec-value">5 tiếng</div>
-        </div>
-
-        <div class="spec-item">
-          <div class="spec-label">Sạc điện</div>
-          <div class="spec-value">Sạc đầy tự ngắt</div>
-        </div>
-
-        <div class="spec-item">
-          <div class="spec-label">Trọng lượng xe</div>
-          <div class="spec-value">46 kg</div>
-        </div>
-
-        <div class="spec-item">
-          <div class="spec-label">Màu sắc</div>
-          <div class="spec-value">
-            Đen, Đỏ, Trắng, Xanh
-            <div class="colors">
-              <div class="color-box color-black"></div>
-              <div class="color-box color-red"></div>
-              <div class="color-box color-white"></div>
-              <div class="color-box color-blue"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="spec-item">
-          <div class="spec-label">Vận hành</div>
-          <div class="spec-value">Tự động hoàn toàn</div>
-        </div>
-
-        <div class="spec-item">
-          <div class="spec-label">Phanh</div>
-          <div class="spec-value">Phanh cơ</div>
-        </div>
-
-        <div class="spec-item">
-          <div class="spec-label">Giảm xóc</div>
-          <div class="spec-value">Thụt dầu trước, Lò xo trụ giảm chấn thủy lực sau</div>
-        </div>
-
-        <div class="spec-item">
-          <div class="spec-label">Bánh xe</div>
-          <div class="spec-value">Thép đúc</div>
-        </div>
-
-        <div class="spec-item">
-          <div class="spec-label">Phụ kiện đi kèm</div>
-          <div class="spec-value">Sạc, 2 chìa khoá, 2 chống trộm</div>
-        </div>
-
-        <div class="spec-item">
-          <div class="spec-label">Lốp</div>
-          <div class="spec-value">Không săm</div>
-        </div>
-      </div>
+  <section>
+    <h2>1. Quy định pháp luật chính (bắt buộc tuân thủ)</h2>
+    <div class="law-box">
+      <p>Nhà nghỉ thuộc ngành nghề kinh doanh <strong>có điều kiện về an ninh, trật tự</strong>. Chủ cơ sở phải thực hiện các nghĩa vụ sau:</p>
+      <ul>
+        <li>Yêu cầu khách xuất trình <strong>giấy tờ tùy thân</strong>:
+          <ul>
+            <li>Công dân Việt Nam: CCCD/CMND</li>
+            <li>Người nước ngoài: hộ chiếu + thị thực (nếu có)</li>
+          </ul>
+        </li>
+        <li>Nếu khách <strong>không có giấy tờ</strong> → vẫn có thể cho thuê phòng nhưng <span class="highlight">phải thông báo ngay</span> cho Công an xã/phường/thị trấn hoặc đồn Công an địa bàn.</li>
+        <li>Lưu giữ thông tin khách lưu trú và báo cáo theo quy định (thường qua phần mềm quản lý lưu trú của Công an).</li>
+        <li>Đảm bảo an toàn <strong>phòng cháy chữa cháy (PCCC)</strong>: biển báo, bình chữa cháy, lối thoát hiểm (đặc biệt với nhà nghỉ từ 5 tầng trở lên hoặc khối tích lớn).</li>
+        <li>Không cho phép các hoạt động vi phạm pháp luật: ma túy, cờ bạc, mại dâm, mua bán người…</li>
+      </ul>
+      <p style="margin-top: 20px; font-weight: bold; color: #dc3545;">
+        Vi phạm có thể bị phạt hành chính nặng hoặc bị đình chỉ hoạt động.
+      </p>
     </div>
+  </section>
 
-    <div class="section warranty">
-      <h2 class="section-title"><span class="checkmark">✔✔</span> BẢO HÀNH</h2>
-      <ul style="list-style: none; padding-left: 0; font-size: 1.1rem;">
-        <li style="margin-bottom: 12px;">• Pin, động cơ: 12 tháng theo nhà sản xuất</li>
-        <li style="margin-bottom: 12px;">• Bo mạch điện, IC điều tốc: 12 tháng theo nhà sản xuất</li>
-        <li>• Bao đổi sản phẩm trong vòng 07 ngày với sản phẩm bị lỗi từ phía nhà sản xuất</li>
+  <section>
+    <h2>2. Nội quy phổ biến cho khách lưu trú</h2>
+    <p style="margin-bottom: 20px;">(Thường được dán tại quầy lễ tân hoặc trong phòng – có thể thay đổi đôi chút tùy cơ sở)</p>
+
+    <div class="rule-box">
+      <h3 style="color: #28a745; margin-bottom: 16px;">Thủ tục nhận phòng</h3>
+      <ul>
+        <li>Quý khách vui lòng xuất trình CCCD/CMND (khách Việt Nam) hoặc hộ chiếu (khách nước ngoài).</li>
+        <li>Không xuất trình giấy tờ → có thể bị từ chối hoặc phải báo Công an.</li>
+      </ul>
+
+      <h3 style="color: #28a745; margin: 24px 0 16px;">Giờ nhận / trả phòng</h3>
+      <ul>
+        <li>Nhận phòng: thường từ <strong>14:00</strong> (một số nơi từ 12:00)</li>
+        <li>Trả phòng: trước <strong>12:00</strong> trưa</li>
+        <li>Nhận sớm / trả muộn: tính thêm phí (thường 50% – 100% giá phòng/ngày)</li>
+      </ul>
+
+      <h3 style="color: #28a745; margin: 24px 0 16px;">Cấm mang vào nhà nghỉ</h3>
+      <ul>
+        <li>Vũ khí, chất nổ, chất dễ cháy/nổ, chất độc hại, ma túy, hàng cấm</li>
+        <li>Vật nuôi (thú cưng)</li>
+        <li>Thực phẩm có mùi tanh hôi mạnh hoặc đồ nấu nướng gây mùi</li>
+        <li>Không nấu ăn, giặt là trong phòng (trừ nơi cho phép dùng ấm siêu tốc)</li>
+      </ul>
+
+      <h3 style="color: #28a745; margin: 24px 0 16px;">An toàn & trách nhiệm</h3>
+      <ul>
+        <li>Khóa cửa phòng, cửa sổ, tắt điện/thiết bị khi ra ngoài</li>
+        <li>Tự bảo quản tài sản, tiền bạc, tư trang quý giá (dùng két nếu có)</li>
+        <li>Nhà nghỉ <strong>không chịu trách nhiệm</strong> nếu mất mát do sơ suất của khách</li>
+        <li>Làm hỏng/mất đồ của nhà nghỉ → phải bồi thường theo giá thực tế</li>
+      </ul>
+
+      <h3 style="color: #28a745; margin: 24px 0 16px;">Giữ gìn vệ sinh & trật tự</h3>
+      <ul>
+        <li>Không hút thuốc trong phòng hoặc khu vực cấm (phạt thường 300.000 – 500.000 VNĐ)</li>
+        <li>Giữ yên lặng sau 22:00–23:00</li>
+        <li>Không gây ồn ào, la hét ở khu vực chung</li>
+        <li>Không tự ý đưa thêm người vào phòng mà chưa đăng ký (có thể tính phí hoặc từ chối)</li>
+      </ul>
+
+      <h3 style="color: #28a745; margin: 24px 0 16px;">Khách đến thăm</h3>
+      <ul>
+        <li>Chỉ được ở phòng từ khoảng 8:00–22:00 (tùy nơi)</li>
+        <li>Phải đăng ký tại lễ tân và tuân thủ quy định an ninh</li>
+      </ul>
+
+      <h3 style="color: #28a745; margin: 24px 0 16px;">Thanh toán & trả phòng</h3>
+      <ul>
+        <li>Thanh toán toàn bộ hóa đơn trước khi trả phòng</li>
+        <li>Trả chìa khóa cho lễ tân</li>
+      </ul>
+
+      <h3 style="color: #28a745; margin: 24px 0 16px;">Các hành vi bị nghiêm cấm</h3>
+      <ul>
+        <li>Cờ bạc, sử dụng chất kích thích, mại dâm trong nhà nghỉ</li>
+        <li>Vi phạm → sẽ bị xử lý theo pháp luật và có thể bị đuổi ngay lập tức</li>
       </ul>
     </div>
+  </section>
 
+  <div class="note">
+    Những nội quy trên nhằm đảm bảo an toàn, vệ sinh, an ninh cho tất cả khách và tuân thủ pháp luật Việt Nam.<br>
+    <strong>Lưu ý:</strong> Mỗi nhà nghỉ có thể bổ sung quy định riêng. Hãy xem bảng nội quy treo tại quầy hoặc trong phòng để biết chi tiết chính xác nhất.
   </div>
+
+  <footer>
+    <p>Cập nhật dựa trên Nghị định 96/2016/NĐ-CP, Luật Du lịch 2017, Nghị định 168/2017/NĐ-CP và thực tế áp dụng phổ biến tại Việt Nam.</p>
+  </footer>
+
+</div>
 
 </body>
 </html>
