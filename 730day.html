@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Countdown • 16/10/2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Roboto+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0e17;
+      --neon-cyan: #00f0ff;
+      --neon-purple: #c300ff;
+      --neon-pink: #ff2e63;
+      --card-bg: rgba(15, 20, 35, 0.65);
+      --text: #e0f7ff;
+      --text-dim: #a3bffa;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      padding: 1rem;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 50%, rgba(0,240,255,0.08) 0%, transparent 25%),
+        radial-gradient(circle at 85% 30%, rgba(195,0,255,0.07) 0%, transparent 30%);
+      background-attachment: fixed;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 640px;
+      background: var(--card-bg);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-radius: 1.6rem;
+      padding: 2rem 1.5rem;
+      border: 1px solid rgba(0, 240, 255, 0.12);
+      box-shadow: 
+        0 8px 32px rgba(0,0,0,0.5),
+        inset 0 0 20px rgba(0,240,255,0.04);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(45deg, transparent, rgba(0,240,255,0.06), transparent);
+      animation: scan 12s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes scan {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    h1 {
+      font-size: clamp(2.1rem, 7vw, 3.8rem);
+      font-weight: 900;
+      letter-spacing: 4px;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple), var(--neon-pink), var(--neon-cyan));
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradient 8s ease infinite;
+      margin-bottom: 0.4rem;
+      text-shadow: 0 0 20px rgba(0,240,255,0.4);
+    }
+
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .subtitle {
+      font-family: 'Roboto Mono', monospace;
+      font-size: clamp(0.95rem, 3.5vw, 1.15rem);
+      color: var(--text-dim);
+      margin: 0.8rem 0 2.2rem;
+      letter-spacing: 1.5px;
+    }
+
+    .countdown {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin: 1.8rem 0;
+    }
+
+    .block {
+      background: rgba(10, 15, 30, 0.5);
+      border-radius: 1.2rem;
+      padding: 1.3rem 0.8rem;
+      border: 1px solid rgba(0,240,255,0.15);
+      backdrop-filter: blur(8px);
+      transition: all 0.35s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .block::after {
+      content: '';
+      position: absolute;
+      inset: -50%;
+      background: radial-gradient(circle at 30% 30%, rgba(0,240,255,0.12), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s;
+      pointer-events: none;
+    }
+
+    .block:hover::after,
+    .block:focus-within::after {
+      opacity: 1;
+    }
+
+    .block:hover {
+      transform: translateY(-6px) scale(1.03);
+      border-color: var(--neon-cyan);
+      box-shadow: 0 12px 30px rgba(0,240,255,0.18);
+    }
+
+    .number {
+      font-size: clamp(2.8rem, 10vw, 4.2rem);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -1px;
+      background: linear-gradient(180deg, var(--neon-cyan), #00aaff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 24px rgba(0,240,255,0.55);
+    }
+
+    .label {
+      font-family: 'Roboto Mono', monospace;
+      font-size: clamp(0.8rem, 2.8vw, 0.95rem);
+      color: var(--text-dim);
+      margin-top: 0.6rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .message {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 1.1rem;
+      color: #c0d4ff;
+      margin-top: 2rem;
+      line-height: 1.5;
+    }
+
+    .finished {
+      font-size: 2.2rem;
+      color: #ffd700;
+      text-shadow: 0 0 30px #ffaa00;
+      animation: glow 1.8s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 20px #ffaa00, 0 0 40px #ff5500; }
+      to   { text-shadow: 0 0 40px #ffff00, 0 0 60px #ff8800; }
+    }
+
+    @media (min-width: 500px) {
+      .countdown {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.2rem;
+      }
+      
+      .container {
+        padding: 2.8rem 2.2rem;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .container {
+        padding: 1.6rem 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>730 NGÀY</h1>
+    <p class="subtitle">16/10/2024 → 16/10/2026 • AI ERA</p>
+
+    <div class="countdown" id="countdown">
+      <div class="block">
+        <div class="number" id="days">0</div>
+        <div class="label">Ngày</div>
+      </div>
+      <div class="block">
+        <div class="number" id="hours">00</div>
+        <div class="label">Giờ</div>
+      </div>
+      <div class="block">
+        <div class="number" id="minutes">00</div>
+        <div class="label">Phút</div>
+      </div>
+      <div class="block">
+        <div class="number" id="seconds">00</div>
+        <div class="label">Giây</div>
+      </div>
+    </div>
+
+    <p class="message" id="message">Đang tiến gần đến cột mốc AI • 16/10/2026</p>
+  </div>
+
+  <script>
+    const target = new Date("2026-10-16T00:00:00+07:00").getTime();
+
+    function update() {
+      const now = Date.now();
+      const diff = target - now;
+
+      if (diff <= 0) {
+        document.getElementById("countdown").innerHTML = `
+          <div style="grid-column: 1/-1; padding: 2.5rem 1rem; font-size: clamp(2rem, 6vw, 3.2rem); color: #ffd700; font-weight: 900; text-shadow: 0 0 30px #ffaa00;">
+            ĐÃ ĐẾN NGÀY 16/10/2026 🚀
+          </div>`;
+        const msg = document.getElementById("message");
+        msg.classList.add("finished");
+        msg.textContent = "Hành trình 730 ngày hoàn tất • Welcome to the Next Era";
+        return;
+      }
+
+      const days = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const minutes = Math.floor((diff % 3600000) / 60000);
+      const seconds = Math.floor((diff % 60000) / 1000);
+
+      document.getElementById("days").textContent = days;
+      document.getElementById("hours").textContent = String(hours).padStart(2, "0");
+      document.getElementById("minutes").textContent = String(minutes).padStart(2, "0");
+      document.getElementById("seconds").textContent = String(seconds).padStart(2, "0");
+    }
+
+    update();
+    setInterval(update, 1000);
+  </script>
+</body>
+</html>
