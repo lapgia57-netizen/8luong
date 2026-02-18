@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Thống kê Blockchain Toàn Cầu 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #6366f1;       /* Indigo */
+      --primary-dark: #4f46e5;
+      --bg: #0f172a;
+      --card: #1e293b;
+      --text: #e2e8f0;
+      --text-light: #94a3b8;
+      --accent: #a5b4fc;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+    header {
+      text-align: center;
+      padding: 4rem 1rem 3rem;
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    }
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .subtitle {
+      font-size: 1.2rem;
+      color: var(--text-light);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin: 3rem 0;
+    }
+    .stat-card {
+      background: var(--card);
+      border-radius: 1rem;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      border: 1px solid #334155;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .stat-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 30px rgba(99,102,241,0.15);
+    }
+    .stat-number {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    .stat-label {
+      font-size: 1.1rem;
+      color: var(--text-light);
+    }
+    h2 {
+      font-size: 2rem;
+      margin: 3rem 0 1.5rem;
+      text-align: center;
+      color: var(--accent);
+    }
+    .table-container {
+      overflow-x: auto;
+      border-radius: 1rem;
+      background: var(--card);
+      border: 1px solid #334155;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 1.2rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid #334155;
+    }
+    th {
+      background: rgba(99,102,241,0.1);
+      color: var(--accent);
+      font-weight: 600;
+    }
+    tr:hover {
+      background: rgba(99,102,241,0.05);
+    }
+    .rank {
+      font-weight: bold;
+      color: var(--primary);
+      min-width: 60px;
+    }
+    footer {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-light);
+      font-size: 0.95rem;
+      border-top: 1px solid #334155;
+      margin-top: 4rem;
+    }
+    @media (max-width: 768px) {
+      h1 { font-size: 2.2rem; }
+      .stat-number { font-size: 2.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <h1>Thống kê Mạng Blockchain Toàn Cầu 2026</h1>
+      <p class="subtitle">Cập nhật tháng 2/2026 – Dựa trên dữ liệu từ DefiLlama, CoinGecko và các nguồn uy tín khác. Hệ sinh thái blockchain đang phát triển chóng mặt với hàng trăm chain hoạt động.</p>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number">~283</div>
+        <div class="stat-label">Tổng số chain được theo dõi (CoinGecko)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">$95.7 tỷ</div>
+        <div class="stat-label">Tổng TVL (Total Value Locked) toàn cầu</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">>1,000</div>
+        <div class="stat-label">Mạng blockchain công khai & hybrid ước tính</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">~120 triệu</div>
+        <div class="stat-label">Tổng token được tạo trên các chain lớn</div>
+      </div>
+    </div>
+
+    <h2>Top 10 Blockchain theo TVL (Tháng 2/2026)</h2>
+    
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Blockchain</th>
+            <th>TVL</th>
+            <th>Dominance</th>
+            <th>24h Volume</th>
+            <th>Số Coin/Token</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="rank">1</td>
+            <td>Ethereum</td>
+            <td>$55 tỷ</td>
+            <td>57.61%</td>
+            <td>$2 tỷ</td>
+            <td>5,099</td>
+          </tr>
+          <tr>
+            <td class="rank">2</td>
+            <td>Solana</td>
+            <td>$6.5 tỷ</td>
+            <td>6.85%</td>
+            <td>$8.4 tỷ</td>
+            <td>5,366</td>
+          </tr>
+          <tr>
+            <td class="rank">3</td>
+            <td>BNB Smart Chain</td>
+            <td>$5.8 tỷ</td>
+            <td>6.04%</td>
+            <td>$5.5 tỷ</td>
+            <td>3,487</td>
+          </tr>
+          <tr>
+            <td class="rank">4</td>
+            <td>Bitcoin (Ordinals)</td>
+            <td>$5.1 tỷ</td>
+            <td>5.33%</td>
+            <td>-</td>
+            <td>67</td>
+          </tr>
+          <tr>
+            <td class="rank">5</td>
+            <td>TRON</td>
+            <td>$4 tỷ</td>
+            <td>4.24%</td>
+            <td>$50 triệu</td>
+            <td>102</td>
+          </tr>
+          <tr>
+            <td class="rank">6</td>
+            <td>Base</td>
+            <td>$3.9 tỷ</td>
+            <td>4.04%</td>
+            <td>$771 triệu</td>
+            <td>2,077</td>
+          </tr>
+          <tr>
+            <td class="rank">7</td>
+            <td>Plasma</td>
+            <td>$2.6 tỷ</td>
+            <td>2.67%</td>
+            <td>$14 triệu</td>
+            <td>42</td>
+          </tr>
+          <tr>
+            <td class="rank">8</td>
+            <td>Arbitrum One</td>
+            <td>$2.1 tỷ</td>
+            <td>2.21%</td>
+            <td>$295 triệu</td>
+            <td>807</td>
+          </tr>
+          <tr>
+            <td class="rank">9</td>
+            <td>Hyperliquid</td>
+            <td>$1.5 tỷ</td>
+            <td>1.60%</td>
+            <td>-</td>
+            <td>47</td>
+          </tr>
+          <tr>
+            <td class="rank">10</td>
+            <td>Provenance</td>
+            <td>$1.2 tỷ</td>
+            <td>1.31%</td>
+            <td>-</td>
+            <td>3</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Ghi chú</h2>
+    <ul style="max-width:800px; margin:1.5rem auto; color:var(--text-light);">
+      <li>TVL chủ yếu tập trung vào DeFi, stablecoin, RWA. Ethereum vẫn thống trị với hơn 57% thị phần.</li>
+      <li>Số chain thực tế lớn hơn nhiều nếu tính private/consortium chains và testnets (ước tính >1.000 public/hybrid).</li>
+      <li>Dữ liệu động → kiểm tra DefiLlama.com/chains hoặc CoinGecko.com/en/chains để cập nhật realtime.</li>
+    </ul>
+
+  </div>
+
+  <footer>
+    <p>© 2026 – Thống kê blockchain | Dữ liệu tham khảo từ DefiLlama & CoinGecko | Designed with ❤️ by Grok</p>
+  </footer>
+
+</body>
+</html>
