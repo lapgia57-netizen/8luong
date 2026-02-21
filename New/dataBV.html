@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ghi nhận Bảo vệ - UnityVina</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+body{
+    margin:0;
+    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+}
+
+.card{
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+    padding:28px 22px;
+    border-radius:16px;
+    width:100%;
+    max-width:420px;
+    box-shadow:0 10px 30px rgba(0,0,0,.3);
+    animation: fade .4s ease;
+}
+
+@keyframes fade{
+    from{opacity:0;transform:translateY(10px);}
+    to{opacity:1;transform:none;}
+}
+
+h2{
+    text-align:center;
+    margin:0 0 18px;
+    font-size:22px;
+}
+
+label{
+    font-size:14px;
+    opacity:.85;
+}
+
+input{
+    width:100%;
+    padding:12px 14px;
+    border-radius:10px;
+    border:none;
+    margin:6px 0 14px;
+    outline:none;
+    font-size:15px;
+}
+
+input:focus{
+    box-shadow:0 0 0 2px #00ffd5;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(135deg,#00ffd5,#00c3ff);
+    font-weight:600;
+    font-size:15px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+button:hover{
+    transform:translateY(-1px);
+    box-shadow:0 5px 18px rgba(0,255,213,.35);
+}
+
+.msg{
+    margin-top:12px;
+    text-align:center;
+    font-size:14px;
+    min-height:20px;
+}
+
+.list{
+    margin-top:16px;
+    max-height:220px;
+    overflow:auto;
+}
+
+.item{
+    background:rgba(255,255,255,.06);
+    padding:8px 10px;
+    border-radius:8px;
+    margin-bottom:6px;
+    font-size:13px;
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+}
+
+.footer{
+    text-align:center;
+    margin-top:10px;
+    font-size:11px;
+    opacity:.6;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h2>👮‍♂️ Ghi nhận Bảo vệ</h2>
+
+    <label>Họ và tên *</label>
+    <input id="name" placeholder="Nhập họ và tên">
+
+    <label>Năm sinh (tự tính tuổi)</label>
+    <input id="birth" type="number" placeholder="Ví dụ: 1996">
+
+    <label>Địa chỉ (có thể bỏ trống)</label>
+    <input id="address" placeholder="Nhập địa chỉ">
+
+    <button onclick="save()">💾 Lưu thông tin</button>
+
+    <div class="msg" id="msg"></div>
+
+    <div class="list" id="list"></div>
+
+    <div class="footer">UnityVina • Firebase Realtime Database</div>
+</div>
+
+<script>
+const DB = "https://unityvina-1fc51-default-rtdb.asia-southeast1.firebasedatabase.app/guards.json";
+
+function calcAge(birth){
+    if(!birth) return "";
+    const year = new Date().getFullYear();
+    const age = year - birth;
+    return (age > 0 && age < 120) ? age : "";
+}
+
+function save(){
+    const name    = document.getElementById("name").value.trim();
+    const birth   = document.getElementById("birth").value.trim();
+    const address = document.getElementById("address").value.trim();
+
+    if(!name){
+        show("⚠️ Vui lòng nhập họ tên", "orange");
+        return;
+    }
+
+    const age = calcAge(birth);
+
+    const data = {
+        name,
+        birth: birth || "",
+        age,
+        address: address || "",
+        time: new Date().toLocaleString("vi-VN")
+    };
+
+    fetch(DB,{
+        method:"POST",
+        body:JSON.stringify(data)
+    })
+    .then(r=>r.json())
+    .then(()=>{
+        show("✅ Lưu thành công","lightgreen");
+        document.getElementById("name").value="";
+        document.getElementById("birth").value="";
+        document.getElementById("address").value="";
+        load();
+    })
+    .catch(()=> show("❌ Lỗi kết nối Firebase","red"));
+}
+
+function load(){
+    fetch(DB)
+    .then(r=>r.json())
+    .then(d=>{
+        const list=document.getElementById("list");
+        list.innerHTML="";
+        if(!d) return;
+
+        Object.values(d).reverse().forEach(v=>{
+            const div=document.createElement("div");
+            div.className="item";
+            div.innerHTML=`
+                <span>${v.name}</span>
+                <span>${v.age ? v.age + " tuổi" : "-"}</span>
+            `;
+            list.appendChild(div);
+        });
+    });
+}
+
+function show(t,c){
+    const m=document.getElementById("msg");
+    m.innerHTML=t;
+    m.style.color=c;
+    setTimeout(()=>m.innerHTML="",3000);
+}
+
+load();
+</script>
+
+</body>
+</html>
