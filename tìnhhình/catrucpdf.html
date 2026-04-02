@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Bảng Ghi Ca Trực - Digital (PDF + Ca Ngày/Đêm)</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+  body{font-family:Arial,sans-serif;margin:0;padding:20px;background:#f4f4f4}
+  .container{max-width:1200px;margin:auto;background:white;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.1);overflow:hidden}
+  header{background:#0a3d62;color:white;padding:15px;text-align:center;font-size:1.5em}
+  .main{display:flex;min-height:700px}
+  .sidebar{width:280px;background:#f8f9fa;border-right:1px solid #ddd;padding:15px;overflow-y:auto}
+  .content{flex:1;padding:20px}
+  table{width:100%;border-collapse:collapse;margin:15px 0}
+  th,td{border:1px solid #ccc;padding:8px;text-align:left;vertical-align:top}
+  th{background:#0a3d62;color:white}
+  input,select,textarea{width:100%;padding:8px;border:1px solid #ccc;border-radius:4px;margin-bottom:8px}
+  button{padding:10px 16px;margin:5px 3px;border:none;border-radius:6px;cursor:pointer;font-size:1em}
+  .btn-save{background:#28a745;color:white}
+  .btn-pdf{background:#e74c3c;color:white}
+  .btn-export{background:#17a2b8;color:white}
+  .btn-delete{background:#dc3545;color:white}
+  .btn-add{background:#007bff;color:white}
+  .list-item{padding:10px;border-bottom:1px solid #ddd;cursor:pointer}
+  .list-item:hover{background:#e9f0ff}
+  .active{background:#d1e7ff;font-weight:bold}
+  label{display:block;margin-top:8px;font-weight:bold}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>BẢNG GHI TÌNH HÌNH CA TRỰC - SECURITY SHIFT RECORD</header>
+  <div class="main">
+    
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h3>Danh sách ca trực</h3>
+      <button onclick="newShift()" class="btn-add" style="width:100%;margin-bottom:10px">+ Tạo ca mới</button>
+      <div id="shiftList"></div>
+    </div>
+
+    <!-- Form -->
+    <div class="content">
+      <h2 id="formTitle">Tạo ca trực mới</h2>
+
+      <label>Chọn ngày</label>
+      <input type="date" id="dateInput">
+
+      <label>Loại ca</label>
+      <select id="caType" onchange="updateTimeFrame()">
+        <option value="Ca ngày">Ca ngày (06:00 - 18:00)</option>
+        <option value="Ca đêm">Ca đêm (18:00 - 06:00)</option>
+      </select>
+
+      <label>Thời gian ca</label>
+      <div style="display:flex;gap:10px;align-items:center">
+        <input type="time" id="tu" value="06:00">
+        <span>đến</span>
+        <input type="time" id="den" value="18:00">
+      </div>
+
+      <label>Họ và tên</label><input type="text" id="hoTen" value="Ngô Thị Cương">
+      <label>Số hiệu</label><input type="text" id="soHieu" value="11440 - 96">
+
+      <h3>DIỄN BIẾN CA TRỰC</h3>
+      <table id="logTable">
+        <thead><tr><th>Thời gian</th><th>Nội dung</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <button onclick="addLogRow()" class="btn-add">+ Thêm dòng diễn biến</button>
+
+      <h3>LƯU Ý CHO CA TRỰC SAU</h3>
+      <textarea id="luuY" rows="3" placeholder="Ghi chú..."></textarea>
+
+      <h3>BÀN GIAO TÀI SẢN & THIẾT BỊ</h3>
+      <table id="handoverTable">
+        <thead><tr><th>Mục bàn giao</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <button onclick="addHandoverRow()" class="btn-add">+ Thêm mục bàn giao</button>
+
+      <div style="margin-top:30px">
+        <button onclick="saveShift()" class="btn-save">💾 LƯU CA TRỰC</button>
+        <button onclick="exportToPDF()" class="btn-pdf">📄 XUẤT PDF</button>
+        <button onclick="exportToTXT()" class="btn-export">📋 Xuất TXT</button>
+        <button onclick="deleteCurrentShift()" class="btn-delete">🗑 Xóa ca này</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// === Dữ liệu ===
+let shifts = JSON.parse(localStorage.getItem('securityShifts_v3')) || {};
+let currentKey = null;
+
+// === Tự động cập nhật thời gian khi chọn ca ===
+function updateTimeFrame() {
+  const type = document.getElementById('caType').value;
+  if (type === "Ca ngày") {
+    document.getElementById('tu').value = "06:00";
+    document.getElementById('den').value = "18:00";
+  } else {
+    document.getElementById('tu').value = "18:00";
+    document.getElementById('den').value = "06:00";
+  }
+}
+
+// === Render danh sách ===
+function renderShiftList() {
+  const listEl = document.getElementById('shiftList');
+  listEl.innerHTML = '';
+  Object.keys(shifts).sort().reverse().forEach(key => {
+    const s = shifts[key];
+    const div = document.createElement('div');
+    div.className = `list-item ${key === currentKey ? 'active' : ''}`;
+    div.textContent = `${key} | ${s.caType} | ${s.hoTen}`;
+    div.onclick = () => loadShift(key);
+    listEl.appendChild(div);
+  });
+}
+
+// === Load ca ===
+function loadShift(key) {
+  currentKey = key;
+  const s = shifts[key];
+  document.getElementById('dateInput').value = `${s.nam}-${String(s.thang).padStart(2,'0')}-${String(s.ngay).padStart(2,'0')}`;
+  document.getElementById('caType').value = s.caType;
+  document.getElementById('tu').value = s.tu;
+  document.getElementById('den').value = s.den;
+  document.getElementById('hoTen').value = s.hoTen;
+  document.getElementById('soHieu').value = s.soHieu;
+  document.getElementById('luuY').value = s.luuY || '';
+
+  // Render logs & handover (giống phiên bản trước)
+  const logBody = document.querySelector('#logTable tbody');
+  logBody.innerHTML = '';
+  s.logs.forEach((log, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td><input type="text" value="${log.time}" onchange="shifts['${key}'].logs[${i}].time=this.value"></td>
+                    <td><input type="text" value="${log.content}" onchange="shifts['${key}'].logs[${i}].content=this.value"></td>
+                    <td><button onclick="deleteLog(${i})" class="btn-delete">Xóa</button></td>`;
+    logBody.appendChild(tr);
+  });
+
+  const hoBody = document.querySelector('#handoverTable tbody');
+  hoBody.innerHTML = '';
+  s.handover.forEach((item, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td><input type="text" value="${item}" onchange="shifts['${key}'].handover[${i}]=this.value"></td>
+                    <td><button onclick="deleteHandover(${i})" class="btn-delete">Xóa</button></td>`;
+    hoBody.appendChild(tr);
+  });
+
+  renderShiftList();
+}
+
+// === Thêm / Xóa dòng ===
+function addLogRow() { if(!currentKey) return alert("Lưu ca trước!"); shifts[currentKey].logs.push({time:"", content:""}); loadShift(currentKey); }
+function addHandoverRow() { if(!currentKey) return alert("Lưu ca trước!"); shifts[currentKey].handover.push(""); loadShift(currentKey); }
+function deleteLog(i) { if(confirm("Xóa?")) { shifts[currentKey].logs.splice(i,1); loadShift(currentKey); }}
+function deleteHandover(i) { if(confirm("Xóa?")) { shifts[currentKey].handover.splice(i,1); loadShift(currentKey); }}
+
+// === Lưu ca ===
+function saveShift() {
+  const dateVal = document.getElementById('dateInput').value;
+  if (!dateVal) return alert("Vui lòng chọn ngày!");
+  const [nam, thang, ngay] = dateVal.split('-').map(Number);
+  const key = `${nam}-${String(thang).padStart(2,'0')}-${String(ngay).padStart(2,'0')}`;
+
+  if (!shifts[key]) shifts[key] = { logs: [], handover: [] };
+
+  const s = shifts[key];
+  s.ngay = ngay; s.thang = thang; s.nam = nam;
+  s.caType = document.getElementById('caType').value;
+  s.tu = document.getElementById('tu').value;
+  s.den = document.getElementById('den').value;
+  s.hoTen = document.getElementById('hoTen').value;
+  s.soHieu = document.getElementById('soHieu').value;
+  s.luuY = document.getElementById('luuY').value;
+
+  localStorage.setItem('securityShifts_v3', JSON.stringify(shifts));
+  currentKey = key;
+  alert(`✅ Đã lưu ca ${key} (${s.caType})`);
+  renderShiftList();
+}
+
+// === Xuất PDF (đẹp, hỗ trợ tiếng Việt) ===
+function exportToPDF() {
+  if (!currentKey) return alert("Chưa có ca nào được chọn!");
+
+  const s = shifts[currentKey];
+  const contentHTML = `
+    <div style="font-family:Arial; padding:30px; line-height:1.6;">
+      <h1 style="text-align:center; color:#0a3d62;">BẢNG GHI TÌNH HÌNH CA TRỰC</h1>
+      <h2 style="text-align:center;">SECURITY SHIFT RECORD</h2>
+      <p><strong>Ngày:</strong> ${s.ngay}/${s.thang}/${s.nam} &nbsp;&nbsp; <strong>Loại ca:</strong> ${s.caType}</p>
+      <p><strong>Thời gian:</strong> Từ ${s.tu} đến ${s.den}</p>
+      <p><strong>Họ và tên:</strong> ${s.hoTen} &nbsp;&nbsp; <strong>Số hiệu:</strong> ${s.soHieu}</p>
+      
+      <h3>DIỄN BIẾN CA TRỰC</h3>
+      <table style="width:100%; border-collapse:collapse; border:1px solid #000;">
+        <thead><tr style="background:#0a3d62;color:white;"><th style="border:1px solid #000; padding:8px;">Thời gian</th><th style="border:1px solid #000; padding:8px;">Nội dung</th></tr></thead>
+        <tbody>
+          ${s.logs.map(log => `<tr><td style="border:1px solid #000; padding:8px;">${log.time}</td><td style="border:1px solid #000; padding:8px;">${log.content}</td></tr>`).join('')}
+        </tbody>
+      </table>
+
+      <h3>LƯU Ý CHO CA TRỰC SAU</h3>
+      <p>${s.luuY || 'Không có lưu ý'}</p>
+
+      <h3>BÀN GIAO TÀI SẢN & THIẾT BỊ</h3>
+      <ul>
+        ${s.handover.map(item => `<li>${item}</li>`).join('')}
+      </ul>
+      <p style="margin-top:50px;"><strong>Người thực hiện:</strong> ${s.hoTen} &nbsp;&nbsp; Ngày ${s.ngay}/${s.thang}/${s.nam}</p>
+    </div>
+  `;
+
+  const element = document.createElement('div');
+  element.innerHTML = contentHTML;
+  document.body.appendChild(element);
+
+  const opt = {
+    margin: [10, 10, 10, 10],
+    filename: `Ca_Truc_${s.ngay}-${s.thang}-${s.nam}_${s.caType}.pdf`,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+
+  html2pdf().set(opt).from(element).save().then(() => {
+    document.body.removeChild(element);
+  });
+}
+
+// === Xuất TXT (giữ nguyên từ trước) ===
+function exportToTXT() {
+  if (!currentKey) return alert("Chưa có ca nào!");
+  const s = shifts[currentKey];
+  let txt = `BẢNG GHI TÌNH HÌNH CA TRỰC\n`;
+  txt += `Ngày: ${s.ngay}/${s.thang}/${s.nam}   Loại ca: ${s.caType}\n`;
+  txt += `Thời gian: Từ ${s.tu} đến ${s.den}\n`;
+  txt += `Họ tên: ${s.hoTen}   Số hiệu: ${s.soHieu}\n\nDIỄN BIẾN:\n`;
+  s.logs.forEach(l => txt += `${l.time}: ${l.content}\n`);
+  txt += `\nLƯU Ý: ${s.luuY || ''}\n\nBÀN GIAO:\n`;
+  s.handover.forEach((h,i) => txt += `${i+1}. ${h}\n`);
+
+  const blob = new Blob([txt], {type:'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `Ca_Truc_${s.ngay}-${s.thang}-${s.nam}.txt`;
+  a.click();
+}
+
+// === Tạo ca mới ===
+function newShift() {
+  currentKey = null;
+  document.getElementById('formTitle').textContent = "Tạo ca trực mới";
+  document.getElementById('dateInput').value = new Date().toISOString().slice(0,10); // hôm nay
+  document.getElementById('caType').value = "Ca ngày";
+  updateTimeFrame();
+  document.getElementById('hoTen').value = "Ngô Thị Cương";
+  document.getElementById('soHieu').value = "11440 - 96";
+  document.getElementById('luuY').value = "";
+  document.querySelector('#logTable tbody').innerHTML = '';
+  document.querySelector('#handoverTable tbody').innerHTML = '';
+}
+
+// === Xóa ca ===
+function deleteCurrentShift() {
+  if (!currentKey || !confirm("Xóa ca này?")) return;
+  delete shifts[currentKey];
+  localStorage.setItem('securityShifts_v3', JSON.stringify(shifts));
+  currentKey = null;
+  newShift();
+  renderShiftList();
+}
+
+// === Khởi động ===
+document.getElementById('dateInput').value = new Date().toISOString().slice(0,10);
+renderShiftList();
+
+// Load ca mẫu nếu chưa có dữ liệu
+if (Object.keys(shifts).length === 0) {
+  const today = new Date();
+  const sampleKey = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+  shifts[sampleKey] = {
+    ngay: today.getDate(), thang: today.getMonth()+1, nam: today.getFullYear(),
+    caType: "Ca đêm", tu: "18:00", den: "06:00",
+    hoTen: "Ngô Thị Cương", soHieu: "11440 - 96",
+    logs: [{time:"18h-20h", content:"Kiểm tra cửa, nhân viên, không bất thường"}, {time:"6h-6h30", content:"Bàn giao ca sau"}],
+    luuY: "", handover: ["Ghi chép ca trực", "Thiết bị bàn giao"]
+  };
+  localStorage.setItem('securityShifts_v3', JSON.stringify(shifts));
+  loadShift(sampleKey);
+} else {
+  loadShift(Object.keys(shifts)[0]);
+}
+</script>
+</body>
+</html>
