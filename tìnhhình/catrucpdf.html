@@ -31,19 +31,13 @@
     font-size: 1.4em;
     font-weight: bold;
   }
-  .main {
-    display: flex;
-    flex-direction: column;
-  }
+  .main { display: flex; flex-direction: column; }
   .sidebar {
     background: #f8f9fa;
     padding: 15px;
     border-bottom: 1px solid #ddd;
   }
-  .content {
-    flex: 1;
-    padding: 15px;
-  }
+  .content { flex: 1; padding: 15px; }
   @media (min-width: 768px) {
     .main { flex-direction: row; }
     .sidebar { width: 280px; border-bottom: none; border-right: 1px solid #ddd; }
@@ -57,35 +51,17 @@
     border-radius: 8px;
     font-size: 16px;
   }
-  button {
-    margin: 8px 4px 8px 0;
-    cursor: pointer;
-    font-weight: bold;
-  }
+  button { margin: 8px 4px 8px 0; cursor: pointer; font-weight: bold; }
   .btn-save { background: #28a745; color: white; }
   .btn-pdf { background: #e74c3c; color: white; }
   .btn-export { background: #17a2b8; color: white; }
   .btn-delete { background: #dc3545; color: white; }
   .btn-add { background: #007bff; color: white; }
   .btn-template { background: #6c757d; color: white; font-size: 0.9em; padding: 10px; }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 12px 0;
-  }
-  th, td {
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: left;
-    vertical-align: top;
-  }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+  th, td { border: 1px solid #ccc; padding: 10px; text-align: left; vertical-align: top; }
   th { background: var(--primary); color: white; }
-  .list-item {
-    padding: 12px;
-    border-bottom: 1px solid #ddd;
-    cursor: pointer;
-  }
+  .list-item { padding: 12px; border-bottom: 1px solid #ddd; cursor: pointer; }
   .list-item:hover, .active { background: #d1e7ff; }
   .table-wrapper { overflow-x: auto; }
 </style>
@@ -94,7 +70,6 @@
 
 <div class="container">
   <header>📋 CA TRỰC - CÔNG TY TNHH UNITY VINA</header>
-  
   <div class="main">
     <div class="sidebar">
       <h3>Danh sách ca trực</h3>
@@ -171,77 +146,98 @@
 </div>
 
 <script>
-// ================== DỮ LIỆU ==================
-let shifts = JSON.parse(localStorage.getItem('unityVinaShifts_v4')) || {};
+// ================== DỮ LIỆU & BIẾN ==================
+let shifts = JSON.parse(localStorage.getItem('unityVinaShifts')) || {};
 let currentKey = null;
 
-// ================== CÁC HÀM HỖ TRỢ ==================
-function getCurrentFormData() {
-  // Lấy dữ liệu realtime từ form (fix bug dữ liệu chưa lưu)
-  const dateVal = document.getElementById('dateInput').value;
-  const [nam, thang, ngay] = dateVal ? dateVal.split('-').map(Number) : [2025,11,14];
-  const key = `${nam}-${String(thang).padStart(2,'0')}-${String(ngay).padStart(2,'0')}`;
-
-  const logs = [];
-  document.querySelectorAll('#logTable tbody tr').forEach(tr => {
-    const time = tr.cells[0].querySelector('input').value;
-    const content = tr.cells[1].querySelector('input').value;
-    if (time || content) logs.push({time, content});
-  });
-
-  const handover = [];
-  document.querySelectorAll('#handoverTable tbody tr').forEach(tr => {
-    const item = tr.cells[0].querySelector('input').value;
-    if (item) handover.push(item);
-  });
-
-  return {
-    ngay, thang, nam, key,
+// ================== HÀM THU THẬP DỮ LIỆU HIỆN TẠI TỪ FORM (FIX BUG PDF TRẮNG) ==================
+function collectCurrentFormData() {
+  const data = {
+    ngay: 0, thang: 0, nam: 0,
     caType: document.getElementById('caType').value,
     tu: document.getElementById('tu').value,
     den: document.getElementById('den').value,
     hoTen: document.getElementById('hoTen').value,
     soHieu: document.getElementById('soHieu').value,
-    luuY: document.getElementById('luuY').value,
-    logs,
-    handover
+    luuY: document.getElementById('luuY').value || '',
+    logs: [],
+    handover: []
   };
-}
 
-// ================== AUTO 2H SLOTS (ĐÃ SỬA LOGIC) ==================
-function auto2hSlots() {
-  const data = getCurrentFormData();
-  if (!currentKey) return alert("Hãy lưu ca trước khi tạo khung 2 giờ!");
-
-  const startTime = data.tu;
-  const endTime = data.den;
-  let logs = [];
-
-  // Sử dụng Date để tính chính xác (hỗ trợ qua nửa đêm)
-  let current = new Date(`2000-01-01 ${startTime}`);
-  const endDate = new Date(`2000-01-01 ${endTime}`);
-  if (endDate <= current) endDate.setDate(endDate.getDate() + 1); // ca đêm
-
-  while (current < endDate) {
-    const next = new Date(current.getTime() + 2 * 60 * 60 * 1000);
-    const timeStr = `${current.getHours().toString().padStart(2,'0')}h${current.getMinutes().toString().padStart(2,'0')}-${next.getHours().toString().padStart(2,'0')}h${next.getMinutes().toString().padStart(2,'0')}`;
-    logs.push({time: timeStr, content: "Tuần tra an ninh - Đảm bảo an ninh an toàn"});
-    current = next;
+  // Lấy ngày từ input date
+  const dateVal = document.getElementById('dateInput').value;
+  if (dateVal) {
+    const [y, m, d] = dateVal.split('-').map(Number);
+    data.nam = y; data.thang = m; data.ngay = d;
   }
 
-  shifts[currentKey].logs = logs;
-  loadShift(currentKey);
-  alert(`✅ Đã tạo ${logs.length} khung 2 giờ cho ca ${data.caType}`);
+  // Thu thập logs từ bảng hiện tại (đảm bảo lấy dữ liệu mới nhất người dùng vừa sửa/thêm)
+  const logRows = document.querySelectorAll('#logTable tbody tr');
+  logRows.forEach(row => {
+    const timeInput = row.cells[0].querySelector('input');
+    const contentInput = row.cells[1].querySelector('input');
+    if (timeInput && contentInput) {
+      data.logs.push({
+        time: timeInput.value || '--h--',
+        content: contentInput.value || ''
+      });
+    }
+  });
+
+  // Thu thập handover từ bảng
+  const hoRows = document.querySelectorAll('#handoverTable tbody tr');
+  hoRows.forEach(row => {
+    const itemInput = row.cells[0].querySelector('input');
+    if (itemInput) {
+      data.handover.push(itemInput.value || '');
+    }
+  });
+
+  return data;
 }
 
-// ================== QUICK TEMPLATE ==================
+// ================== CÁC HÀM CÒN LẠI (ĐÃ SỬA LOGIC) ==================
+function updateTimeFrame() {
+  const type = document.getElementById('caType').value;
+  if (type === "Ca ngày") {
+    document.getElementById('tu').value = "06:00";
+    document.getElementById('den').value = "18:00";
+  } else {
+    document.getElementById('tu').value = "18:00";
+    document.getElementById('den').value = "06:00";
+  }
+}
+
+function auto2hSlots() {
+  const s = shifts[currentKey];
+  if (!s) return alert("Hãy lưu ca trước khi tạo khung 2 giờ!");
+  const start = document.getElementById('tu').value;
+  const end = document.getElementById('den').value;
+  let logs = [];
+  let hour = parseInt(start.split(':')[0]);
+  const min = parseInt(start.split(':')[1]);
+  const endHour = parseInt(end.split(':')[0]);
+
+  while (true) {
+    const nextHour = (hour + 2) % 24;
+    const timeStr = `${hour.toString().padStart(2,'0')}h${min.toString().padStart(2,'0')}-${nextHour.toString().padStart(2,'0')}h${min.toString().padStart(2,'0')}`;
+    logs.push({time: timeStr, content: "Tuần tra an ninh - Đảm bảo an ninh an toàn"});
+    hour = nextHour;
+    if (hour === endHour) break;
+    if (logs.length > 12) break;
+  }
+  s.logs = logs;
+  loadShift(currentKey);
+  alert(`✅ Đã tạo ${logs.length} khung 2 giờ cho ca ${s.caType}`);
+}
+
 function insertTemplate(text) {
   if (!currentKey) return alert("Hãy lưu ca trước!");
-  shifts[currentKey].logs.push({time: "--h--", content: text});
+  const s = shifts[currentKey];
+  s.logs.push({time: "--h--", content: text});
   loadShift(currentKey);
 }
 
-// ================== RENDER DANH SÁCH ==================
 function renderShiftList() {
   const el = document.getElementById('shiftList');
   el.innerHTML = '';
@@ -254,7 +250,6 @@ function renderShiftList() {
   });
 }
 
-// ================== LOAD CA ==================
 function loadShift(key) {
   currentKey = key;
   const s = shifts[key];
@@ -266,7 +261,6 @@ function loadShift(key) {
   document.getElementById('soHieu').value = s.soHieu;
   document.getElementById('luuY').value = s.luuY || '';
 
-  // Logs
   const tbody = document.querySelector('#logTable tbody');
   tbody.innerHTML = '';
   s.logs.forEach((log, i) => {
@@ -278,7 +272,6 @@ function loadShift(key) {
     tbody.appendChild(tr);
   });
 
-  // Handover
   const hbody = document.querySelector('#handoverTable tbody');
   hbody.innerHTML = '';
   s.handover.forEach((item, i) => {
@@ -292,7 +285,6 @@ function loadShift(key) {
   renderShiftList();
 }
 
-// ================== THÊM / XÓA DÒNG ==================
 function addLogRow() {
   if (!currentKey) return alert("Lưu ca trước!");
   shifts[currentKey].logs.push({time: "--h--", content: ""});
@@ -316,38 +308,41 @@ function deleteHandover(i) {
   }
 }
 
-// ================== LƯU CA (ĐÃ SỬA) ==================
 function saveShift() {
-  const data = getCurrentFormData();
-  if (!shifts[data.key]) shifts[data.key] = { logs: [], handover: [] };
+  const dateVal = document.getElementById('dateInput').value;
+  if (!dateVal) return alert("Chọn ngày trước!");
+  const [nam, thang, ngay] = dateVal.split('-').map(Number);
+  const key = `${nam}-${String(thang).padStart(2,'0')}-${String(ngay).padStart(2,'0')}`;
 
-  const s = shifts[data.key];
-  s.ngay = data.ngay; s.thang = data.thang; s.nam = data.nam;
-  s.caType = data.caType;
-  s.tu = data.tu;
-  s.den = data.den;
-  s.hoTen = data.hoTen;
-  s.soHieu = data.soHieu;
-  s.luuY = data.luuY;
-  s.logs = data.logs;
-  s.handover = data.handover;
+  if (!shifts[key]) shifts[key] = { logs: [], handover: [] };
 
-  localStorage.setItem('unityVinaShifts_v4', JSON.stringify(shifts));
-  currentKey = data.key;
-  alert(`✅ ĐÃ LƯU CA ${data.key} (${s.caType})`);
+  const s = shifts[key];
+  s.ngay = ngay; s.thang = thang; s.nam = nam;
+  s.caType = document.getElementById('caType').value;
+  s.tu = document.getElementById('tu').value;
+  s.den = document.getElementById('den').value;
+  s.hoTen = document.getElementById('hoTen').value;
+  s.soHieu = document.getElementById('soHieu').value;
+  s.luuY = document.getElementById('luuY').value;
+
+  // Lưu logs & handover từ form hiện tại (đảm bảo dữ liệu mới nhất)
+  const liveData = collectCurrentFormData();
+  s.logs = liveData.logs;
+  s.handover = liveData.handover;
+
+  localStorage.setItem('unityVinaShifts', JSON.stringify(shifts));
+  currentKey = key;
+  alert(`✅ ĐÃ LƯU CA ${key} (${s.caType})`);
   renderShiftList();
-  loadShift(data.key); // reload để đồng bộ
 }
 
-// ================== XUẤT PDF (ĐÃ HOÀN THIỆN - LẤY DỮ LIỆU REALTIME) ==================
+// ================== XUẤT PDF (ĐÃ SỬA BUG - LUÔN LẤY DỮ LIỆU MỚI NHẤT TỪ FORM) ==================
 function exportToPDF() {
-  if (!currentKey) {
-    if (!confirm("Chưa lưu ca. Vẫn xuất PDF với dữ liệu hiện tại?")) return;
-  } else {
-    saveShift(); // Tự động lưu trước khi xuất (fix bug dữ liệu mới thêm)
-  }
+  const data = collectCurrentFormData();   // ← Đây là fix quan trọng: lấy dữ liệu live từ form + bảng
 
-  const d = getCurrentFormData();
+  if (data.logs.length === 0) {
+    if (!confirm("Ca này chưa có diễn biến nào. Vẫn xuất PDF?")) return;
+  }
 
   const pdfHTML = `
     <div style="font-family:Arial;padding:30px 20px;line-height:1.6;color:#222;">
@@ -356,33 +351,31 @@ function exportToPDF() {
       
       <h2 style="text-align:center;border-bottom:3px solid #0a3d62;padding-bottom:8px;">BẢNG GHI TÌNH HÌNH CA TRỰC</h2>
       
-      <table style="width:100%;margin:15px 0;border:1px solid #ccc;">
-        <tr><td><strong>Ngày:</strong></td><td>${d.ngay}/${d.thang}/${d.nam}</td>
-            <td><strong>Loại ca:</strong></td><td>${d.caType}</td></tr>
-        <tr><td><strong>Thời gian:</strong></td><td>${d.tu} – ${d.den}</td>
-            <td><strong>Họ tên:</strong></td><td>${d.hoTen}</td></tr>
-        <tr><td><strong>Số hiệu:</strong></td><td colspan="3">${d.soHieu}</td></tr>
+      <table style="width:100%;margin:15px 0;">
+        <tr><td><strong>Ngày:</strong></td><td>${data.ngay}/${data.thang}/${data.nam}</td><td><strong>Loại ca:</strong></td><td>${data.caType}</td></tr>
+        <tr><td><strong>Thời gian:</strong></td><td>${data.tu} – ${data.den}</td><td><strong>Họ tên:</strong></td><td>${data.hoTen}</td></tr>
+        <tr><td><strong>Số hiệu:</strong></td><td colspan="3">${data.soHieu}</td></tr>
       </table>
 
       <h3 style="background:#0a3d62;color:white;padding:8px;">DIỄN BIẾN CA TRỰC</h3>
       <table style="width:100%;border-collapse:collapse;border:2px solid #0a3d62;">
         <thead><tr style="background:#0a3d62;color:white;"><th style="border:1px solid #fff;padding:8px;">Thời gian</th><th style="border:1px solid #fff;padding:8px;">Nội dung</th></tr></thead>
         <tbody>
-          ${d.logs.map(l => `<tr><td style="border:1px solid #0a3d62;padding:8px;">${l.time}</td><td style="border:1px solid #0a3d62;padding:8px;">${l.content}</td></tr>`).join('')}
+          ${data.logs.map(l => `<tr><td style="border:1px solid #0a3d62;padding:8px;">${l.time}</td><td style="border:1px solid #0a3d62;padding:8px;">${l.content}</td></tr>`).join('')}
         </tbody>
       </table>
 
       <h3 style="margin-top:25px;">LƯU Ý CHO CA TRỰC SAU</h3>
-      <p style="border:1px solid #ccc;padding:12px;min-height:60px;">${d.luuY || 'Không có lưu ý'}</p>
+      <p style="border:1px solid #ccc;padding:12px;min-height:60px;">${data.luuY || 'Không có lưu ý'}</p>
 
       <h3>BÀN GIAO TÀI SẢN & THIẾT BỊ</h3>
       <ul style="padding-left:20px;">
-        ${d.handover.map(item => `<li style="margin:6px 0;">${item}</li>`).join('')}
+        ${data.handover.map(item => `<li style="margin:6px 0;">${item}</li>`).join('')}
       </ul>
 
       <p style="margin-top:60px;text-align:right;">
-        <strong>Người thực hiện:</strong> ${d.hoTen}<br>
-        Ngày ${d.ngay}/${d.thang}/${d.nam} • Giờ ${new Date().toLocaleTimeString('vi-VN')}
+        <strong>Người thực hiện:</strong> ${data.hoTen}<br>
+        Ngày ${data.ngay}/${data.thang}/${data.nam} • Giờ ${new Date().toLocaleTimeString('vi-VN')}
       </p>
       <p style="text-align:center;margin-top:40px;font-size:0.9em;color:#666;">CÔNG TY TNHH UNITY VINA • QUỐC LỘ 1A • VIỆT NAM</p>
     </div>`;
@@ -393,7 +386,7 @@ function exportToPDF() {
 
   const opt = {
     margin: [10, 10, 10, 10],
-    filename: `CaTruc_UnityVina_${d.ngay}-${d.thang}-${d.nam}_${d.caType}.pdf`,
+    filename: `CaTruc_UnityVina_${data.ngay}-${data.thang}-${data.nam}_${data.caType}.pdf`,
     image: { type: 'jpeg', quality: 0.98 },
     html2canvas: { scale: 2 },
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -402,25 +395,23 @@ function exportToPDF() {
   html2pdf().set(opt).from(element).save().then(() => document.body.removeChild(element));
 }
 
-// ================== XUẤT TXT ==================
 function exportToTXT() {
-  const d = getCurrentFormData();
+  const data = collectCurrentFormData();
   let txt = `CÔNG TY TNHH UNITY VINA\nBẢNG GHI TÌNH HÌNH CA TRỰC\n\n`;
-  txt += `Ngày: ${d.ngay}/${d.thang}/${d.nam}   Ca: ${d.caType}\n`;
-  txt += `Thời gian: ${d.tu} – ${d.den}\nHọ tên: ${d.hoTen}   Số hiệu: ${d.soHieu}\n\n`;
+  txt += `Ngày: ${data.ngay}/${data.thang}/${data.nam}   Ca: ${data.caType}\n`;
+  txt += `Thời gian: ${data.tu} – ${data.den}\nHọ tên: ${data.hoTen}   Số hiệu: ${data.soHieu}\n\n`;
   txt += `DIỄN BIẾN:\n`;
-  d.logs.forEach(l => txt += `${l.time} : ${l.content}\n`);
-  txt += `\nLƯU Ý: ${d.luuY || 'Không'}\n\nBÀN GIAO:\n`;
-  d.handover.forEach((h,i) => txt += `${i+1}. ${h}\n`);
+  data.logs.forEach(l => txt += `${l.time} : ${l.content}\n`);
+  txt += `\nLƯU Ý: ${data.luuY || 'Không'}\n\nBÀN GIAO:\n`;
+  data.handover.forEach((h,i) => txt += `${i+1}. ${h}\n`);
 
   const blob = new Blob([txt], {type: 'text/plain'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `CaTruc_UnityVina_${d.ngay}-${d.thang}-${d.nam}.txt`;
+  a.download = `CaTruc_UnityVina_${data.ngay}-${data.thang}-${data.nam}.txt`;
   a.click();
 }
 
-// ================== TẠO MỚI + XÓA ==================
 function newShift() {
   currentKey = null;
   document.getElementById('formTitle').textContent = "Tạo ca trực mới";
@@ -437,21 +428,10 @@ function newShift() {
 function deleteCurrentShift() {
   if (!currentKey || !confirm("Xóa toàn bộ ca này?")) return;
   delete shifts[currentKey];
-  localStorage.setItem('unityVinaShifts_v4', JSON.stringify(shifts));
+  localStorage.setItem('unityVinaShifts', JSON.stringify(shifts));
   currentKey = null;
   newShift();
   renderShiftList();
-}
-
-function updateTimeFrame() {
-  const type = document.getElementById('caType').value;
-  if (type === "Ca ngày") {
-    document.getElementById('tu').value = "06:00";
-    document.getElementById('den').value = "18:00";
-  } else {
-    document.getElementById('tu').value = "18:00";
-    document.getElementById('den').value = "06:00";
-  }
 }
 
 // ================== KHỞI ĐỘNG ==================
@@ -473,7 +453,7 @@ if (Object.keys(shifts).length === 0) {
     luuY: "",
     handover: ["Số ghi chép ca trực", "Thiết bị bàn giao"]
   };
-  localStorage.setItem('unityVinaShifts_v4', JSON.stringify(shifts));
+  localStorage.setItem('unityVinaShifts', JSON.stringify(shifts));
   loadShift(key);
 } else {
   loadShift(Object.keys(shifts)[0]);
