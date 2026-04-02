@@ -2,45 +2,106 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Bảng Ghi Ca Trực - Digital (PDF + Ca Ngày/Đêm)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Ca Trực Unity Vina - Mobile</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
-  body{font-family:Arial,sans-serif;margin:0;padding:20px;background:#f4f4f4}
-  .container{max-width:1200px;margin:auto;background:white;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.1);overflow:hidden}
-  header{background:#0a3d62;color:white;padding:15px;text-align:center;font-size:1.5em}
-  .main{display:flex;min-height:700px}
-  .sidebar{width:280px;background:#f8f9fa;border-right:1px solid #ddd;padding:15px;overflow-y:auto}
-  .content{flex:1;padding:20px}
-  table{width:100%;border-collapse:collapse;margin:15px 0}
-  th,td{border:1px solid #ccc;padding:8px;text-align:left;vertical-align:top}
-  th{background:#0a3d62;color:white}
-  input,select,textarea{width:100%;padding:8px;border:1px solid #ccc;border-radius:4px;margin-bottom:8px}
-  button{padding:10px 16px;margin:5px 3px;border:none;border-radius:6px;cursor:pointer;font-size:1em}
-  .btn-save{background:#28a745;color:white}
-  .btn-pdf{background:#e74c3c;color:white}
-  .btn-export{background:#17a2b8;color:white}
-  .btn-delete{background:#dc3545;color:white}
-  .btn-add{background:#007bff;color:white}
-  .list-item{padding:10px;border-bottom:1px solid #ddd;cursor:pointer}
-  .list-item:hover{background:#e9f0ff}
-  .active{background:#d1e7ff;font-weight:bold}
-  label{display:block;margin-top:8px;font-weight:bold}
+  :root { --primary: #0a3d62; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f4f4f4;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .container {
+    max-width: 100%;
+    margin: 0 auto;
+    background: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    min-height: 100vh;
+  }
+  header {
+    background: var(--primary);
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 1.4em;
+    font-weight: bold;
+  }
+  .main {
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar {
+    background: #f8f9fa;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+  }
+  .content {
+    flex: 1;
+    padding: 15px;
+  }
+  @media (min-width: 768px) {
+    .main { flex-direction: row; }
+    .sidebar { width: 280px; border-bottom: none; border-right: 1px solid #ddd; }
+  }
+  h2, h3 { color: var(--primary); margin: 15px 0 8px; }
+  label { display: block; margin-top: 12px; font-weight: bold; font-size: 0.95em; }
+  input, select, textarea, button {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+  }
+  button {
+    margin: 8px 4px 8px 0;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .btn-save { background: #28a745; color: white; }
+  .btn-pdf { background: #e74c3c; color: white; }
+  .btn-export { background: #17a2b8; color: white; }
+  .btn-delete { background: #dc3545; color: white; }
+  .btn-add { background: #007bff; color: white; }
+  .btn-template { background: #6c757d; color: white; font-size: 0.9em; padding: 10px; }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+  }
+  th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th { background: var(--primary); color: white; }
+  .list-item {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+  }
+  .list-item:hover, .active { background: #d1e7ff; }
+  .table-wrapper { overflow-x: auto; }
 </style>
 </head>
 <body>
 
 <div class="container">
-  <header>BẢNG GHI TÌNH HÌNH CA TRỰC - SECURITY SHIFT RECORD</header>
+  <header>📋 CA TRỰC - CÔNG TY TNHH UNITY VINA</header>
+  
   <div class="main">
-    
-    <!-- Sidebar -->
     <div class="sidebar">
       <h3>Danh sách ca trực</h3>
-      <button onclick="newShift()" class="btn-add" style="width:100%;margin-bottom:10px">+ Tạo ca mới</button>
-      <div id="shiftList"></div>
+      <button onclick="newShift()" class="btn-add">+ Tạo ca mới</button>
+      <div id="shiftList" style="max-height:40vh;overflow-y:auto;"></div>
     </div>
 
-    <!-- Form -->
     <div class="content">
       <h2 id="formTitle">Tạo ca trực mới</h2>
 
@@ -49,79 +110,151 @@
 
       <label>Loại ca</label>
       <select id="caType" onchange="updateTimeFrame()">
-        <option value="Ca ngày">Ca ngày (06:00 - 18:00)</option>
-        <option value="Ca đêm">Ca đêm (18:00 - 06:00)</option>
+        <option value="Ca ngày">Ca ngày (06:00 → 18:00)</option>
+        <option value="Ca đêm">Ca đêm (18:00 → 06:00)</option>
       </select>
 
       <label>Thời gian ca</label>
       <div style="display:flex;gap:10px;align-items:center">
         <input type="time" id="tu" value="06:00">
-        <span>đến</span>
+        <span style="white-space:nowrap;">đến</span>
         <input type="time" id="den" value="18:00">
       </div>
 
-      <label>Họ và tên</label><input type="text" id="hoTen" value="Ngô Thị Cương">
-      <label>Số hiệu</label><input type="text" id="soHieu" value="11440 - 96">
+      <label>Họ và tên</label>
+      <input type="text" id="hoTen" value="Ngô Thị Cương">
+
+      <label>Số hiệu</label>
+      <input type="text" id="soHieu" value="11440 - 96">
+
+      <h3>Mẫu nội dung nhanh</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;">
+        <button onclick="insertTemplate('Tuần tra an ninh')" class="btn-template">Tuần tra an ninh</button>
+        <button onclick="insertTemplate('Kiểm tra cửa ra vào')" class="btn-template">Kiểm tra cửa</button>
+        <button onclick="insertTemplate('Đảm bảo an ninh an toàn')" class="btn-template">Đảm bảo an ninh</button>
+        <button onclick="insertTemplate('Kiểm tra nhân viên')" class="btn-template">Kiểm tra NV</button>
+        <button onclick="insertTemplate('Không có bất thường')" class="btn-template">Không bất thường</button>
+        <button onclick="insertTemplate('Bàn giao ca trực')" class="btn-template">Bàn giao ca trực</button>
+        <button onclick="insertTemplate('Vị trí an ninh ổn định')" class="btn-template">Vị trí ổn định</button>
+      </div>
 
       <h3>DIỄN BIẾN CA TRỰC</h3>
-      <table id="logTable">
-        <thead><tr><th>Thời gian</th><th>Nội dung</th><th></th></tr></thead>
-        <tbody></tbody>
-      </table>
-      <button onclick="addLogRow()" class="btn-add">+ Thêm dòng diễn biến</button>
+      <button onclick="auto2hSlots()" class="btn-add" style="margin-bottom:8px;">🔄 Tự động tạo khung 2 giờ</button>
+      <div class="table-wrapper">
+        <table id="logTable">
+          <thead><tr><th>Thời gian</th><th>Nội dung</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <button onclick="addLogRow()" class="btn-add">+ Thêm dòng thủ công</button>
 
       <h3>LƯU Ý CHO CA TRỰC SAU</h3>
-      <textarea id="luuY" rows="3" placeholder="Ghi chú..."></textarea>
+      <textarea id="luuY" rows="3" placeholder="Ghi chú cho ca sau..."></textarea>
 
       <h3>BÀN GIAO TÀI SẢN & THIẾT BỊ</h3>
-      <table id="handoverTable">
-        <thead><tr><th>Mục bàn giao</th><th></th></tr></thead>
-        <tbody></tbody>
-      </table>
+      <div class="table-wrapper">
+        <table id="handoverTable">
+          <thead><tr><th>Mục bàn giao</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
       <button onclick="addHandoverRow()" class="btn-add">+ Thêm mục bàn giao</button>
 
-      <div style="margin-top:30px">
+      <div style="margin-top:25px;display:flex;flex-wrap:wrap;gap:8px;">
         <button onclick="saveShift()" class="btn-save">💾 LƯU CA TRỰC</button>
-        <button onclick="exportToPDF()" class="btn-pdf">📄 XUẤT PDF</button>
+        <button onclick="exportToPDF()" class="btn-pdf">📄 XUẤT PDF (Unity Vina)</button>
         <button onclick="exportToTXT()" class="btn-export">📋 Xuất TXT</button>
-        <button onclick="deleteCurrentShift()" class="btn-delete">🗑 Xóa ca này</button>
+        <button onclick="deleteCurrentShift()" class="btn-delete">🗑 Xóa ca</button>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-// === Dữ liệu ===
-let shifts = JSON.parse(localStorage.getItem('securityShifts_v3')) || {};
+// ================== DỮ LIỆU ==================
+let shifts = JSON.parse(localStorage.getItem('unityVinaShifts_v4')) || {};
 let currentKey = null;
 
-// === Tự động cập nhật thời gian khi chọn ca ===
-function updateTimeFrame() {
-  const type = document.getElementById('caType').value;
-  if (type === "Ca ngày") {
-    document.getElementById('tu').value = "06:00";
-    document.getElementById('den').value = "18:00";
-  } else {
-    document.getElementById('tu').value = "18:00";
-    document.getElementById('den').value = "06:00";
-  }
+// ================== CÁC HÀM HỖ TRỢ ==================
+function getCurrentFormData() {
+  // Lấy dữ liệu realtime từ form (fix bug dữ liệu chưa lưu)
+  const dateVal = document.getElementById('dateInput').value;
+  const [nam, thang, ngay] = dateVal ? dateVal.split('-').map(Number) : [2025,11,14];
+  const key = `${nam}-${String(thang).padStart(2,'0')}-${String(ngay).padStart(2,'0')}`;
+
+  const logs = [];
+  document.querySelectorAll('#logTable tbody tr').forEach(tr => {
+    const time = tr.cells[0].querySelector('input').value;
+    const content = tr.cells[1].querySelector('input').value;
+    if (time || content) logs.push({time, content});
+  });
+
+  const handover = [];
+  document.querySelectorAll('#handoverTable tbody tr').forEach(tr => {
+    const item = tr.cells[0].querySelector('input').value;
+    if (item) handover.push(item);
+  });
+
+  return {
+    ngay, thang, nam, key,
+    caType: document.getElementById('caType').value,
+    tu: document.getElementById('tu').value,
+    den: document.getElementById('den').value,
+    hoTen: document.getElementById('hoTen').value,
+    soHieu: document.getElementById('soHieu').value,
+    luuY: document.getElementById('luuY').value,
+    logs,
+    handover
+  };
 }
 
-// === Render danh sách ===
+// ================== AUTO 2H SLOTS (ĐÃ SỬA LOGIC) ==================
+function auto2hSlots() {
+  const data = getCurrentFormData();
+  if (!currentKey) return alert("Hãy lưu ca trước khi tạo khung 2 giờ!");
+
+  const startTime = data.tu;
+  const endTime = data.den;
+  let logs = [];
+
+  // Sử dụng Date để tính chính xác (hỗ trợ qua nửa đêm)
+  let current = new Date(`2000-01-01 ${startTime}`);
+  const endDate = new Date(`2000-01-01 ${endTime}`);
+  if (endDate <= current) endDate.setDate(endDate.getDate() + 1); // ca đêm
+
+  while (current < endDate) {
+    const next = new Date(current.getTime() + 2 * 60 * 60 * 1000);
+    const timeStr = `${current.getHours().toString().padStart(2,'0')}h${current.getMinutes().toString().padStart(2,'0')}-${next.getHours().toString().padStart(2,'0')}h${next.getMinutes().toString().padStart(2,'0')}`;
+    logs.push({time: timeStr, content: "Tuần tra an ninh - Đảm bảo an ninh an toàn"});
+    current = next;
+  }
+
+  shifts[currentKey].logs = logs;
+  loadShift(currentKey);
+  alert(`✅ Đã tạo ${logs.length} khung 2 giờ cho ca ${data.caType}`);
+}
+
+// ================== QUICK TEMPLATE ==================
+function insertTemplate(text) {
+  if (!currentKey) return alert("Hãy lưu ca trước!");
+  shifts[currentKey].logs.push({time: "--h--", content: text});
+  loadShift(currentKey);
+}
+
+// ================== RENDER DANH SÁCH ==================
 function renderShiftList() {
-  const listEl = document.getElementById('shiftList');
-  listEl.innerHTML = '';
+  const el = document.getElementById('shiftList');
+  el.innerHTML = '';
   Object.keys(shifts).sort().reverse().forEach(key => {
-    const s = shifts[key];
     const div = document.createElement('div');
     div.className = `list-item ${key === currentKey ? 'active' : ''}`;
-    div.textContent = `${key} | ${s.caType} | ${s.hoTen}`;
+    div.textContent = `${key} | ${shifts[key].caType} | ${shifts[key].hoTen}`;
     div.onclick = () => loadShift(key);
-    listEl.appendChild(div);
+    el.appendChild(div);
   });
 }
 
-// === Load ca ===
+// ================== LOAD CA ==================
 function loadShift(key) {
   currentKey = key;
   const s = shifts[key];
@@ -133,132 +266,165 @@ function loadShift(key) {
   document.getElementById('soHieu').value = s.soHieu;
   document.getElementById('luuY').value = s.luuY || '';
 
-  // Render logs & handover (giống phiên bản trước)
-  const logBody = document.querySelector('#logTable tbody');
-  logBody.innerHTML = '';
+  // Logs
+  const tbody = document.querySelector('#logTable tbody');
+  tbody.innerHTML = '';
   s.logs.forEach((log, i) => {
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td><input type="text" value="${log.time}" onchange="shifts['${key}'].logs[${i}].time=this.value"></td>
-                    <td><input type="text" value="${log.content}" onchange="shifts['${key}'].logs[${i}].content=this.value"></td>
-                    <td><button onclick="deleteLog(${i})" class="btn-delete">Xóa</button></td>`;
-    logBody.appendChild(tr);
+    tr.innerHTML = `
+      <td><input type="text" value="${log.time}" onchange="shifts['${key}'].logs[${i}].time=this.value"></td>
+      <td><input type="text" value="${log.content}" onchange="shifts['${key}'].logs[${i}].content=this.value"></td>
+      <td><button onclick="deleteLog(${i})" class="btn-delete" style="padding:8px 12px;width:auto">X</button></td>`;
+    tbody.appendChild(tr);
   });
 
-  const hoBody = document.querySelector('#handoverTable tbody');
-  hoBody.innerHTML = '';
+  // Handover
+  const hbody = document.querySelector('#handoverTable tbody');
+  hbody.innerHTML = '';
   s.handover.forEach((item, i) => {
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td><input type="text" value="${item}" onchange="shifts['${key}'].handover[${i}]=this.value"></td>
-                    <td><button onclick="deleteHandover(${i})" class="btn-delete">Xóa</button></td>`;
-    hoBody.appendChild(tr);
+    tr.innerHTML = `
+      <td><input type="text" value="${item}" onchange="shifts['${key}'].handover[${i}]=this.value"></td>
+      <td><button onclick="deleteHandover(${i})" class="btn-delete" style="padding:8px 12px;width:auto">X</button></td>`;
+    hbody.appendChild(tr);
   });
 
   renderShiftList();
 }
 
-// === Thêm / Xóa dòng ===
-function addLogRow() { if(!currentKey) return alert("Lưu ca trước!"); shifts[currentKey].logs.push({time:"", content:""}); loadShift(currentKey); }
-function addHandoverRow() { if(!currentKey) return alert("Lưu ca trước!"); shifts[currentKey].handover.push(""); loadShift(currentKey); }
-function deleteLog(i) { if(confirm("Xóa?")) { shifts[currentKey].logs.splice(i,1); loadShift(currentKey); }}
-function deleteHandover(i) { if(confirm("Xóa?")) { shifts[currentKey].handover.splice(i,1); loadShift(currentKey); }}
-
-// === Lưu ca ===
-function saveShift() {
-  const dateVal = document.getElementById('dateInput').value;
-  if (!dateVal) return alert("Vui lòng chọn ngày!");
-  const [nam, thang, ngay] = dateVal.split('-').map(Number);
-  const key = `${nam}-${String(thang).padStart(2,'0')}-${String(ngay).padStart(2,'0')}`;
-
-  if (!shifts[key]) shifts[key] = { logs: [], handover: [] };
-
-  const s = shifts[key];
-  s.ngay = ngay; s.thang = thang; s.nam = nam;
-  s.caType = document.getElementById('caType').value;
-  s.tu = document.getElementById('tu').value;
-  s.den = document.getElementById('den').value;
-  s.hoTen = document.getElementById('hoTen').value;
-  s.soHieu = document.getElementById('soHieu').value;
-  s.luuY = document.getElementById('luuY').value;
-
-  localStorage.setItem('securityShifts_v3', JSON.stringify(shifts));
-  currentKey = key;
-  alert(`✅ Đã lưu ca ${key} (${s.caType})`);
-  renderShiftList();
+// ================== THÊM / XÓA DÒNG ==================
+function addLogRow() {
+  if (!currentKey) return alert("Lưu ca trước!");
+  shifts[currentKey].logs.push({time: "--h--", content: ""});
+  loadShift(currentKey);
+}
+function addHandoverRow() {
+  if (!currentKey) return alert("Lưu ca trước!");
+  shifts[currentKey].handover.push("");
+  loadShift(currentKey);
+}
+function deleteLog(i) {
+  if (confirm("Xóa dòng?")) {
+    shifts[currentKey].logs.splice(i, 1);
+    loadShift(currentKey);
+  }
+}
+function deleteHandover(i) {
+  if (confirm("Xóa?")) {
+    shifts[currentKey].handover.splice(i, 1);
+    loadShift(currentKey);
+  }
 }
 
-// === Xuất PDF (đẹp, hỗ trợ tiếng Việt) ===
-function exportToPDF() {
-  if (!currentKey) return alert("Chưa có ca nào được chọn!");
+// ================== LƯU CA (ĐÃ SỬA) ==================
+function saveShift() {
+  const data = getCurrentFormData();
+  if (!shifts[data.key]) shifts[data.key] = { logs: [], handover: [] };
 
-  const s = shifts[currentKey];
-  const contentHTML = `
-    <div style="font-family:Arial; padding:30px; line-height:1.6;">
-      <h1 style="text-align:center; color:#0a3d62;">BẢNG GHI TÌNH HÌNH CA TRỰC</h1>
-      <h2 style="text-align:center;">SECURITY SHIFT RECORD</h2>
-      <p><strong>Ngày:</strong> ${s.ngay}/${s.thang}/${s.nam} &nbsp;&nbsp; <strong>Loại ca:</strong> ${s.caType}</p>
-      <p><strong>Thời gian:</strong> Từ ${s.tu} đến ${s.den}</p>
-      <p><strong>Họ và tên:</strong> ${s.hoTen} &nbsp;&nbsp; <strong>Số hiệu:</strong> ${s.soHieu}</p>
+  const s = shifts[data.key];
+  s.ngay = data.ngay; s.thang = data.thang; s.nam = data.nam;
+  s.caType = data.caType;
+  s.tu = data.tu;
+  s.den = data.den;
+  s.hoTen = data.hoTen;
+  s.soHieu = data.soHieu;
+  s.luuY = data.luuY;
+  s.logs = data.logs;
+  s.handover = data.handover;
+
+  localStorage.setItem('unityVinaShifts_v4', JSON.stringify(shifts));
+  currentKey = data.key;
+  alert(`✅ ĐÃ LƯU CA ${data.key} (${s.caType})`);
+  renderShiftList();
+  loadShift(data.key); // reload để đồng bộ
+}
+
+// ================== XUẤT PDF (ĐÃ HOÀN THIỆN - LẤY DỮ LIỆU REALTIME) ==================
+function exportToPDF() {
+  if (!currentKey) {
+    if (!confirm("Chưa lưu ca. Vẫn xuất PDF với dữ liệu hiện tại?")) return;
+  } else {
+    saveShift(); // Tự động lưu trước khi xuất (fix bug dữ liệu mới thêm)
+  }
+
+  const d = getCurrentFormData();
+
+  const pdfHTML = `
+    <div style="font-family:Arial;padding:30px 20px;line-height:1.6;color:#222;">
+      <h1 style="text-align:center;margin:0;color:#0a3d62;">CÔNG TY TNHH UNITY VINA</h1>
+      <p style="text-align:center;margin:5px 0 20px;font-size:1.1em;color:#555;">TO SERVE AND PROTECT • SECURITY SHIFT RECORD</p>
       
-      <h3>DIỄN BIẾN CA TRỰC</h3>
-      <table style="width:100%; border-collapse:collapse; border:1px solid #000;">
-        <thead><tr style="background:#0a3d62;color:white;"><th style="border:1px solid #000; padding:8px;">Thời gian</th><th style="border:1px solid #000; padding:8px;">Nội dung</th></tr></thead>
+      <h2 style="text-align:center;border-bottom:3px solid #0a3d62;padding-bottom:8px;">BẢNG GHI TÌNH HÌNH CA TRỰC</h2>
+      
+      <table style="width:100%;margin:15px 0;border:1px solid #ccc;">
+        <tr><td><strong>Ngày:</strong></td><td>${d.ngay}/${d.thang}/${d.nam}</td>
+            <td><strong>Loại ca:</strong></td><td>${d.caType}</td></tr>
+        <tr><td><strong>Thời gian:</strong></td><td>${d.tu} – ${d.den}</td>
+            <td><strong>Họ tên:</strong></td><td>${d.hoTen}</td></tr>
+        <tr><td><strong>Số hiệu:</strong></td><td colspan="3">${d.soHieu}</td></tr>
+      </table>
+
+      <h3 style="background:#0a3d62;color:white;padding:8px;">DIỄN BIẾN CA TRỰC</h3>
+      <table style="width:100%;border-collapse:collapse;border:2px solid #0a3d62;">
+        <thead><tr style="background:#0a3d62;color:white;"><th style="border:1px solid #fff;padding:8px;">Thời gian</th><th style="border:1px solid #fff;padding:8px;">Nội dung</th></tr></thead>
         <tbody>
-          ${s.logs.map(log => `<tr><td style="border:1px solid #000; padding:8px;">${log.time}</td><td style="border:1px solid #000; padding:8px;">${log.content}</td></tr>`).join('')}
+          ${d.logs.map(l => `<tr><td style="border:1px solid #0a3d62;padding:8px;">${l.time}</td><td style="border:1px solid #0a3d62;padding:8px;">${l.content}</td></tr>`).join('')}
         </tbody>
       </table>
 
-      <h3>LƯU Ý CHO CA TRỰC SAU</h3>
-      <p>${s.luuY || 'Không có lưu ý'}</p>
+      <h3 style="margin-top:25px;">LƯU Ý CHO CA TRỰC SAU</h3>
+      <p style="border:1px solid #ccc;padding:12px;min-height:60px;">${d.luuY || 'Không có lưu ý'}</p>
 
       <h3>BÀN GIAO TÀI SẢN & THIẾT BỊ</h3>
-      <ul>
-        ${s.handover.map(item => `<li>${item}</li>`).join('')}
+      <ul style="padding-left:20px;">
+        ${d.handover.map(item => `<li style="margin:6px 0;">${item}</li>`).join('')}
       </ul>
-      <p style="margin-top:50px;"><strong>Người thực hiện:</strong> ${s.hoTen} &nbsp;&nbsp; Ngày ${s.ngay}/${s.thang}/${s.nam}</p>
-    </div>
-  `;
+
+      <p style="margin-top:60px;text-align:right;">
+        <strong>Người thực hiện:</strong> ${d.hoTen}<br>
+        Ngày ${d.ngay}/${d.thang}/${d.nam} • Giờ ${new Date().toLocaleTimeString('vi-VN')}
+      </p>
+      <p style="text-align:center;margin-top:40px;font-size:0.9em;color:#666;">CÔNG TY TNHH UNITY VINA • QUỐC LỘ 1A • VIỆT NAM</p>
+    </div>`;
 
   const element = document.createElement('div');
-  element.innerHTML = contentHTML;
+  element.innerHTML = pdfHTML;
   document.body.appendChild(element);
 
   const opt = {
     margin: [10, 10, 10, 10],
-    filename: `Ca_Truc_${s.ngay}-${s.thang}-${s.nam}_${s.caType}.pdf`,
+    filename: `CaTruc_UnityVina_${d.ngay}-${d.thang}-${d.nam}_${d.caType}.pdf`,
     image: { type: 'jpeg', quality: 0.98 },
     html2canvas: { scale: 2 },
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
   };
 
-  html2pdf().set(opt).from(element).save().then(() => {
-    document.body.removeChild(element);
-  });
+  html2pdf().set(opt).from(element).save().then(() => document.body.removeChild(element));
 }
 
-// === Xuất TXT (giữ nguyên từ trước) ===
+// ================== XUẤT TXT ==================
 function exportToTXT() {
-  if (!currentKey) return alert("Chưa có ca nào!");
-  const s = shifts[currentKey];
-  let txt = `BẢNG GHI TÌNH HÌNH CA TRỰC\n`;
-  txt += `Ngày: ${s.ngay}/${s.thang}/${s.nam}   Loại ca: ${s.caType}\n`;
-  txt += `Thời gian: Từ ${s.tu} đến ${s.den}\n`;
-  txt += `Họ tên: ${s.hoTen}   Số hiệu: ${s.soHieu}\n\nDIỄN BIẾN:\n`;
-  s.logs.forEach(l => txt += `${l.time}: ${l.content}\n`);
-  txt += `\nLƯU Ý: ${s.luuY || ''}\n\nBÀN GIAO:\n`;
-  s.handover.forEach((h,i) => txt += `${i+1}. ${h}\n`);
+  const d = getCurrentFormData();
+  let txt = `CÔNG TY TNHH UNITY VINA\nBẢNG GHI TÌNH HÌNH CA TRỰC\n\n`;
+  txt += `Ngày: ${d.ngay}/${d.thang}/${d.nam}   Ca: ${d.caType}\n`;
+  txt += `Thời gian: ${d.tu} – ${d.den}\nHọ tên: ${d.hoTen}   Số hiệu: ${d.soHieu}\n\n`;
+  txt += `DIỄN BIẾN:\n`;
+  d.logs.forEach(l => txt += `${l.time} : ${l.content}\n`);
+  txt += `\nLƯU Ý: ${d.luuY || 'Không'}\n\nBÀN GIAO:\n`;
+  d.handover.forEach((h,i) => txt += `${i+1}. ${h}\n`);
 
-  const blob = new Blob([txt], {type:'text/plain'});
+  const blob = new Blob([txt], {type: 'text/plain'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `Ca_Truc_${s.ngay}-${s.thang}-${s.nam}.txt`;
+  a.download = `CaTruc_UnityVina_${d.ngay}-${d.thang}-${d.nam}.txt`;
   a.click();
 }
 
-// === Tạo ca mới ===
+// ================== TẠO MỚI + XÓA ==================
 function newShift() {
   currentKey = null;
   document.getElementById('formTitle').textContent = "Tạo ca trực mới";
-  document.getElementById('dateInput').value = new Date().toISOString().slice(0,10); // hôm nay
+  document.getElementById('dateInput').value = new Date().toISOString().slice(0,10);
   document.getElementById('caType').value = "Ca ngày";
   updateTimeFrame();
   document.getElementById('hoTen').value = "Ngô Thị Cương";
@@ -268,33 +434,47 @@ function newShift() {
   document.querySelector('#handoverTable tbody').innerHTML = '';
 }
 
-// === Xóa ca ===
 function deleteCurrentShift() {
-  if (!currentKey || !confirm("Xóa ca này?")) return;
+  if (!currentKey || !confirm("Xóa toàn bộ ca này?")) return;
   delete shifts[currentKey];
-  localStorage.setItem('securityShifts_v3', JSON.stringify(shifts));
+  localStorage.setItem('unityVinaShifts_v4', JSON.stringify(shifts));
   currentKey = null;
   newShift();
   renderShiftList();
 }
 
-// === Khởi động ===
+function updateTimeFrame() {
+  const type = document.getElementById('caType').value;
+  if (type === "Ca ngày") {
+    document.getElementById('tu').value = "06:00";
+    document.getElementById('den').value = "18:00";
+  } else {
+    document.getElementById('tu').value = "18:00";
+    document.getElementById('den').value = "06:00";
+  }
+}
+
+// ================== KHỞI ĐỘNG ==================
 document.getElementById('dateInput').value = new Date().toISOString().slice(0,10);
 renderShiftList();
 
-// Load ca mẫu nếu chưa có dữ liệu
 if (Object.keys(shifts).length === 0) {
   const today = new Date();
-  const sampleKey = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
-  shifts[sampleKey] = {
+  const key = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+  shifts[key] = {
     ngay: today.getDate(), thang: today.getMonth()+1, nam: today.getFullYear(),
     caType: "Ca đêm", tu: "18:00", den: "06:00",
     hoTen: "Ngô Thị Cương", soHieu: "11440 - 96",
-    logs: [{time:"18h-20h", content:"Kiểm tra cửa, nhân viên, không bất thường"}, {time:"6h-6h30", content:"Bàn giao ca sau"}],
-    luuY: "", handover: ["Ghi chép ca trực", "Thiết bị bàn giao"]
+    logs: [
+      {time: "18h00-20h00", content: "Tuần tra an ninh"},
+      {time: "20h00-22h00", content: "Đảm bảo an ninh an toàn"},
+      {time: "06h00-06h30", content: "Bàn giao ca trực"}
+    ],
+    luuY: "",
+    handover: ["Số ghi chép ca trực", "Thiết bị bàn giao"]
   };
-  localStorage.setItem('securityShifts_v3', JSON.stringify(shifts));
-  loadShift(sampleKey);
+  localStorage.setItem('unityVinaShifts_v4', JSON.stringify(shifts));
+  loadShift(key);
 } else {
   loadShift(Object.keys(shifts)[0]);
 }
