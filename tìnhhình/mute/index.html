@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Bot - Hoạt Cảnh Di Chuyển</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #0a0a2a;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+        }
+        .container {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 12px;
+            z-index: 100;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+        h1 {
+            margin: 0;
+            font-size: 24px;
+            text-shadow: 0 0 10px cyan;
+        }
+        .status {
+            margin: 8px 0 0 0;
+            font-size: 18px;
+        }
+        .running { color: #00ff9d; }
+        
+        /* Khu vực di chuyển */
+        #scene {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        /* Các đối tượng bot di chuyển */
+        .bot {
+            position: absolute;
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.8);
+            user-select: none;
+            transition: transform 0.6s ease-out;
+            z-index: 10;
+        }
+
+        .log-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.75);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            width: 380px;
+            max-height: 280px;
+            overflow-y: auto;
+            font-size: 14px;
+            z-index: 100;
+        }
+
+        .log-item {
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .log-item:last-child { border-bottom: none; }
+
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: #ff3366;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="scene"></div>
+
+    <div class="container">
+        <h1>🤖 AUTO BOT - HOẠT CẢNH DI CHUYỂN</h1>
+        <div class="status">
+            Trạng thái: <span id="botStatus" class="running">Đang chạy tự động</span>
+        </div>
+    </div>
+
+    <div class="log-panel">
+        <strong>📋 Nhật ký hoạt động</strong>
+        <div id="logContainer"></div>
+        <button onclick="clearLog()">Xóa Log</button>
+    </div>
+
+    <script>
+        const scene = document.getElementById('scene');
+        let bots = [];
+        let actionCount = 0;
+        let isRunning = true;
+        let botInterval = null;
+
+        // Tạo một bot di chuyển
+        function createBot() {
+            const bot = document.createElement('div');
+            bot.className = 'bot';
+            bot.textContent = '🤖';
+            
+            // Vị trí xuất phát ngẫu nhiên
+            const startX = Math.random() * window.innerWidth;
+            const startY = Math.random() * (window.innerHeight * 0.6);
+            
+            bot.style.left = `${startX}px`;
+            bot.style.top = `${startY}px`;
+            
+            scene.appendChild(bot);
+            bots.push(bot);
+
+            // Hành trình di chuyển ngẫu nhiên
+            moveBotRandomly(bot);
+        }
+
+        function moveBotRandomly(bot) {
+            if (!isRunning) return;
+
+            const maxX = window.innerWidth - 60;
+            const maxY = window.innerHeight - 100;
+
+            const targetX = Math.random() * maxX;
+            const targetY = Math.random() * maxY;
+
+            // Tính thời gian di chuyển ngẫu nhiên (1.5 - 4 giây)
+            const duration = 1500 + Math.random() * 2500;
+
+            bot.style.transition = `left ${duration}ms ease-in-out, top ${duration}ms ease-in-out`;
+            bot.style.left = `${targetX}px`;
+            bot.style.top = `${targetY}px`;
+
+            // Sau khi di chuyển xong, tiếp tục di chuyển mới
+            setTimeout(() => {
+                if (isRunning && bots.includes(bot)) {
+                    moveBotRandomly(bot);
+                }
+            }, duration + 100);
+        }
+
+        // Thêm log
+        function addLog(action, detail) {
+            actionCount++;
+            const logContainer = document.getElementById('logContainer');
+            
+            const log = document.createElement('div');
+            log.className = 'log-item';
+            const time = new Date().toLocaleTimeString('vi-VN');
+            
+            log.innerHTML = `
+                <strong>[${time}] ${action}</strong><br>
+                <small>${detail}</small>
+            `;
+            
+            logContainer.appendChild(log);
+
+            // Giữ tối đa 12 dòng log
+            if (logContainer.children.length > 12) {
+                logContainer.removeChild(logContainer.children[0]);
+            }
+
+            // Tự scroll xuống
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        // Các hành động ngẫu nhiên
+        function performRandomAction() {
+            const actions = [
+                { name: "Di chuyển nhanh", detail: "Bot đang thay đổi quỹ đạo" },
+                { name: "Phát sáng", detail: "Tăng cường hiệu ứng ánh sáng" },
+                { name: "Thu thập dữ liệu", detail: `Đã quét ${Math.floor(Math.random()*1000)} điểm` },
+                { name: "Tránh vật cản", detail: "Điều chỉnh hướng di chuyển" },
+                { name: "Tương tác", detail: "Bot đang giao tiếp với nhau" }
+            ];
+
+            const randomAction = actions[Math.floor(Math.random() * actions.length)];
+            addLog(randomAction.name, randomAction.detail);
+
+            // Đổi màu ngẫu nhiên cho một bot
+            if (bots.length > 0) {
+                const randomBot = bots[Math.floor(Math.random() * bots.length)];
+                const hue = Math.random() * 360;
+                randomBot.style.background = `linear-gradient(45deg, hsl(${hue}, 100%, 60%), hsl(${hue + 60}, 100%, 70%))`;
+            }
+        }
+
+        // Khởi tạo nhiều bot
+        function initScene() {
+            // Tạo 8 bot ban đầu
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    createBot();
+                }, i * 300);
+            }
+        }
+
+        // Chạy bot chính
+        function startAutoBot() {
+            addLog("Hệ thống", "🌌 Hoạt cảnh di chuyển đã được kích hoạt");
+
+            // Thực hiện hành động ngẫu nhiên định kỳ
+            botInterval = setInterval(() => {
+                if (Math.random() < 0.7) {
+                    performRandomAction();
+                }
+            }, 1200);
+        }
+
+        function stopBot() {
+            isRunning = false;
+            if (botInterval) clearInterval(botInterval);
+            
+            document.getElementById('botStatus').textContent = "Đã dừng";
+            document.getElementById('botStatus').style.color = "#ff6666";
+            
+            addLog("Bot dừng", `Tổng ${actionCount} hoạt động đã thực hiện`);
+        }
+
+        function clearLog() {
+            document.getElementById('logContainer').innerHTML = '';
+            addLog("Hệ thống", "Nhật ký đã được xóa");
+        }
+
+        // Xử lý khi thay đổi kích thước cửa sổ
+        window.addEventListener('resize', () => {
+            // Có thể thêm logic điều chỉnh nếu cần
+        });
+
+        // ==================== KHỞI ĐỘNG TỰ ĐỘNG ====================
+        window.onload = function() {
+            initScene();
+            startAutoBot();
+        };
+    </script>
+</body>
+</html>
