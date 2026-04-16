@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auto Bot - Hoạt Cảnh Di Chuyển</title>
+    <title>Auto Bot - Quản lý nhiều Cookie</title>
     <style>
         body {
             margin: 0;
@@ -11,91 +11,94 @@
             overflow: hidden;
             background: #0a0a2a;
             font-family: Arial, sans-serif;
+            color: white;
             height: 100vh;
         }
-        .container {
+        .header {
             position: absolute;
-            top: 20px;
+            top: 15px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 15px 30px;
+            background: rgba(0,0,0,0.8);
+            padding: 12px 30px;
             border-radius: 12px;
-            z-index: 100;
+            z-index: 200;
             text-align: center;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
         }
-        h1 {
-            margin: 0;
-            font-size: 24px;
-            text-shadow: 0 0 10px cyan;
-        }
-        .status {
-            margin: 8px 0 0 0;
-            font-size: 18px;
-        }
-        .running { color: #00ff9d; }
-        
-        /* Khu vực di chuyển */
+        h1 { margin: 0; font-size: 26px; text-shadow: 0 0 12px cyan; }
+
         #scene {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             overflow: hidden;
             z-index: 1;
         }
 
-        /* Các đối tượng bot di chuyển */
         .bot {
             position: absolute;
-            width: 55px;
-            height: 55px;
+            width: 52px;
+            height: 52px;
             background: linear-gradient(45deg, #ff00ff, #00ffff);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 18px;
-            box-shadow: 0 0 25px rgba(0, 255, 255, 0.8);
-            user-select: none;
-            transition: transform 0.6s ease-out;
+            font-size: 22px;
+            box-shadow: 0 0 30px rgba(0,255,255,0.8);
             z-index: 10;
+        }
+
+        .control-panel {
+            position: absolute;
+            top: 80px;
+            right: 20px;
+            background: rgba(0,0,0,0.85);
+            padding: 15px;
+            border-radius: 12px;
+            width: 320px;
+            z-index: 150;
+            font-size: 14px;
         }
 
         .log-panel {
             position: absolute;
             bottom: 20px;
             left: 20px;
-            background: rgba(0, 0, 0, 0.75);
-            color: white;
+            background: rgba(0,0,0,0.85);
             padding: 15px;
-            border-radius: 10px;
-            width: 380px;
-            max-height: 280px;
+            border-radius: 12px;
+            width: 420px;
+            max-height: 320px;
             overflow-y: auto;
-            font-size: 14px;
-            z-index: 100;
+            z-index: 150;
         }
-
-        .log-item {
-            padding: 6px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .log-item:last-child { border-bottom: none; }
 
         button {
-            margin-top: 10px;
-            padding: 10px 20px;
-            background: #ff3366;
+            padding: 8px 16px;
+            margin: 4px 2px;
+            background: #00bfff;
             color: white;
             border: none;
             border-radius: 6px;
             cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover { background: #0099cc; }
+        .danger { background: #ff3366; }
+        .danger:hover { background: #cc0033; }
+
+        .cookie-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin: 10px 0;
+        }
+        .cookie-item {
+            background: rgba(255,255,255,0.1);
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 6px;
+            font-size: 13px;
         }
     </style>
 </head>
@@ -103,17 +106,34 @@
 
     <div id="scene"></div>
 
-    <div class="container">
-        <h1>🤖 AUTO BOT - HOẠT CẢNH DI CHUYỂN</h1>
-        <div class="status">
-            Trạng thái: <span id="botStatus" class="running">Đang chạy tự động</span>
-        </div>
+    <div class="header">
+        <h1>🤖 AUTO BOT - Quản lý Cookie</h1>
+        <div style="margin-top:8px;">Đang chạy tự động • <span id="status" style="color:#00ff9d;">Hoạt động</span></div>
     </div>
 
+    <!-- Panel quản lý Cookie -->
+    <div class="control-panel">
+        <strong>🍪 Quản lý Cookie</strong><br><br>
+        
+        <button onclick="saveCurrentCookies()">💾 Lưu Cookie Hiện Tại</button>
+        <button onclick="downloadAllCookies()">⬇️ Tải Về Tất Cả</button>
+        <button onclick="document.getElementById('uploadCookie').click()">⬆️ Upload Cookie</button>
+        <input type="file" id="uploadCookie" accept=".json" style="display:none;" onchange="uploadCookies(event)">
+
+        <hr style="border-color:#444;margin:12px 0;">
+        
+        <strong>Danh sách Cookie đã lưu:</strong>
+        <div class="cookie-list" id="cookieList"></div>
+        
+        <button onclick="clearAllCookies()" class="danger">🗑 Xóa Tất Cả Cookie</button>
+    </div>
+
+    <!-- Log Panel -->
     <div class="log-panel">
         <strong>📋 Nhật ký hoạt động</strong>
         <div id="logContainer"></div>
         <button onclick="clearLog()">Xóa Log</button>
+        <button onclick="stopBot()" class="danger">Dừng Bot</button>
     </div>
 
     <script>
@@ -122,127 +142,203 @@
         let actionCount = 0;
         let isRunning = true;
         let botInterval = null;
+        let savedCookies = []; // Mảng lưu nhiều bộ cookie
 
-        // Tạo một bot di chuyển
+        // ==================== COOKIE MANAGEMENT ====================
+        function setCookie(name, value, days = 365) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = `${name}=${encodeURIComponent(value)}; expires=${date.toUTCString()}; path=/`;
+        }
+
+        function getAllCookies() {
+            const cookies = {};
+            document.cookie.split(';').forEach(cookie => {
+                const [name, value] = cookie.trim().split('=');
+                if (name) cookies[name] = decodeURIComponent(value);
+            });
+            return cookies;
+        }
+
+        // Lưu bộ cookie hiện tại với tên
+        function saveCurrentCookies(name = null) {
+            const timestamp = new Date().toISOString();
+            const cookieData = {
+                id: Date.now(),
+                name: name || `Cookie_${new Date().toLocaleTimeString('vi-VN')}`,
+                timestamp: timestamp,
+                totalActions: actionCount,
+                cookies: getAllCookies()
+            };
+
+            savedCookies.push(cookieData);
+            saveToLocalStorage();
+            renderCookieList();
+            addLog("Lưu Cookie", `Đã lưu bộ cookie: ${cookieData.name}`);
+        }
+
+        function saveToLocalStorage() {
+            localStorage.setItem('savedBotCookies', JSON.stringify(savedCookies));
+        }
+
+        function loadFromLocalStorage() {
+            const data = localStorage.getItem('savedBotCookies');
+            if (data) {
+                savedCookies = JSON.parse(data);
+                renderCookieList();
+            }
+        }
+
+        function renderCookieList() {
+            const list = document.getElementById('cookieList');
+            list.innerHTML = '';
+
+            savedCookies.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'cookie-item';
+                div.innerHTML = `
+                    <strong>${item.name}</strong><br>
+                    <small>${new Date(item.timestamp).toLocaleString('vi-VN')}</small><br>
+                    Hành động: ${item.totalActions}
+                    <button onclick="downloadSingleCookie(${index})" style="float:right; padding:2px 8px; font-size:12px;">⬇️</button>
+                    <button onclick="deleteCookie(${index})" class="danger" style="float:right; margin-right:5px; padding:2px 8px; font-size:12px;">X</button>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        function downloadSingleCookie(index) {
+            const item = savedCookies[index];
+            const dataStr = JSON.stringify(item, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${item.name}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            addLog("Tải Cookie", `Đã tải ${item.name}`);
+        }
+
+        function downloadAllCookies() {
+            if (savedCookies.length === 0) {
+                alert("Chưa có cookie nào được lưu!");
+                return;
+            }
+            const dataStr = JSON.stringify(savedCookies, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `All_Bot_Cookies_${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            addLog("Tải Cookie", "Đã tải tất cả cookie");
+        }
+
+        function uploadCookies(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (Array.isArray(imported)) {
+                        savedCookies = savedCookies.concat(imported);
+                    } else {
+                        savedCookies.push(imported);
+                    }
+                    saveToLocalStorage();
+                    renderCookieList();
+                    addLog("Upload Cookie", "Đã tải lên và khôi phục cookie thành công");
+                } catch(err) {
+                    alert("File không đúng định dạng!");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function deleteCookie(index) {
+            if (confirm("Xóa bộ cookie này?")) {
+                savedCookies.splice(index, 1);
+                saveToLocalStorage();
+                renderCookieList();
+            }
+        }
+
+        function clearAllCookies() {
+            if (confirm("XÓA TẤT CẢ cookie đã lưu?")) {
+                savedCookies = [];
+                localStorage.removeItem('savedBotCookies');
+                renderCookieList();
+                addLog("Xóa Cookie", "Đã xóa tất cả cookie đã lưu");
+            }
+        }
+
+        // ==================== HOẠT CẢNH & BOT ====================
         function createBot() {
             const bot = document.createElement('div');
             bot.className = 'bot';
             bot.textContent = '🤖';
-            
-            // Vị trí xuất phát ngẫu nhiên
-            const startX = Math.random() * window.innerWidth;
-            const startY = Math.random() * (window.innerHeight * 0.6);
-            
-            bot.style.left = `${startX}px`;
-            bot.style.top = `${startY}px`;
-            
+            bot.style.left = Math.random() * window.innerWidth + 'px';
+            bot.style.top = Math.random() * window.innerHeight * 0.65 + 'px';
             scene.appendChild(bot);
             bots.push(bot);
-
-            // Hành trình di chuyển ngẫu nhiên
             moveBotRandomly(bot);
         }
 
         function moveBotRandomly(bot) {
             if (!isRunning) return;
-
-            const maxX = window.innerWidth - 60;
-            const maxY = window.innerHeight - 100;
-
-            const targetX = Math.random() * maxX;
-            const targetY = Math.random() * maxY;
-
-            // Tính thời gian di chuyển ngẫu nhiên (1.5 - 4 giây)
-            const duration = 1500 + Math.random() * 2500;
+            const targetX = Math.random() * (window.innerWidth - 70);
+            const targetY = Math.random() * (window.innerHeight - 150);
+            const duration = 1600 + Math.random() * 2400;
 
             bot.style.transition = `left ${duration}ms ease-in-out, top ${duration}ms ease-in-out`;
             bot.style.left = `${targetX}px`;
             bot.style.top = `${targetY}px`;
 
-            // Sau khi di chuyển xong, tiếp tục di chuyển mới
-            setTimeout(() => {
-                if (isRunning && bots.includes(bot)) {
-                    moveBotRandomly(bot);
-                }
-            }, duration + 100);
+            setTimeout(() => moveBotRandomly(bot), duration + 200);
         }
 
-        // Thêm log
         function addLog(action, detail) {
             actionCount++;
-            const logContainer = document.getElementById('logContainer');
-            
-            const log = document.createElement('div');
-            log.className = 'log-item';
-            const time = new Date().toLocaleTimeString('vi-VN');
-            
-            log.innerHTML = `
-                <strong>[${time}] ${action}</strong><br>
-                <small>${detail}</small>
-            `;
-            
-            logContainer.appendChild(log);
+            const container = document.getElementById('logContainer');
+            const entry = document.createElement('div');
+            entry.innerHTML = `<strong>[${new Date().toLocaleTimeString('vi-VN')}] ${action}</strong><br><small>${detail}</small>`;
+            container.appendChild(entry);
+            if (container.children.length > 18) container.removeChild(container.children[0]);
+            container.scrollTop = container.scrollHeight;
 
-            // Giữ tối đa 12 dòng log
-            if (logContainer.children.length > 12) {
-                logContainer.removeChild(logContainer.children[0]);
-            }
-
-            // Tự scroll xuống
-            logContainer.scrollTop = logContainer.scrollHeight;
-        }
-
-        // Các hành động ngẫu nhiên
-        function performRandomAction() {
-            const actions = [
-                { name: "Di chuyển nhanh", detail: "Bot đang thay đổi quỹ đạo" },
-                { name: "Phát sáng", detail: "Tăng cường hiệu ứng ánh sáng" },
-                { name: "Thu thập dữ liệu", detail: `Đã quét ${Math.floor(Math.random()*1000)} điểm` },
-                { name: "Tránh vật cản", detail: "Điều chỉnh hướng di chuyển" },
-                { name: "Tương tác", detail: "Bot đang giao tiếp với nhau" }
-            ];
-
-            const randomAction = actions[Math.floor(Math.random() * actions.length)];
-            addLog(randomAction.name, randomAction.detail);
-
-            // Đổi màu ngẫu nhiên cho một bot
-            if (bots.length > 0) {
-                const randomBot = bots[Math.floor(Math.random() * bots.length)];
-                const hue = Math.random() * 360;
-                randomBot.style.background = `linear-gradient(45deg, hsl(${hue}, 100%, 60%), hsl(${hue + 60}, 100%, 70%))`;
+            // Tự động lưu cookie mỗi 5 hành động
+            if (actionCount % 5 === 0) {
+                saveCurrentCookies();
             }
         }
 
-        // Khởi tạo nhiều bot
-        function initScene() {
-            // Tạo 8 bot ban đầu
-            for (let i = 0; i < 8; i++) {
-                setTimeout(() => {
-                    createBot();
-                }, i * 300);
-            }
-        }
-
-        // Chạy bot chính
         function startAutoBot() {
-            addLog("Hệ thống", "🌌 Hoạt cảnh di chuyển đã được kích hoạt");
+            addLog("Khởi động", "Bot bắt đầu - Hệ thống quản lý cookie đã sẵn sàng");
 
-            // Thực hiện hành động ngẫu nhiên định kỳ
             botInterval = setInterval(() => {
-                if (Math.random() < 0.7) {
-                    performRandomAction();
+                if (Math.random() < 0.8) {
+                    addLog("Hoạt động", "Bot đang di chuyển và cập nhật cookie");
                 }
-            }, 1200);
+                // Đổi màu bot ngẫu nhiên
+                if (bots.length > 0 && Math.random() < 0.5) {
+                    const bot = bots[Math.floor(Math.random() * bots.length)];
+                    const hue = Math.random() * 360;
+                    bot.style.background = `linear-gradient(45deg, hsl(${hue},100%,60%), hsl(${hue+70},100%,75%))`;
+                }
+            }, 1400);
         }
 
         function stopBot() {
             isRunning = false;
             if (botInterval) clearInterval(botInterval);
-            
-            document.getElementById('botStatus').textContent = "Đã dừng";
-            document.getElementById('botStatus').style.color = "#ff6666";
-            
-            addLog("Bot dừng", `Tổng ${actionCount} hoạt động đã thực hiện`);
+            document.getElementById('status').textContent = "Đã dừng";
+            document.getElementById('status').style.color = "#ff6666";
+            addLog("Dừng", `Bot đã dừng sau ${actionCount} hành động`);
+            saveCurrentCookies("Cookie_Trước_Khi_Dừng");
         }
 
         function clearLog() {
@@ -250,15 +346,18 @@
             addLog("Hệ thống", "Nhật ký đã được xóa");
         }
 
-        // Xử lý khi thay đổi kích thước cửa sổ
-        window.addEventListener('resize', () => {
-            // Có thể thêm logic điều chỉnh nếu cần
-        });
-
-        // ==================== KHỞI ĐỘNG TỰ ĐỘNG ====================
+        // ==================== KHỞI ĐỘNG ====================
         window.onload = function() {
-            initScene();
+            // Tạo 7 bot di chuyển
+            for (let i = 0; i < 7; i++) {
+                setTimeout(createBot, i * 280);
+            }
+
+            loadFromLocalStorage();   // Load cookie đã lưu trước đó
             startAutoBot();
+
+            // Lưu cookie đầu tiên khi vừa mở
+            setTimeout(() => saveCurrentCookies("Cookie_Khi_Mở_Trang"), 1500);
         };
     </script>
 </body>
