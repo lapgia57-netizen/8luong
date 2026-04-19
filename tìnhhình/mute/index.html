@@ -1,364 +1,911 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auto Bot - Quản lý nhiều Cookie</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background: #0a0a2a;
-            font-family: Arial, sans-serif;
-            color: white;
-            height: 100vh;
-        }
-        .header {
-            position: absolute;
-            top: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.8);
-            padding: 12px 30px;
-            border-radius: 12px;
-            z-index: 200;
-            text-align: center;
-        }
-        h1 { margin: 0; font-size: 26px; text-shadow: 0 0 12px cyan; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🤖 Auto Bot — Quản lý Cookie</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%230a0a2a' stroke='%2300ffff' stroke-width='3'/><rect x='16' y='22' width='32' height='22' rx='6' fill='%2300ffff' opacity='0.15'/><rect x='16' y='22' width='32' height='22' rx='6' fill='none' stroke='%2300ffff' stroke-width='2'/><circle cx='24' cy='32' r='4' fill='%2300ffff'/><circle cx='40' cy='32' r='4' fill='%2300ffff'/><rect x='27' y='38' width='10' height='3' rx='1.5' fill='%2300ffff'/><rect x='28' y='15' width='3' height='8' rx='1.5' fill='%2300ffff'/><rect x='33' y='15' width='3' height='8' rx='1.5' fill='%2300ffff'/><circle cx='28' cy='14' r='2' fill='%2300ffff'/><circle cx='36' cy='14' r='2' fill='%2300ffff'/></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap');
 
-        #scene {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            overflow: hidden;
-            z-index: 1;
-        }
+  :root {
+    --bg: #050510;
+    --surface: rgba(10,15,40,0.92);
+    --surface2: rgba(0,200,255,0.06);
+    --border: rgba(0,200,255,0.25);
+    --border2: rgba(0,200,255,0.5);
+    --cyan: #00e5ff;
+    --magenta: #ff00cc;
+    --green: #00ff9d;
+    --text: #c8e6f0;
+    --text2: #6a90a8;
+    --danger: #ff2255;
+    --warn: #ffaa00;
+    --font-mono: 'Share Tech Mono', monospace;
+    --font-ui: 'Rajdhani', sans-serif;
+  }
 
-        .bot {
-            position: absolute;
-            width: 52px;
-            height: 52px;
-            background: linear-gradient(45deg, #ff00ff, #00ffff);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            box-shadow: 0 0 30px rgba(0,255,255,0.8);
-            z-index: 10;
-        }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .control-panel {
-            position: absolute;
-            top: 80px;
-            right: 20px;
-            background: rgba(0,0,0,0.85);
-            padding: 15px;
-            border-radius: 12px;
-            width: 320px;
-            z-index: 150;
-            font-size: 14px;
-        }
+  html, body {
+    width: 100%; min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-ui);
+    font-size: 15px;
+    overflow-x: hidden;
+  }
 
-        .log-panel {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(0,0,0,0.85);
-            padding: 15px;
-            border-radius: 12px;
-            width: 420px;
-            max-height: 320px;
-            overflow-y: auto;
-            z-index: 150;
-        }
+  /* ── BACKGROUND GRID ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
 
-        button {
-            padding: 8px 16px;
-            margin: 4px 2px;
-            background: #00bfff;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        button:hover { background: #0099cc; }
-        .danger { background: #ff3366; }
-        .danger:hover { background: #cc0033; }
+  /* ── SCAN LINE ── */
+  body::after {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 2px,
+      rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+  }
 
-        .cookie-list {
-            max-height: 200px;
-            overflow-y: auto;
-            margin: 10px 0;
-        }
-        .cookie-item {
-            background: rgba(255,255,255,0.1);
-            padding: 8px;
-            margin: 5px 0;
-            border-radius: 6px;
-            font-size: 13px;
-        }
-    </style>
+  /* ── SCENE (bot animation) ── */
+  #scene {
+    position: fixed; inset: 0; z-index: 1;
+    pointer-events: none; overflow: hidden;
+  }
+  .bot {
+    position: absolute;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    background: radial-gradient(circle at 35% 35%, #00e5ff 0%, #0033aa 100%);
+    box-shadow: 0 0 18px rgba(0,229,255,0.7), 0 0 40px rgba(0,229,255,0.3);
+    pointer-events: none;
+    will-change: transform, left, top;
+  }
+  .bot-trail {
+    position: absolute;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(0,229,255,0.4);
+    pointer-events: none;
+  }
+
+  /* ── LAYOUT ── */
+  .app {
+    position: relative; z-index: 10;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px;
+    gap: 16px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 20px;
+    backdrop-filter: blur(12px);
+  }
+  .logo {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .logo-icon {
+    width: 40px; height: 40px;
+    border: 2px solid var(--cyan);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    box-shadow: 0 0 12px rgba(0,229,255,0.5);
+    flex-shrink: 0;
+  }
+  .logo-text h1 {
+    font-size: 20px; font-weight: 700; letter-spacing: 2px;
+    color: var(--cyan); text-transform: uppercase;
+  }
+  .logo-text p {
+    font-size: 12px; color: var(--text2); letter-spacing: 1px;
+    font-family: var(--font-mono);
+  }
+  .header-stats {
+    display: flex; gap: 20px;
+  }
+  .stat-chip {
+    text-align: right;
+  }
+  .stat-chip .val {
+    font-size: 22px; font-weight: 700; color: var(--cyan);
+    font-family: var(--font-mono); line-height: 1;
+  }
+  .stat-chip .lbl {
+    font-size: 11px; color: var(--text2); letter-spacing: 1px; text-transform: uppercase;
+  }
+  .status-pill {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(0,255,157,0.1);
+    border: 1px solid rgba(0,255,157,0.3);
+    border-radius: 20px; padding: 6px 14px;
+    font-size: 13px; font-weight: 600; color: var(--green);
+    letter-spacing: 1px;
+  }
+  .pulse {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--green);
+    animation: pulse 1.4s infinite;
+    flex-shrink: 0;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
+
+  /* ── MAIN GRID ── */
+  main {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 16px;
+  }
+
+  /* ── PANELS ── */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    backdrop-filter: blur(12px);
+  }
+  .panel-title {
+    font-size: 13px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--cyan);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px; margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 14px;
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    background: var(--surface2);
+    color: var(--cyan);
+    font-family: var(--font-ui);
+    font-size: 13px; font-weight: 600; letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn:hover { background: rgba(0,200,255,0.15); border-color: var(--cyan); box-shadow: 0 0 10px rgba(0,229,255,0.3); }
+  .btn:active { transform: scale(0.97); }
+  .btn.danger { border-color: rgba(255,34,85,0.5); color: var(--danger); background: rgba(255,34,85,0.07); }
+  .btn.danger:hover { background: rgba(255,34,85,0.18); border-color: var(--danger); box-shadow: 0 0 10px rgba(255,34,85,0.3); }
+  .btn.success { border-color: rgba(0,255,157,0.5); color: var(--green); background: rgba(0,255,157,0.07); }
+  .btn.success:hover { background: rgba(0,255,157,0.18); border-color: var(--green); box-shadow: 0 0 10px rgba(0,255,157,0.3); }
+  .btn.warn { border-color: rgba(255,170,0,0.5); color: var(--warn); background: rgba(255,170,0,0.07); }
+  .btn.sm { padding: 4px 9px; font-size: 12px; }
+
+  /* ── BUTTON GROUP ── */
+  .btn-group { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+
+  /* ── COOKIE LIST ── */
+  .cookie-list { max-height: 380px; overflow-y: auto; }
+  .cookie-list::-webkit-scrollbar { width: 4px; }
+  .cookie-list::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+  .cookie-item {
+    background: rgba(0,229,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 12px;
+    margin-bottom: 8px;
+    transition: border-color 0.2s;
+  }
+  .cookie-item:hover { border-color: var(--cyan); }
+  .cookie-item .ci-head { display: flex; justify-content: space-between; align-items: flex-start; }
+  .cookie-item .ci-name { font-weight: 600; color: var(--text); font-size: 14px; }
+  .cookie-item .ci-meta { font-size: 11px; color: var(--text2); font-family: var(--font-mono); margin-top: 4px; }
+  .ci-badge {
+    font-size: 10px; letter-spacing: 1px; font-weight: 700;
+    padding: 2px 7px; border-radius: 10px;
+    background: rgba(0,229,255,0.12); color: var(--cyan);
+    border: 1px solid rgba(0,229,255,0.3);
+    white-space: nowrap;
+  }
+  .ci-actions { display: flex; gap: 5px; margin-top: 8px; }
+  .empty-state { text-align: center; padding: 30px 0; color: var(--text2); font-size: 13px; }
+  .empty-state .icon { font-size: 32px; margin-bottom: 10px; }
+
+  /* ── RIGHT COLUMN ── */
+  .right-col { display: flex; flex-direction: column; gap: 16px; }
+
+  /* ── LIVE COOKIES TABLE ── */
+  .table-wrap { overflow-x: auto; max-height: 220px; overflow-y: auto; }
+  .table-wrap::-webkit-scrollbar { width: 4px; height: 4px; }
+  .table-wrap::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; font-family: var(--font-mono); }
+  th { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--text2); font-weight: 600; padding: 6px 10px; text-align: left; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.2); position: sticky; top: 0; }
+  td { padding: 7px 10px; border-bottom: 1px solid rgba(0,229,255,0.07); color: var(--text); max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  tr:hover td { background: rgba(0,229,255,0.04); }
+  .td-key { color: var(--cyan); font-weight: 500; }
+  .td-del { cursor: pointer; color: var(--danger); font-size: 12px; padding: 4px 8px; }
+  .td-del:hover { text-decoration: underline; }
+
+  /* ── LOG ── */
+  .log-body { max-height: 220px; overflow-y: auto; font-family: var(--font-mono); font-size: 12px; }
+  .log-body::-webkit-scrollbar { width: 4px; }
+  .log-body::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+  .log-entry { padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.05); line-height: 1.5; }
+  .log-time { color: var(--text2); }
+  .log-action { color: var(--cyan); font-weight: 500; }
+  .log-detail { color: var(--text); }
+
+  /* ── ACTIVITY BAR ── */
+  .activity-bars { display: flex; align-items: flex-end; gap: 4px; height: 60px; }
+  .a-bar {
+    flex: 1; background: rgba(0,229,255,0.3);
+    border-radius: 2px 2px 0 0;
+    min-height: 4px; transition: height 0.4s ease;
+  }
+
+  /* ── INPUT ── */
+  input[type=text] {
+    width: 100%;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    padding: 8px 12px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  input[type=text]:focus { border-color: var(--cyan); box-shadow: 0 0 8px rgba(0,229,255,0.2); }
+  input[type=file] { display: none; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 12px; color: var(--text2); font-family: var(--font-mono);
+    backdrop-filter: blur(12px);
+  }
+  footer .footer-right { display: flex; gap: 20px; }
+
+  /* ── CLICK SPARK ── */
+  .spark {
+    position: fixed; pointer-events: none; z-index: 999;
+    width: 20px; height: 20px; margin: -10px 0 0 -10px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,229,255,0.9), transparent);
+    animation: sparkAnim 0.5s ease-out forwards;
+  }
+  @keyframes sparkAnim { 0%{transform:scale(0);opacity:1} 100%{transform:scale(4);opacity:0} }
+
+  /* ── NOTIFICATION ── */
+  .notif {
+    position: fixed; top: 80px; right: 24px; z-index: 9999;
+    background: var(--surface);
+    border: 1px solid var(--cyan);
+    border-radius: 8px; padding: 10px 16px;
+    font-size: 13px; color: var(--cyan);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 20px rgba(0,229,255,0.2);
+    animation: slideIn 0.3s ease, fadeOut 0.4s 2s forwards;
+    max-width: 280px;
+  }
+  .notif.err { border-color: var(--danger); color: var(--danger); box-shadow: 0 0 20px rgba(255,34,85,0.2); }
+  .notif.ok { border-color: var(--green); color: var(--green); box-shadow: 0 0 20px rgba(0,255,157,0.2); }
+  @keyframes slideIn { from{opacity:0;transform:translateX(30px)} to{opacity:1;transform:translateX(0)} }
+  @keyframes fadeOut { from{opacity:1} to{opacity:0;pointer-events:none} }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 760px) {
+    main { grid-template-columns: 1fr; }
+    .header-stats { display: none; }
+  }
+</style>
 </head>
 <body>
 
-    <div id="scene"></div>
+<div id="scene"></div>
 
-    <div class="header">
-        <h1>🤖 AUTO BOT - Quản lý Cookie</h1>
-        <div style="margin-top:8px;">Đang chạy tự động • <span id="status" style="color:#00ff9d;">Hoạt động</span></div>
+<div class="app">
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <div class="logo-icon">🤖</div>
+      <div class="logo-text">
+        <h1>Auto Bot</h1>
+        <p>COOKIE MANAGEMENT SYSTEM v2.0</p>
+      </div>
+    </div>
+    <div class="header-stats">
+      <div class="stat-chip">
+        <div class="val" id="statActions">0</div>
+        <div class="lbl">Hành động</div>
+      </div>
+      <div class="stat-chip">
+        <div class="val" id="statSaved">0</div>
+        <div class="lbl">Đã lưu</div>
+      </div>
+      <div class="stat-chip">
+        <div class="val" id="statLiveCookies">0</div>
+        <div class="lbl">Live Cookies</div>
+      </div>
+    </div>
+    <div class="status-pill">
+      <div class="pulse" id="pulse"></div>
+      <span id="statusText">ĐANG CHẠY</span>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- LEFT: COOKIE MANAGER -->
+    <div class="panel">
+      <div class="panel-title">🍪 Quản lý Cookie</div>
+
+      <div class="btn-group">
+        <button class="btn success" onclick="saveCurrentCookies()">💾 Lưu Cookie</button>
+        <button class="btn" onclick="downloadAll()">⬇️ Tải Về</button>
+        <button class="btn" onclick="document.getElementById('upFile').click()">⬆️ Upload</button>
+        <input type="file" id="upFile" accept=".json" onchange="uploadCookies(event)">
+      </div>
+
+      <div style="display:flex;gap:6px;margin-bottom:12px">
+        <input type="text" id="cookieName" placeholder="Tên cookie (tuỳ chọn)..." />
+      </div>
+
+      <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:8px">
+        Danh sách đã lưu (<span id="savedCount">0</span>)
+      </div>
+      <div class="cookie-list" id="cookieList">
+        <div class="empty-state"><div class="icon">🗂️</div>Chưa có cookie nào được lưu</div>
+      </div>
+
+      <div style="margin-top:12px;border-top:1px solid var(--border);padding-top:12px">
+        <button class="btn danger" onclick="clearAllSaved()">🗑 Xóa Tất Cả Đã Lưu</button>
+      </div>
     </div>
 
-    <!-- Panel quản lý Cookie -->
-    <div class="control-panel">
-        <strong>🍪 Quản lý Cookie</strong><br><br>
-        
-        <button onclick="saveCurrentCookies()">💾 Lưu Cookie Hiện Tại</button>
-        <button onclick="downloadAllCookies()">⬇️ Tải Về Tất Cả</button>
-        <button onclick="document.getElementById('uploadCookie').click()">⬆️ Upload Cookie</button>
-        <input type="file" id="uploadCookie" accept=".json" style="display:none;" onchange="uploadCookies(event)">
+    <!-- RIGHT COLUMN -->
+    <div class="right-col">
 
-        <hr style="border-color:#444;margin:12px 0;">
-        
-        <strong>Danh sách Cookie đã lưu:</strong>
-        <div class="cookie-list" id="cookieList"></div>
-        
-        <button onclick="clearAllCookies()" class="danger">🗑 Xóa Tất Cả Cookie</button>
+      <!-- LIVE COOKIES TABLE -->
+      <div class="panel">
+        <div class="panel-title">🔍 Cookie Trình Duyệt Hiện Tại</div>
+        <div style="display:flex;gap:6px;margin-bottom:10px">
+          <button class="btn sm" onclick="refreshLive()">↻ Làm mới</button>
+          <button class="btn sm" onclick="addCustomCookie()">＋ Thêm Cookie</button>
+          <button class="btn sm danger" onclick="clearAllLive()">✕ Xóa Hết</button>
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:10px">
+          <input type="text" id="newKey" placeholder="Tên cookie..." style="flex:1" />
+          <input type="text" id="newVal" placeholder="Giá trị..." style="flex:2" />
+          <button class="btn sm success" onclick="addCustomCookie()">Ghi</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Tên</th><th>Giá trị</th><th>Xóa</th></tr>
+            </thead>
+            <tbody id="liveTable"><tr><td colspan="3" style="color:var(--text2);text-align:center;padding:16px">Không có cookie</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ACTIVITY CHART + LOG -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+
+        <div class="panel">
+          <div class="panel-title">📊 Hoạt động Bot</div>
+          <div class="activity-bars" id="actBars">
+            <!-- JS will fill -->
+          </div>
+          <div style="margin-top:10px;font-size:12px;color:var(--text2);font-family:var(--font-mono)">
+            Bot: <span id="botCount" style="color:var(--cyan)">0</span> đang chạy &nbsp;|&nbsp;
+            Uptime: <span id="uptime" style="color:var(--green)">0s</span>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">⚙️ Điều khiển</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <button class="btn" onclick="addBot()">➕ Thêm Bot</button>
+            <button class="btn warn" onclick="pauseBot()">⏸ Tạm dừng / Tiếp tục</button>
+            <button class="btn danger" onclick="stopBot()">⏹ Dừng Bot</button>
+            <button class="btn" onclick="exportReport()">📄 Xuất Báo Cáo</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- LOG -->
+      <div class="panel">
+        <div class="panel-title" style="justify-content:space-between">
+          <span>📋 Nhật ký hoạt động</span>
+          <button class="btn sm" onclick="clearLog()">Xóa</button>
+        </div>
+        <div class="log-body" id="logBody"></div>
+      </div>
+
     </div>
+  </main>
 
-    <!-- Log Panel -->
-    <div class="log-panel">
-        <strong>📋 Nhật ký hoạt động</strong>
-        <div id="logContainer"></div>
-        <button onclick="clearLog()">Xóa Log</button>
-        <button onclick="stopBot()" class="danger">Dừng Bot</button>
+  <!-- FOOTER -->
+  <footer>
+    <span>AUTO BOT SYSTEM &copy; 2025 — Nhấp vào màn hình để ghi cookie tương tác</span>
+    <div class="footer-right">
+      <span>Build: v2.0.0</span>
+      <span id="footerTime">--:--:--</span>
     </div>
+  </footer>
 
-    <script>
-        const scene = document.getElementById('scene');
-        let bots = [];
-        let actionCount = 0;
-        let isRunning = true;
-        let botInterval = null;
-        let savedCookies = []; // Mảng lưu nhiều bộ cookie
+</div>
 
-        // ==================== COOKIE MANAGEMENT ====================
-        function setCookie(name, value, days = 365) {
-            const date = new Date();
-            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-            document.cookie = `${name}=${encodeURIComponent(value)}; expires=${date.toUTCString()}; path=/`;
-        }
+<script>
+// ══════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════
+const scene = document.getElementById('scene');
+let bots = [], savedCookies = [], actionCount = 0;
+let isRunning = true, isPaused = false;
+let mainTimer = null, uptimeVal = 0;
+let activityData = Array(20).fill(0);
 
-        function getAllCookies() {
-            const cookies = {};
-            document.cookie.split(';').forEach(cookie => {
-                const [name, value] = cookie.trim().split('=');
-                if (name) cookies[name] = decodeURIComponent(value);
-            });
-            return cookies;
-        }
+// ══════════════════════════════════════════
+//  COOKIE UTILITIES
+// ══════════════════════════════════════════
+function setCookie(name, value, days = 365) {
+  const d = new Date();
+  d.setTime(d.getTime() + days * 86400000);
+  document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)};expires=${d.toUTCString()};path=/`;
+}
 
-        // Lưu bộ cookie hiện tại với tên
-        function saveCurrentCookies(name = null) {
-            const timestamp = new Date().toISOString();
-            const cookieData = {
-                id: Date.now(),
-                name: name || `Cookie_${new Date().toLocaleTimeString('vi-VN')}`,
-                timestamp: timestamp,
-                totalActions: actionCount,
-                cookies: getAllCookies()
-            };
+function deleteCookieByName(name) {
+  document.cookie = `${encodeURIComponent(name)}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/`;
+}
 
-            savedCookies.push(cookieData);
-            saveToLocalStorage();
-            renderCookieList();
-            addLog("Lưu Cookie", `Đã lưu bộ cookie: ${cookieData.name}`);
-        }
+function getAllCookies() {
+  const c = {};
+  document.cookie.split(';').forEach(s => {
+    const idx = s.indexOf('=');
+    if (idx < 0) return;
+    const k = decodeURIComponent(s.slice(0, idx).trim());
+    const v = decodeURIComponent(s.slice(idx + 1).trim());
+    if (k) c[k] = v;
+  });
+  return c;
+}
 
-        function saveToLocalStorage() {
-            localStorage.setItem('savedBotCookies', JSON.stringify(savedCookies));
-        }
+function clearAllLiveCookies() {
+  const c = getAllCookies();
+  Object.keys(c).forEach(k => deleteCookieByName(k));
+}
 
-        function loadFromLocalStorage() {
-            const data = localStorage.getItem('savedBotCookies');
-            if (data) {
-                savedCookies = JSON.parse(data);
-                renderCookieList();
-            }
-        }
+// ══════════════════════════════════════════
+//  SAVE / LOAD
+// ══════════════════════════════════════════
+function saveCurrentCookies(label = null) {
+  // Write real interaction cookies
+  setCookie('bot_session_id', 'SID_' + Date.now());
+  setCookie('bot_last_action', 'save_' + actionCount);
+  setCookie('bot_status', isRunning ? (isPaused ? 'paused' : 'running') : 'stopped');
+  setCookie('bot_timestamp', new Date().toISOString());
+  setCookie('bot_action_count', String(actionCount));
+  setCookie('bot_uptime_s', String(uptimeVal));
 
-        function renderCookieList() {
-            const list = document.getElementById('cookieList');
-            list.innerHTML = '';
+  const name = label || (document.getElementById('cookieName').value.trim()) || `Cookie_${new Date().toLocaleTimeString('vi-VN')}`;
+  document.getElementById('cookieName').value = '';
 
-            savedCookies.forEach((item, index) => {
-                const div = document.createElement('div');
-                div.className = 'cookie-item';
-                div.innerHTML = `
-                    <strong>${item.name}</strong><br>
-                    <small>${new Date(item.timestamp).toLocaleString('vi-VN')}</small><br>
-                    Hành động: ${item.totalActions}
-                    <button onclick="downloadSingleCookie(${index})" style="float:right; padding:2px 8px; font-size:12px;">⬇️</button>
-                    <button onclick="deleteCookie(${index})" class="danger" style="float:right; margin-right:5px; padding:2px 8px; font-size:12px;">X</button>
-                `;
-                list.appendChild(div);
-            });
-        }
+  const obj = {
+    id: Date.now(),
+    name,
+    timestamp: new Date().toISOString(),
+    actions: actionCount,
+    uptime: uptimeVal,
+    cookies: getAllCookies()
+  };
+  savedCookies.push(obj);
+  persistSaved();
+  renderSavedList();
+  refreshLive();
+  addLog('💾 Lưu Cookie', `"${name}" — ${Object.keys(obj.cookies).length} cookies`);
+  notify(`✅ Đã lưu: ${name}`, 'ok');
+}
 
-        function downloadSingleCookie(index) {
-            const item = savedCookies[index];
-            const dataStr = JSON.stringify(item, null, 2);
-            const blob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${item.name}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-            addLog("Tải Cookie", `Đã tải ${item.name}`);
-        }
+function persistSaved() {
+  try { localStorage.setItem('savedBotCookies', JSON.stringify(savedCookies)); } catch(e) {}
+  document.getElementById('savedCount').textContent = savedCookies.length;
+  document.getElementById('statSaved').textContent = savedCookies.length;
+}
 
-        function downloadAllCookies() {
-            if (savedCookies.length === 0) {
-                alert("Chưa có cookie nào được lưu!");
-                return;
-            }
-            const dataStr = JSON.stringify(savedCookies, null, 2);
-            const blob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `All_Bot_Cookies_${new Date().toISOString().slice(0,10)}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-            addLog("Tải Cookie", "Đã tải tất cả cookie");
-        }
+function loadSaved() {
+  try {
+    const d = localStorage.getItem('savedBotCookies');
+    if (d) savedCookies = JSON.parse(d);
+  } catch(e) { savedCookies = []; }
+  renderSavedList();
+}
 
-        function uploadCookies(event) {
-            const file = event.target.files[0];
-            if (!file) return;
+function renderSavedList() {
+  const el = document.getElementById('cookieList');
+  if (!savedCookies.length) {
+    el.innerHTML = '<div class="empty-state"><div class="icon">🗂️</div>Chưa có cookie nào được lưu</div>';
+    return;
+  }
+  el.innerHTML = savedCookies.map((it, i) => `
+    <div class="cookie-item">
+      <div class="ci-head">
+        <div class="ci-name">${escHtml(it.name)}</div>
+        <span class="ci-badge">${Object.keys(it.cookies).length} cookies</span>
+      </div>
+      <div class="ci-meta">
+        ${new Date(it.timestamp).toLocaleString('vi-VN')} &nbsp;·&nbsp;
+        ${it.actions} hành động &nbsp;·&nbsp; uptime ${it.uptime || 0}s
+      </div>
+      <div class="ci-actions">
+        <button class="btn sm success" onclick="restoreCookies(${i})">↩ Khôi phục</button>
+        <button class="btn sm" onclick="dlOne(${i})">⬇️ Tải</button>
+        <button class="btn sm" onclick="previewCookie(${i})">🔍 Xem</button>
+        <button class="btn sm danger" onclick="delOne(${i})">✕</button>
+      </div>
+    </div>
+  `).join('');
+}
 
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const imported = JSON.parse(e.target.result);
-                    if (Array.isArray(imported)) {
-                        savedCookies = savedCookies.concat(imported);
-                    } else {
-                        savedCookies.push(imported);
-                    }
-                    saveToLocalStorage();
-                    renderCookieList();
-                    addLog("Upload Cookie", "Đã tải lên và khôi phục cookie thành công");
-                } catch(err) {
-                    alert("File không đúng định dạng!");
-                }
-            };
-            reader.readAsText(file);
-        }
+// ══════════════════════════════════════════
+//  RESTORE / PREVIEW
+// ══════════════════════════════════════════
+function restoreCookies(i) {
+  const it = savedCookies[i];
+  Object.entries(it.cookies).forEach(([k, v]) => setCookie(k, v));
+  refreshLive();
+  addLog('↩ Khôi phục', `"${it.name}" — ${Object.keys(it.cookies).length} cookies đã được ghi lại`);
+  notify('✅ Đã khôi phục cookie!', 'ok');
+}
 
-        function deleteCookie(index) {
-            if (confirm("Xóa bộ cookie này?")) {
-                savedCookies.splice(index, 1);
-                saveToLocalStorage();
-                renderCookieList();
-            }
-        }
+function previewCookie(i) {
+  const it = savedCookies[i];
+  const text = Object.entries(it.cookies).map(([k,v]) => `${k} = ${v}`).join('\n');
+  alert(`📦 ${it.name}\n\n${text || '(trống)'}`);
+}
 
-        function clearAllCookies() {
-            if (confirm("XÓA TẤT CẢ cookie đã lưu?")) {
-                savedCookies = [];
-                localStorage.removeItem('savedBotCookies');
-                renderCookieList();
-                addLog("Xóa Cookie", "Đã xóa tất cả cookie đã lưu");
-            }
-        }
+// ══════════════════════════════════════════
+//  DOWNLOAD / UPLOAD
+// ══════════════════════════════════════════
+function dlOne(i) {
+  const it = savedCookies[i];
+  download(JSON.stringify(it, null, 2), it.name + '.json');
+  addLog('⬇️ Tải Cookie', `"${it.name}"`);
+}
 
-        // ==================== HOẠT CẢNH & BOT ====================
-        function createBot() {
-            const bot = document.createElement('div');
-            bot.className = 'bot';
-            bot.textContent = '🤖';
-            bot.style.left = Math.random() * window.innerWidth + 'px';
-            bot.style.top = Math.random() * window.innerHeight * 0.65 + 'px';
-            scene.appendChild(bot);
-            bots.push(bot);
-            moveBotRandomly(bot);
-        }
+function downloadAll() {
+  if (!savedCookies.length) { notify('Chưa có cookie nào!', 'err'); return; }
+  download(JSON.stringify(savedCookies, null, 2), `AllCookies_${new Date().toISOString().slice(0,10)}.json`);
+  addLog('⬇️ Tải Tất Cả', `${savedCookies.length} bộ cookie`);
+}
 
-        function moveBotRandomly(bot) {
-            if (!isRunning) return;
-            const targetX = Math.random() * (window.innerWidth - 70);
-            const targetY = Math.random() * (window.innerHeight - 150);
-            const duration = 1600 + Math.random() * 2400;
+function download(text, filename) {
+  const b = new Blob([text], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(b); a.download = filename; a.click();
+  URL.revokeObjectURL(a.href);
+}
 
-            bot.style.transition = `left ${duration}ms ease-in-out, top ${duration}ms ease-in-out`;
-            bot.style.left = `${targetX}px`;
-            bot.style.top = `${targetY}px`;
+function uploadCookies(e) {
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    try {
+      const d = JSON.parse(ev.target.result);
+      const arr = Array.isArray(d) ? d : [d];
+      savedCookies = savedCookies.concat(arr);
+      persistSaved(); renderSavedList();
+      addLog('⬆️ Upload', `Đã nhập ${arr.length} bộ cookie`);
+      notify(`✅ Nhập ${arr.length} bộ cookie thành công!`, 'ok');
+    } catch(x) { notify('❌ File không hợp lệ!', 'err'); }
+  };
+  r.readAsText(f);
+  e.target.value = '';
+}
 
-            setTimeout(() => moveBotRandomly(bot), duration + 200);
-        }
+function delOne(i) {
+  savedCookies.splice(i, 1);
+  persistSaved(); renderSavedList();
+  addLog('🗑 Xóa', `Đã xóa 1 bộ cookie`);
+}
 
-        function addLog(action, detail) {
-            actionCount++;
-            const container = document.getElementById('logContainer');
-            const entry = document.createElement('div');
-            entry.innerHTML = `<strong>[${new Date().toLocaleTimeString('vi-VN')}] ${action}</strong><br><small>${detail}</small>`;
-            container.appendChild(entry);
-            if (container.children.length > 18) container.removeChild(container.children[0]);
-            container.scrollTop = container.scrollHeight;
+function clearAllSaved() {
+  if (!savedCookies.length) { notify('Danh sách đã trống!', 'err'); return; }
+  if (!confirm('Xóa tất cả cookie đã lưu?')) return;
+  savedCookies = [];
+  try { localStorage.removeItem('savedBotCookies'); } catch(e) {}
+  persistSaved(); renderSavedList();
+  addLog('🗑 Xóa Tất Cả', 'Đã xóa toàn bộ danh sách đã lưu');
+}
 
-            // Tự động lưu cookie mỗi 5 hành động
-            if (actionCount % 5 === 0) {
-                saveCurrentCookies();
-            }
-        }
+// ══════════════════════════════════════════
+//  LIVE COOKIE TABLE
+// ══════════════════════════════════════════
+function refreshLive() {
+  const c = getAllCookies();
+  const keys = Object.keys(c);
+  const tb = document.getElementById('liveTable');
+  document.getElementById('statLiveCookies').textContent = keys.length;
+  if (!keys.length) {
+    tb.innerHTML = '<tr><td colspan="3" style="color:var(--text2);text-align:center;padding:14px">Không có cookie nào</td></tr>';
+    return;
+  }
+  tb.innerHTML = keys.map(k => `
+    <tr>
+      <td class="td-key">${escHtml(k)}</td>
+      <td title="${escHtml(c[k])}">${escHtml(c[k].length > 40 ? c[k].slice(0,40)+'…' : c[k])}</td>
+      <td class="td-del" onclick="removeLiveCookie('${escHtml(k)}')">✕</td>
+    </tr>
+  `).join('');
+}
 
-        function startAutoBot() {
-            addLog("Khởi động", "Bot bắt đầu - Hệ thống quản lý cookie đã sẵn sàng");
+function removeLiveCookie(name) {
+  deleteCookieByName(name);
+  refreshLive();
+  addLog('🗑 Xóa Cookie', `Đã xóa: ${name}`);
+}
 
-            botInterval = setInterval(() => {
-                if (Math.random() < 0.8) {
-                    addLog("Hoạt động", "Bot đang di chuyển và cập nhật cookie");
-                }
-                // Đổi màu bot ngẫu nhiên
-                if (bots.length > 0 && Math.random() < 0.5) {
-                    const bot = bots[Math.floor(Math.random() * bots.length)];
-                    const hue = Math.random() * 360;
-                    bot.style.background = `linear-gradient(45deg, hsl(${hue},100%,60%), hsl(${hue+70},100%,75%))`;
-                }
-            }, 1400);
-        }
+function addCustomCookie() {
+  const k = document.getElementById('newKey').value.trim();
+  const v = document.getElementById('newVal').value.trim();
+  if (!k) { notify('Nhập tên cookie!', 'err'); return; }
+  setCookie(k, v);
+  document.getElementById('newKey').value = '';
+  document.getElementById('newVal').value = '';
+  refreshLive();
+  addLog('➕ Thêm Cookie', `${k} = ${v || '(rỗng)'}`);
+  notify(`✅ Đã ghi cookie: ${k}`, 'ok');
+}
 
-        function stopBot() {
-            isRunning = false;
-            if (botInterval) clearInterval(botInterval);
-            document.getElementById('status').textContent = "Đã dừng";
-            document.getElementById('status').style.color = "#ff6666";
-            addLog("Dừng", `Bot đã dừng sau ${actionCount} hành động`);
-            saveCurrentCookies("Cookie_Trước_Khi_Dừng");
-        }
+function clearAllLive() {
+  if (!confirm('Xóa tất cả cookie hiện tại của trang?')) return;
+  clearAllLiveCookies();
+  refreshLive();
+  addLog('🗑 Xóa Live', 'Đã xóa tất cả cookie của trang');
+}
 
-        function clearLog() {
-            document.getElementById('logContainer').innerHTML = '';
-            addLog("Hệ thống", "Nhật ký đã được xóa");
-        }
+// ══════════════════════════════════════════
+//  REPORT
+// ══════════════════════════════════════════
+function exportReport() {
+  const now = new Date();
+  const report = {
+    generated: now.toISOString(),
+    summary: { totalSaved: savedCookies.length, totalActions: actionCount, uptime: uptimeVal, botsActive: bots.length },
+    liveCookies: getAllCookies(),
+    savedHistory: savedCookies
+  };
+  download(JSON.stringify(report, null, 2), `BotReport_${now.toISOString().slice(0,19).replace(/:/g,'-')}.json`);
+  addLog('📄 Báo Cáo', 'Đã xuất báo cáo toàn bộ hệ thống');
+  notify('✅ Đã xuất báo cáo!', 'ok');
+}
 
-        // ==================== KHỞI ĐỘNG ====================
-        window.onload = function() {
-            // Tạo 7 bot di chuyển
-            for (let i = 0; i < 7; i++) {
-                setTimeout(createBot, i * 280);
-            }
+// ══════════════════════════════════════════
+//  LOG
+// ══════════════════════════════════════════
+function addLog(action, detail) {
+  actionCount++;
+  document.getElementById('statActions').textContent = actionCount;
+  setCookie('bot_action_count', String(actionCount));
 
-            loadFromLocalStorage();   // Load cookie đã lưu trước đó
-            startAutoBot();
+  const b = document.getElementById('logBody');
+  const d = document.createElement('div');
+  d.className = 'log-entry';
+  d.innerHTML = `<span class="log-time">[${new Date().toLocaleTimeString('vi-VN')}]</span> <span class="log-action">${action}</span> <span class="log-detail">— ${detail}</span>`;
+  b.appendChild(d);
+  if (b.children.length > 60) b.removeChild(b.children[0]);
+  b.scrollTop = b.scrollHeight;
 
-            // Lưu cookie đầu tiên khi vừa mở
-            setTimeout(() => saveCurrentCookies("Cookie_Khi_Mở_Trang"), 1500);
-        };
-    </script>
+  // Auto-save every 10 actions
+  if (actionCount % 10 === 0) saveCurrentCookies(`Auto_${actionCount}`);
+
+  // Update activity chart
+  activityData.shift(); activityData.push(Math.min(actionCount % 20 + 1, 20));
+  renderActivityBars();
+}
+
+function clearLog() {
+  document.getElementById('logBody').innerHTML = '';
+  addLog('🧹 Xóa Log', 'Nhật ký đã được xóa');
+}
+
+// ══════════════════════════════════════════
+//  ACTIVITY BARS
+// ══════════════════════════════════════════
+function renderActivityBars() {
+  const container = document.getElementById('actBars');
+  const max = Math.max(...activityData, 1);
+  container.innerHTML = activityData.map((v, i) => {
+    const pct = Math.max(4, Math.round((v / max) * 100));
+    const hue = 180 + i * 3;
+    return `<div class="a-bar" style="height:${pct}%;background:hsla(${hue},100%,60%,0.5)"></div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════
+//  BOTS
+// ══════════════════════════════════════════
+function createBot() {
+  const el = document.createElement('div');
+  el.className = 'bot';
+  el.textContent = ['🤖','👾','🦾','🛸'][Math.floor(Math.random()*4)];
+  el.style.left = Math.random() * (window.innerWidth - 60) + 'px';
+  el.style.top  = Math.random() * (window.innerHeight - 80) + 'px';
+  scene.appendChild(el);
+  bots.push(el);
+  moveBot(el);
+  document.getElementById('botCount').textContent = bots.length;
+  return el;
+}
+
+function moveBot(el) {
+  if (!isRunning || isPaused) { setTimeout(() => moveBot(el), 500); return; }
+  const x = Math.random() * (window.innerWidth - 60);
+  const y = Math.random() * (window.innerHeight - 80);
+  const t = 1800 + Math.random() * 2400;
+  el.style.transition = `left ${t}ms ease-in-out, top ${t}ms ease-in-out`;
+  el.style.left = x + 'px';
+  el.style.top  = y + 'px';
+  setTimeout(() => {
+    if (bots.includes(el)) moveBot(el);
+  }, t + 300);
+}
+
+function addBot() {
+  createBot();
+  addLog('➕ Bot Mới', `Tổng ${bots.length} bot đang hoạt động`);
+}
+
+function pauseBot() {
+  isPaused = !isPaused;
+  const dot = document.getElementById('pulse');
+  const txt = document.getElementById('statusText');
+  if (isPaused) {
+    dot.style.background = 'var(--warn)'; txt.textContent = 'TẠM DỪNG';
+    addLog('⏸ Tạm dừng', 'Bot đã tạm dừng di chuyển');
+  } else {
+    dot.style.background = 'var(--green)'; txt.textContent = 'ĐANG CHẠY';
+    bots.forEach(b => moveBot(b));
+    addLog('▶️ Tiếp tục', 'Bot tiếp tục hoạt động');
+  }
+}
+
+function stopBot() {
+  if (!isRunning) return;
+  isRunning = false; isPaused = false;
+  clearInterval(mainTimer);
+  const dot = document.getElementById('pulse');
+  dot.style.background = 'var(--danger)';
+  dot.style.animation = 'none';
+  document.getElementById('statusText').textContent = 'ĐÃ DỪNG';
+  saveCurrentCookies('Cookie_Trước_Khi_Dừng');
+  addLog('⏹ Dừng', `Bot đã dừng sau ${actionCount} hành động | uptime: ${uptimeVal}s`);
+  notify('Bot đã dừng. Cookie đã được lưu tự động.', 'ok');
+}
+
+// ══════════════════════════════════════════
+//  NOTIFICATIONS
+// ══════════════════════════════════════════
+function notify(msg, type = '') {
+  const el = document.createElement('div');
+  el.className = 'notif ' + type;
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2500);
+}
+
+// ══════════════════════════════════════════
+//  CLICK → REAL COOKIE
+// ══════════════════════════════════════════
+document.addEventListener('click', e => {
+  if (!isRunning || isPaused) return;
+  // Skip panel clicks
+  if (e.target.closest('.panel, header, footer')) return;
+
+  const x = e.clientX, y = e.clientY;
+  setCookie('bot_last_click_x', String(x));
+  setCookie('bot_last_click_y', String(y));
+  setCookie('bot_click_time', new Date().toISOString());
+  setCookie('bot_click_count', String(++window._clickCount || 1));
+  window._clickCount = (window._clickCount || 0) + 1;
+
+  // Spark
+  const sp = document.createElement('div');
+  sp.className = 'spark';
+  sp.style.left = x + 'px'; sp.style.top = y + 'px';
+  document.body.appendChild(sp);
+  setTimeout(() => sp.remove(), 600);
+
+  refreshLive();
+  addLog('🖱 Click', `Tương tác tại (${x}, ${y}) — cookie đã ghi`);
+});
+
+// ══════════════════════════════════════════
+//  HELPERS
+// ══════════════════════════════════════════
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ══════════════════════════════════════════
+//  CLOCK + UPTIME
+// ══════════════════════════════════════════
+setInterval(() => {
+  document.getElementById('footerTime').textContent = new Date().toLocaleTimeString('vi-VN');
+  if (isRunning && !isPaused) {
+    uptimeVal++;
+    document.getElementById('uptime').textContent = uptimeVal + 's';
+    setCookie('bot_uptime_s', String(uptimeVal));
+  }
+}, 1000);
+
+// ══════════════════════════════════════════
+//  AUTO BOT LOOP
+// ══════════════════════════════════════════
+function startAutoLoop() {
+  mainTimer = setInterval(() => {
+    if (!isRunning || isPaused) return;
+    if (Math.random() < 0.6) {
+      const msgs = [
+        'Di chuyển đến vị trí mới và cập nhật cookie',
+        'Quét môi trường và ghi nhận dữ liệu',
+        'Đồng bộ trạng thái bot với hệ thống',
+        'Kiểm tra và gia hạn cookie phiên',
+        'Bot tự động thực hiện tác vụ nền'
+      ];
+      addLog('⚙️ Auto', msgs[Math.floor(Math.random() * msgs.length)]);
+    }
+    // Random recolor bot
+    if (bots.length && Math.random() < 0.4) {
+      const b = bots[Math.floor(Math.random() * bots.length)];
+      const h = Math.random() * 360;
+      b.style.background = `radial-gradient(circle at 35% 35%, hsl(${h},100%,70%), hsl(${h+60},100%,35%))`;
+    }
+    refreshLive();
+  }, 2000);
+}
+
+// ══════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════
+window.onload = function() {
+  loadSaved();
+  renderActivityBars();
+
+  // Spawn initial bots
+  for (let i = 0; i < 5; i++) setTimeout(createBot, i * 300);
+
+  startAutoLoop();
+  refreshLive();
+  addLog('🚀 Khởi động', 'Hệ thống Auto Bot v2.0 sẵn sàng — Cookie Management đã kích hoạt');
+
+  // First auto-save
+  setTimeout(() => saveCurrentCookies('Cookie_Khi_Mở_Trang'), 1500);
+};
+</script>
 </body>
 </html>
